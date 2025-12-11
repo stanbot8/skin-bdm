@@ -1,0 +1,7 @@
+build/
+output/
+__pycache__/
+bdm.toml
+bdm.toml.*
+batch/results/
+studies/*-results/
