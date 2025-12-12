@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+title: "Skin BioDynaMo (SkiBiDy)"
+message: "If you use this software, please cite it using these metadata."
+type: software
+authors:
+  - name: stanbot8
+repository-code: "https://github.com/stanbot8/skibidy"
+license: Apache-2.0
+keywords:
+  - skin
+  - wound-healing
+  - agent-based-model
+  - biodynamo
+  - computational-biology
