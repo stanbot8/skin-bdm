@@ -1,0 +1,242 @@
+# Literature sources for tissue module
+core_tissue_parameters:
+  description: 'Literature sources validating core bdm.toml parameters for epidermis and dermis continuum fields, cell cycle,
+    division mechanics, and migration.
+
+    '
+  sources:
+  - id: schugart2008
+    authors: Schugart RC, Friedman A, Zhao R, Sen CK
+    year: 2008
+    title: 'Wound angiogenesis as a function of tissue oxygen tension: a mathematical model'
+    journal: Proc Natl Acad Sci USA 105(7):2628-2633
+    doi: 10.1073/pnas.0711642105
+    notes: 'Mathematical wound angiogenesis model with O2 diffusion, capillary density, and VEGF coupling. Supports oxygen_diffusion
+      and VEGF hypoxia threshold parameters.
+
+      '
+  - id: stucker2002
+    authors: Stucker M, Struk A, Altmeyer P, Herde M, Baumgartl H, Lubbers DW
+    year: 2002
+    title: The cutaneous uptake of atmospheric oxygen contributes significantly to the oxygen supply of human dermis and epidermis
+    journal: J Physiol 538(Pt 3):985-994
+    doi: 10.1113/jphysiol.2001.013067
+    notes: 'In vivo transcutaneous pO2 measurements in human skin. Supports oxygen_decay parameter magnitude for epidermal
+      O2 consumption.
+
+      '
+  - id: rubin1989
+    authors: Rubin JS, Osada H, Finch PW, Taylor WG, Rudikoff S, Aaronson SA
+    year: 1989
+    title: Purification and characterization of a newly identified growth factor specific for epithelial cells
+    journal: Proc Natl Acad Sci USA 86(3):802-806
+    doi: 10.1073/pnas.86.3.802
+    notes: 'Original KGF characterization. Half-maximal stimulation data supports kgf_half_maximal Michaelis-Menten parameter.
+
+      '
+  - id: werner1992
+    authors: Werner S, Peters KG, Longaker MT, Fuller-Pace F, Banda MJ, Williams LT
+    year: 1992
+    title: Large induction of keratinocyte growth factor expression in the dermis during wound healing
+    journal: Proc Natl Acad Sci USA 89(15):6896-6900
+    doi: 10.1073/pnas.89.15.6896
+    notes: 'KGF expressed exclusively by dermal fibroblasts, 160-fold upregulation post-wounding. Supports paracrine continuum
+      source model and kgf_decay_length parameter.
+
+      '
+  - id: schwindt1998
+    authors: Schwindt DA, Wilhelm KP, Maibach HI
+    year: 1998
+    title: Water diffusion characteristics of human stratum corneum at different anatomical sites in vivo
+    journal: J Invest Dermatol 111(3):385-389
+    doi: 10.1046/j.1523-1747.1998.00321.x
+    notes: 'Measured water diffusion through stratum corneum in vivo. Supports water_diffusion parameter.
+
+      '
+  - id: pinnagoda1990
+    authors: Pinnagoda J, Tupker RA, Agner T, Serup J
+    year: 1990
+    title: Guidelines for transepidermal water loss (TEWL) measurement
+    journal: Contact Dermatitis 22(3):164-178
+    doi: 10.1111/j.1600-0536.1990.tb01553.x
+    notes: 'Standardized TEWL measurement protocol. Normal TEWL 5-10 g/m2/h. Supports water_decay and water_surface_loss_rate
+      parameters.
+
+      '
+  - id: grabe2005
+    authors: Grabe N, Neuber K
+    year: 2005
+    title: A multicellular systems biology model predicts epidermal morphology, kinetics and Ca2+ flow
+    journal: Bioinformatics 21(17):3541-3547
+    doi: 10.1093/bioinformatics/bti585
+    notes: 'Agent-based epidermal model with Ca2+ flow. Predicted calcium profile matches physiological measurements. Foundational
+      paper for calcium sigmoid profile parameters.
+
+      '
+  - id: menon1985
+    authors: Menon GK, Grayson S, Elias PM
+    year: 1985
+    title: 'Ionic calcium reservoirs in mammalian epidermis: ultrastructural localization by ion-capture cytochemistry'
+    journal: J Invest Dermatol 84(6):508-512
+    doi: 10.1111/1523-1747.ep12273485
+    notes: 'Ca2+ low in basale, increases through spinosum, peaks in granulosum. Supports calcium_basal and calcium_peak parameters.
+
+      '
+  - id: bikle2012
+    authors: Bikle DD, Xie Z, Tu CL
+    year: 2012
+    title: Calcium regulation of keratinocyte differentiation
+    journal: Expert Rev Endocrinol Metab 7(4):461-472
+    doi: 10.1586/eem.12.34
+    notes: '>0.1 mM Ca2+ triggers calcium switch initiating differentiation. Supports ca_spinous_threshold=0.1 as differentiation
+      gate.
+
+      '
+  - id: adams2015
+    authors: Adams MP, Mallet DG, Pettet GJ
+    year: 2015
+    title: Towards a quantitative theory of epidermal calcium profile formation in unwounded skin
+    journal: PLoS ONE 10(1):e0116751
+    doi: 10.1371/journal.pone.0116751
+    notes: 'Mathematical model of epidermal calcium profile. Quantitative fit to measured gradient. Supports calcium sigmoid
+      parameters.
+
+      '
+  - id: adra2010
+    authors: Adra S, Sun T, MacNeil S, Holcombe M, Smallwood R
+    year: 2010
+    title: Development of a three dimensional multiscale computational model of the human epidermis
+    journal: PLoS ONE 5(1):e8511
+    doi: 10.1371/journal.pone.0008511
+    notes: 'Agent-based epidermal model with 15-24h cell cycle for actively cycling cells and 10um cell diameter. Supports
+      cell cycle and division_diameter parameters.
+
+      '
+  - id: jones1993
+    authors: Jones PH, Watt FM
+    year: 1993
+    title: Separation of human epidermal stem cells from transit amplifying cells on the basis of differences in integrin
+      function and expression
+    journal: Cell 73(4):713-724
+    doi: 10.1016/0092-8674(93)90251-K
+    notes: 'TA cells undergo 1-5 rounds of division before terminal differentiation. Foundational paper for max_ta_divisions=4.
+
+      '
+  - id: clayton2007
+    authors: Clayton E, Doupe DP, Klein AM, Winton DJ, Simons BD, Jones PH
+    year: 2007
+    title: A single type of progenitor cell maintains normal epidermis
+    journal: Nature 446(7132):185-189
+    doi: 10.1038/nature05574
+    notes: '~80% asymmetric divisions at homeostasis. Supports p_asymmetric=0.7.
+
+      '
+  - id: barrandon1985
+    authors: Barrandon Y, Green H
+    year: 1985
+    title: Cell size as a determinant of the clone-forming ability of human keratinocytes
+    journal: Proc Natl Acad Sci USA 82(16):5390-5394
+    doi: 10.1073/pnas.82.16.5390
+    notes: 'Clone-forming keratinocytes <=11um, committed >=12um. Smallest basal stem cells ~9um. Supports division_diameter
+      parameter.
+
+      '
+  - id: sun2007
+    authors: Sun T, McMinn P, Coakley S, Holcombe M, Smallwood R, MacNeil S
+    year: 2007
+    title: An integrated systems biology approach to understanding the rules of keratinocyte colony formation
+    journal: J R Soc Interface 4(17):1077-1117
+    doi: 10.1098/rsif.2007.0227
+    notes: 'Contact inhibition by neighbor count; packing geometry threshold. Supports max_neighbors=14 (sphere packing ~12-14).
+
+      '
+  - id: li1998
+    authors: Li A, Simmons PJ, Kaur P
+    year: 1998
+    title: Identification and isolation of candidate human keratinocyte stem cells based on cell surface phenotype
+    journal: Proc Natl Acad Sci USA 95(7):3902-3907
+    doi: 10.1073/pnas.95.7.3902
+    notes: 'Alpha6-bright/CD71-dim stem fraction ~5% of basal cells in vivo. Model stem_fraction=0.50 represents full proliferative
+      fraction (stem + TA cells).
+
+      '
+  - id: lulevich2010
+    authors: Lulevich V, Zink T, Chen HY, Liu FT, Liu GY
+    year: 2010
+    title: Single cell mechanics of keratinocyte cells
+    journal: Ultramicroscopy 110(12):1435-1442
+    doi: 10.1016/j.ultramic.2010.07.009
+    notes: 'AFM-based single cell compression. Keratinocyte Young''s modulus 1-10 kPa for Hertz contact model. Supports repulsion_coeff.
+
+      '
+  - id: safferling2013
+    authors: Safferling K, Sutterlin T, Westphal K, Ernst C, Breuhahn K, et al.
+    year: 2013
+    title: 'Wound healing revised: a novel reepithelialization mechanism revealed by in vitro and in silico models'
+    journal: J Cell Biol 203(4):691-709
+    doi: 10.1083/jcb.201212020
+    notes: 'Wound edge advancement 20-60 um/h. Supports migration_speed.
+
+      '
+  - id: mcdougall2006
+    authors: McDougall S, Dallon J, Sherratt J, Maini P
+    year: 2006
+    title: Fibroblast migration and collagen deposition during dermal wound healing
+    journal: Philos Trans R Soc A 364(1843):1385-1405
+    doi: 10.1098/rsta.2006.1773
+    notes: 'Fibroblast migration 10-30 um/h in wound bed. Supports fibroblast migration_speed parameter.
+
+      '
+  - id: lammermann2008
+    authors: Lammermann T, Bader BL, Monkley SJ, et al.
+    year: 2008
+    title: Rapid leukocyte migration by integrin-independent flowing and squeezing
+    journal: Nature 453(7191):51-55
+    doi: 10.1038/nature06887
+    notes: 'Leukocyte 3D migration up to 20-30 um/min for neutrophils. Macrophages ~1-4 um/min. Supports immune migration_speed.
+
+      '
+  - id: iizuka1994
+    authors: Iizuka H
+    year: 1994
+    title: Epidermal turnover time
+    journal: J Dermatol Sci 8(3):215-217
+    doi: 10.1016/0923-1811(94)90057-4
+    notes: 'Total epidermal turnover 47-48 days. Stratum corneum transit ~14 days.
+
+      '
+cell_mechanics:
+  description: 'Literature sources for cell-cell interaction forces and density-dependent growth control used in agent-based
+    modeling.
+
+    '
+  sources:
+  - id: vanliedekerke2015
+    authors: Van Liedekerke P, Palm MM, Jagiella N, Drasdo D
+    year: 2015
+    title: 'Simulating tissue mechanics with agent-based models: concepts, perspectives and some novel results'
+    journal: Comput Part Mech 2(4):401-444
+    doi: 10.1007/s40571-015-0082-3
+    notes: 'JKR and Hertz contact models for deformable cell-cell interactions in agent-based tissue simulations. Supports
+      cell_cell_force repulsion/adhesion calibration.
+
+      '
+  - id: johnson1971
+    authors: Johnson KL, Kendall K, Roberts AD
+    year: 1971
+    title: Surface energy and the contact of elastic solids
+    journal: Proc R Soc Lond A 324(1558):301-313
+    doi: 10.1098/rspa.1971.0141
+    notes: 'Original JKR theory for elastic contact with adhesion. Foundational reference for Hertz-adhesion cell force model.
+
+      '
+  - id: eisenhoffer2012
+    authors: Eisenhoffer GT, Loftus PD, Yoshigi M, Otsuna H, Chien CB, et al.
+    year: 2012
+    title: Crowding induces live cell extrusion to maintain homeostatic cell numbers in epithelia
+    journal: Nature 484(7395):546-549
+    doi: 10.1038/nature10999
+    notes: 'Epithelial overcrowding triggers live cell extrusion via stretch-activated channel Piezo1 and S1P signaling. Supports
+      crowding-driven differentiation/extrusion threshold.
+
+      '

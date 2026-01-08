@@ -1,0 +1,3 @@
+# Module: tissue -- core epidermal biology (always on)
+# Root [skin] params live in bdm.core.toml (master config) because
+# sub-modules reference [skin.X] tables that depend on the root.
