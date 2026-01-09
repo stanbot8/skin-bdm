@@ -1,0 +1,15 @@
+source,Cukjati D et al. (2000)
+doi,10.1007/BF02347056
+figure,Fig 3 - sigmoid model fitted to normal wound closure
+wound_type,excisional punch biopsy (human)
+notes,Sigmoid model parameters from clinical data; normal (non-chronic) healing
+day,closure_pct
+0,0
+1,2
+3,10
+5,22
+7,40
+10,60
+14,80
+21,95
+28,100

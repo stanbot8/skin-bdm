@@ -1,0 +1,15 @@
+source,Eaglstein WH & Mertz PM (1978)
+doi,10.1111/1523-1747.ep12556814
+figure,Fig 1 - epidermal wound healing rate under occlusive dressing
+wound_type,shallow partial-thickness (porcine)
+notes,Moist environment; re-epithelialization measured by histology
+day,closure_pct
+0,0
+1,8
+2,18
+3,30
+4,42
+5,55
+7,75
+10,90
+14,98
