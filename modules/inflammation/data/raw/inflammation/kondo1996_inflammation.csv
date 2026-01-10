@@ -1,0 +1,18 @@
+source,Kondo T & Ohshima T (1996)
+doi,10.1007/BF01369816
+figure,Figs 2-4 - cytokine dynamics in mouse skin wounds
+wound_type,excisional (murine)
+notes,"TNF-alpha + IL-1beta + IL-6 summed, normalized to peak at ~48h"
+day,inflammation_normalized
+0,0.00
+0.5,0.75
+1,0.95
+2,1.00
+3,0.90
+4,0.75
+5,0.60
+7,0.40
+10,0.20
+14,0.10
+21,0.04
+28,0.02
