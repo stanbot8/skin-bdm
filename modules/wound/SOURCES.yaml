@@ -1,0 +1,254 @@
+# Literature sources for wound module
+closure_kinetics_punch_biopsy:
+  description: Re-epithelialization trajectory (% wound closure over 28 days)
+  consensus: data/closure_kinetics_punch_biopsy.csv
+  raw_files:
+  - data/raw/closure/eaglstein1978_closure.csv
+  - data/raw/closure/cukjati2000_closure.csv
+  - data/raw/closure/pastar2014_closure.csv
+  columns:
+  - day
+  - closure_pct
+  units:
+    day: days
+    closure_pct: percent
+  normalization: absolute (0-100%)
+  sources:
+  - id: eaglstein1978
+    authors: Eaglstein WH, Mertz PM
+    year: 1978
+    title: New methods for assessing epidermal wound healing
+    journal: J Invest Dermatol 71(6):382-384
+    doi: 10.1111/1523-1747.ep12556814
+  - id: cukjati2000
+    authors: Cukjati D, Rebersek S, Karba R, Miklavcic D
+    year: 2000
+    title: Modelling of chronic wound healing dynamics
+    journal: Med Biol Eng Comput 38(3):339-347
+    doi: 10.1007/BF02347056
+  - id: pastar2014
+    authors: Pastar I, Stojadinovic O, Yin NC, Ramirez H, Nusbaum AG, Sawaya A, Patel SB, Khalid L, Isseroff RR, Tomic-Canic
+      M
+    year: 2014
+    title: 'Epithelialization in wound healing: a comprehensive review'
+    journal: Adv Wound Care 3(7):445-464
+    doi: 10.1089/wound.2013.0473
+normal_skin_profile:
+  description: 'Literature sources for baseline normal skin parameters: cell cycle kinetics, stem/TA cell hierarchy, calcium-driven
+    differentiation, and paracrine growth factor signaling.
+
+    '
+  sources:
+  - id: dover1988
+    authors: Dover R, Potten CS
+    year: 1988
+    title: Heterogeneity and cell cycle analyses from time-lapse studies of human keratinocytes in vitro
+    journal: J Cell Sci 89(3):359-371
+    doi: 10.1242/jcs.89.3.359
+    notes: 'Time-lapse cell cycle analysis of human keratinocytes. Mean cycle time ~17h with heterogeneity. Supports g1_duration=7.0,
+      s_duration=6.0, g2_duration=3.0, m_duration=1.0 parameters.
+
+      '
+  - id: potten1988
+    authors: Potten CS, Morris RJ
+    year: 1988
+    title: Epithelial stem cells in vivo
+    journal: J Cell Sci Suppl 10:45-62
+    doi: 10.1242/jcs.1988.supplement_10.4
+    notes: 'Epidermal proliferative unit model: stem cells with unlimited self-renewal, TA cells with 3-5 divisions before
+      terminal differentiation. Supports max_ta_divisions=4, p_asymmetric=0.7.
+
+      '
+  - id: bikle2012
+    authors: Bikle DD, Xie Z, Tu CL
+    year: 2012
+    title: Calcium regulation of keratinocyte differentiation
+    journal: Expert Rev Endocrinol Metab 7(4):461-472
+    doi: 10.1586/eem.12.34
+    notes: 'Calcium gradient from low (basal) to peak (granulosum) drives sequential keratinocyte differentiation via CaR
+      signaling. Supports calcium_basal=0.05, calcium_peak=1.5 and differentiation threshold parameters.
+
+      '
+  - id: finch2004
+    authors: Finch PW, Rubin JS
+    year: 2004
+    title: Keratinocyte growth factor/fibroblast growth factor 7, a homeostatic factor with therapeutic potential for epithelial
+      protection and repair
+    journal: Adv Cancer Res 91:69-136
+    doi: 10.1016/S0065-230X(04)91003-2
+    notes: 'KGF (FGF-7) is a paracrine factor from mesenchymal cells that drives epithelial proliferation and repair. Supports
+      kgf_basal_conc and kgf_max_boost parameters.
+
+      '
+aged_skin_profile:
+  description: 'Literature sources for aged skin profile parameters. Aged skin shows slower epidermal turnover, thinner stratum
+    corneum, and reduced dermal vasculature compared to young adult skin.
+
+    '
+  sources:
+  - id: gilchrest1983
+    authors: Gilchrest BA
+    year: 1983
+    title: In vitro assessment of keratinocyte aging
+    journal: J Invest Dermatol 81(1 Suppl):184s-189s
+    doi: 10.1111/1523-1747.ep12541084
+    notes: 'Aged keratinocytes proliferate more slowly in vitro with reduced mitogenic responsiveness. Supports g1_duration=9.0
+      and s_duration=8.0 (total cycle ~20h vs ~17h in young adult).
+
+      '
+  - id: farage2013
+    authors: Farage MA, Miller KW, Elsner P, Maibach HI
+    year: 2013
+    title: Characteristics of the aging skin
+    journal: Adv Wound Care 2(1):5-10
+    doi: 10.1089/wound.2011.0356
+    notes: 'Review of age-related skin changes: thinner stratum corneum, reduced barrier function, slower transepidermal water
+      loss recovery. Supports volume_z_cornified=20.0, water_recovery_rate=0.03, and basal perfusion=0.8 parameters.
+
+      '
+  - id: sgonc2013
+    authors: Sgonc R, Gruber J
+    year: 2013
+    title: 'Age-related aspects of cutaneous wound healing: a mini-review'
+    journal: Gerontology 59(2):159-164
+    doi: 10.1159/000342344
+    notes: 'Fewer active stem cells, reduced growth factor responsiveness, and delayed inflammatory resolution in aged skin.
+      Supports stem_fraction=0.30 parameter.
+
+      '
+treatment_interventions:
+  description: 'Literature sources supporting treatment parameter choices for diabetic wound interventions. Each treatment
+    overlay modifies diabetic dysfunction parameters proportional to published clinical/preclinical effect sizes.
+
+    '
+  sources:
+  - id: goren2007
+    authors: Goren I, Muller E, Schiefelbein D, Christen U, Pfeilschifter J, Muhl H, Frank S
+    year: 2007
+    title: Systemic anti-TNFalpha treatment restores diabetes-impaired skin repair in ob/ob mice by inactivation of macrophages
+    journal: J Invest Dermatol 127(9):2259-2267
+    doi: 10.1038/sj.jid.5700842
+    notes: 'Anti-TNF-alpha restores wound healing in diabetic ob/ob mice via macrophage inactivation. Supports anti_inflammatory
+      treatment m1_duration_factor and resolution_factor adjustments.
+
+      '
+  - id: ashcroft2012
+    authors: Ashcroft GS, Jeong MJ, Ashworth JJ, Hardman M, Jin W, Moutsopoulos N, et al.
+    year: 2012
+    title: Tumor necrosis factor-alpha (TNF-alpha) is a therapeutic target for impaired cutaneous wound healing
+    journal: Wound Repair Regen 20(1):38-49
+    doi: 10.1111/j.1524-475X.2011.00748.x
+    notes: 'Topical anti-TNF-alpha neutralizing antibodies blunt leukocyte recruitment, shift M1/M2 balance, and accelerate
+      wound closure.
+
+      '
+  - id: siqueira2010
+    authors: Siqueira MF, Li J, Chehab L, Desta T, Chino T, Krothpali N, et al.
+    year: 2010
+    title: Impaired wound healing in mouse models of diabetes is mediated by TNF-alpha dysregulation and associated with enhanced
+      activation of forkhead box O1 (FOXO1)
+    journal: Diabetologia 53(2):378-388
+    doi: 10.1007/s00125-009-1529-y
+    notes: 'TNF-alpha dysregulation drives fibroblast apoptosis and reduced proliferation via FOXO1 pathway in diabetic wounds.
+
+      '
+  - id: londahl2010
+    authors: Londahl M, Katzman P, Nilsson A, Hammarlund C
+    year: 2010
+    title: Hyperbaric oxygen therapy facilitates healing of chronic foot ulcers in patients with diabetes
+    journal: Diabetes Care 33(5):998-1003
+    doi: 10.2337/dc09-1754
+    notes: 'HODFU RCT: HBO significantly improved complete healing of chronic DFUs at 1 year. Supports HBO treatment perfusion
+      and VEGF adjustments.
+
+      '
+  - id: fedorko2016
+    authors: Fedorko L, Bowen JM, Jones W, Englesbe G, Englesbe J, Dain S, et al.
+    year: 2016
+    title: Hyperbaric oxygen therapy does not reduce indications for amputation in patients with diabetes with nonhealing
+      ulcers of the lower limb
+    journal: Diabetes Care 39(3):392-399
+    doi: 10.2337/dc15-2001
+    notes: 'Negative RCT: no significant healing difference with HBO. Provides important context that HBO effect sizes are
+      debated.
+
+      '
+  - id: morykwas1997
+    authors: Morykwas MJ, Argenta LC, Shelton-Brown EI, McGuirt W
+    year: 1997
+    title: 'Vacuum-assisted closure: a new method for wound control and treatment'
+    journal: Ann Plast Surg 38(6):553-562
+    doi: 10.1097/00000637-199706000-00001
+    notes: 'Original NPWT description. 4x blood flow increase at -125 mmHg. Granulation tissue formation accelerated. Supports
+      NPWT perfusion and proliferation parameter adjustments.
+
+      '
+  - id: armstrong2005
+    authors: Armstrong DG, Lavery LA
+    year: 2005
+    title: Negative pressure wound therapy after partial diabetic foot amputation
+    journal: Lancet 366(9498):1704-1710
+    doi: 10.1016/S0140-6736(05)67695-7
+    notes: 'RCT: NPWT improved healing rate (56% vs 39%) in diabetic foot amputations. Supports NPWT treatment parameter magnitudes.
+
+      '
+  - id: smith1999
+    authors: Smith GN Jr, Mickler EA, Hasty KA, Brandt KD
+    year: 1999
+    title: Specificity of inhibition of matrix metalloproteinase activity by doxycycline
+    journal: Arthritis Rheum 42(6):1140-1146
+    doi: 10.1002/1529-0131(199906)42:6<1140::AID-ANR10>3.0.CO;2-7
+    notes: 'Sub-antimicrobial doxycycline inhibits MMP-1, -8, -9, -13. IC50 values support mmp_factor adjustment from 3.0
+      to 1.5.
+
+      '
+  - id: steed2006
+    authors: Steed DL
+    year: 2006
+    title: Clinical evaluation of recombinant human platelet-derived growth factor for the treatment of lower extremity ulcers
+    journal: Plast Reconstr Surg 117(7 Suppl):143S-149S
+    doi: 10.1097/01.prs.0000222526.21512.4c
+    notes: 'Becaplermin (rhPDGF-BB) improved complete healing in DFU clinical trials. Supports growth_factor treatment fibroblast
+      activation and density parameters.
+
+      '
+  - id: smiell1998
+    authors: Smiell JM, Wieman TJ, Steed DL, Perry BH, Sampson AR, Schwab BH
+    year: 1998
+    title: Efficacy and safety of becaplermin (recombinant human platelet-derived growth factor-BB) in patients with nonhealing,
+      lower extremity diabetic ulcers
+    journal: Wound Repair Regen 7(5):335-346
+    doi: 10.1046/j.1524-475X.1999.00335.x
+    notes: 'FDA pivotal trial data for becaplermin. 50% improvement in complete healing vs. placebo.
+
+      '
+  - id: cao2017
+    authors: Cao Y, Gang X, Sun C, Wang G
+    year: 2017
+    title: Mesenchymal stem cells improve healing of diabetic foot ulcer
+    journal: J Diabetes Res 2017:9328347
+    doi: 10.1155/2017/9328347
+    notes: 'Review of MSC mechanisms in DFU: paracrine factors (VEGF, PDGF, TGF-beta, IL-10) modulate all four dysfunction
+      axes.
+
+      '
+  - id: winter1962
+    authors: Winter GD
+    year: 1962
+    title: Formation of the scab and the rate of epithelization of superficial wounds in the skin of the young domestic pig
+    journal: Nature 193:293-294
+    doi: 10.1038/193293a0
+    notes: 'Foundational moist wound healing study. Epithelialization 2x faster under occlusive dressing vs. air-exposed.
+      Supports moisture treatment water_recovery_rate and surface_loss_rate adjustments.
+
+      '
+  - id: junker2013
+    authors: Junker JPE, Kamel RA, Caterson EJ, Eriksson E
+    year: 2013
+    title: Clinical impact upon wound healing and inflammation in moist, wet, and dry environments
+    journal: Adv Wound Care 2(7):348-356
+    doi: 10.1089/wound.2012.0412
+    notes: 'Moist environment reduces inflammation, improves keratinocyte migration, and accelerates wound closure. Supports
+      moisture treatment inflammation_decay adjustment.
+
+      '

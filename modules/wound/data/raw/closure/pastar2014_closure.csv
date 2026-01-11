@@ -1,0 +1,15 @@
+source,Pastar I et al. (2014)
+doi,10.1089/wound.2013.0473
+figure,Fig 2 - epithelialization kinetics composite
+wound_type,punch biopsy (human review composite)
+notes,Review paper; composite from multiple cited studies; re-epithelialization focus
+day,closure_pct
+0,0
+1,5
+3,15
+5,28
+7,42
+10,62
+14,82
+21,94
+28,100

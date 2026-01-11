@@ -1,0 +1,9 @@
+# Module: wound -- circular punch biopsy event
+[skin.wound]
+enabled = true
+center_x = 15.0                # x-center of punch biopsy
+center_y = 15.0                # y-center of punch biopsy
+radius = 5.0                   # radius of circular wound
+trigger_h = 0                  # hours at which wound fires (0 = start wounded)
+inward_bias = 0.3              # 0=pure random, 1=pure center-directed division
+vascular_damage = 0.5          # (superseded by Vascular field; kept for compat)
