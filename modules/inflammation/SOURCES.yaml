@@ -1,0 +1,121 @@
+# Literature sources for inflammation module
+inflammation_timecourse:
+  description: Composite inflammatory signal (cytokines + cell density), peak-normalized
+  consensus: data/inflammation_timecourse.csv
+  raw_files:
+  - data/raw/inflammation/eming2007_inflammation.csv
+  - data/raw/inflammation/kondo1996_inflammation.csv
+  - data/raw/inflammation/hubner1996_inflammation.csv
+  columns:
+  - day
+  - inflammation_normalized
+  units:
+    day: days
+    inflammation_normalized: fraction of peak
+  normalization: peak-normalized (1.0 = maximum at day 2)
+  notes: 'Peak reflects neutrophil density maximum and sustained TNF-alpha/IL-1/IL-6 expression.
+
+    '
+  sources:
+  - id: eming2007
+    authors: Eming SA, Krieg T, Davidson JM
+    year: 2007
+    title: 'Inflammation in wound repair: molecular and cellular mechanisms'
+    journal: J Invest Dermatol 127(3):514-525
+    doi: 10.1038/sj.jid.5700701
+  - id: kondo1996
+    authors: Kondo T, Ohshima T
+    year: 1996
+    title: The dynamics of inflammatory cytokines in the healing process of mouse skin wound
+    journal: Int J Legal Med 108(5):231-236
+    doi: 10.1007/BF01369816
+  - id: hubner1996
+    authors: Hubner G, Brauchle M, Smola H, Madlener M, Fassler R, Werner S
+    year: 1996
+    title: Differential regulation of pro-inflammatory cytokines during wound healing
+    journal: Cytokine 8(7):548-556
+    doi: 10.1006/cyto.1996.0074
+  - id: koh2011
+    authors: Koh TJ, DiPietro LA
+    year: 2011
+    title: 'Inflammation and wound healing: the role of the macrophage'
+    journal: Expert Rev Mol Med 13:e23
+    doi: 10.1017/S1462399411001943
+  - id: canedo2019
+    authors: Canedo-Dorantes L, Canedo-Ayala M
+    year: 2019
+    title: 'Skin acute wound healing: a comprehensive review'
+    journal: Int J Inflam 2019:3706315
+    doi: 10.1155/2019/3706315
+inflammation_parameters:
+  description: 'Literature sources validating inflammation module parameters for cytokine diffusion, decay, and pro/anti-inflammatory
+    balance.
+
+    '
+  sources:
+  - id: oyler_yaniv2017
+    authors: Oyler-Yaniv A, Oyler-Yaniv J, Whitlock BM, et al.
+    year: 2017
+    title: A tunable diffusion-consumption mechanism of cytokine propagation enables plasticity in cell-to-cell communication
+    journal: Immunity 46(4):609-620
+    doi: 10.1016/j.immuni.2017.03.011
+    notes: 'Cytokine diffusion in dense tissue ~10^-7 to 10^-8 cm^2/s. Supports inflammation diffusion parameter.
+
+      '
+  - id: bemelmans1996
+    authors: Bemelmans MH, van Tits LJ, Buurman WA
+    year: 1996
+    title: 'Tumor necrosis factor: function, release and clearance'
+    journal: Crit Rev Immunol 16(1):1-11
+    doi: 10.1615/CritRevImmunol.v16.i1.10
+    notes: 'TNF-alpha serum half-life 14-18 minutes. Supports inflammation decay parameter.
+
+      '
+  - id: mosser2008
+    authors: Mosser DM, Zhang X
+    year: 2008
+    title: 'Interleukin-10: new perspectives on an old cytokine'
+    journal: Immunol Rev 226:205-218
+    doi: 10.1111/j.1600-065X.2008.00706.x
+    notes: 'IL-10 inhibits TNF-alpha and IL-1beta production. Supports split pro/anti-inflammatory field model.
+
+      '
+  - id: huhn1996
+    authors: Huhn RD, Radwanski E, O'Connell SM, Sturgill MG, Clarke L, Cody RP, Affrime MB, Cutler DL
+    year: 1996
+    title: Pharmacokinetics and immunomodulatory properties of intravenously administered recombinant human interleukin-10
+      in healthy volunteers
+    journal: Blood 87(2):699-705
+    doi: 10.1182/blood.V87.2.699.bloodjournal872699
+    notes: 'IL-10 terminal half-life 2.3-3.7h in healthy volunteers. Supports anti_decay=0.002 parameter for anti-inflammatory
+      field.
+
+      '
+  - id: werner2003
+    authors: Werner S, Grose R
+    year: 2003
+    title: Regulation of wound healing by growth factors and cytokines
+    journal: Physiol Rev 83(3):835-870
+    doi: 10.1152/physrev.00031.2002
+    notes: 'DAMPs and IL-1alpha release from damaged keratinocytes sustain inflammation proportional to open wound area. Supports
+      wound_source_rate parameter for continuum inflammation source.
+
+      '
+  - id: ravichandran2010
+    authors: Ravichandran KS
+    year: 2010
+    title: Find-me and eat-me signals in apoptotic cell clearance
+    journal: J Exp Med 207(9):1807-1817
+    doi: 10.1084/jem.20101157
+    notes: 'Find-me signals create short-range chemotactic gradient. Effective range tens to ~200 um. Supports efferocytosis_radius.
+
+      '
+  - id: savill1989
+    authors: Savill JS, Wyllie AH, Henson JE, Walport MJ, Henson PM, Haslett C
+    year: 1989
+    title: Macrophage phagocytosis of aging neutrophils in inflammation
+    journal: J Clin Invest 83(3):865-875
+    doi: 10.1172/JCI113970
+    notes: 'Macrophages preferentially recognize aging/apoptotic neutrophils expressing phosphatidylserine. Supports efferocytosis_age_fraction.
+
+      '

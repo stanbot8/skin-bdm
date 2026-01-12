@@ -1,0 +1,17 @@
+# Module: inflammation -- cytokine signal field
+# Sources: Oyler-Yaniv et al. 2017 (doi:10.1016/j.immuni.2017.03.011),
+#          Bemelmans et al. 1996 (doi:10.1615/CritRevImmunol.v16.i1.10)
+[skin.inflammation]
+diffusion = 0.30               # lateral cytokine spread; fast enough for wound-mean to track cell activity
+decay = 0.010                  # background clearance; fast PDE response to track cell activity peaks (Bemelmans et al. 1996)
+migration_threshold = 0.1      # Hill K: 50% suppression at infl=0.1 (peak day 1-3)
+prolif_threshold = 0.15        # Hill K: 50% suppression at infl=0.15
+wound_source_rate = 0.008      # DAMPs + keratinocyte IL-1alpha from open wound (Werner & Grose 2003, doi:10.1152/physrev.00031.2002)
+wound_source_taper = 0.001     # DAMP clearance rate (half-life ~70h; macrophage phagocytosis of debris)
+
+# Split pro/anti-inflammatory fields
+# Pro: TNF-alpha/IL-1; Anti: IL-10/TGF-beta (Mosser & Zhang 2008, doi:10.1111/j.1600-065X.2008.00706.x)
+split_enabled = false          # single field: M2 actively resolves inflammation (diabetic overrides to true)
+anti_diffusion = 0.05          # anti-inflammatory diffusion coefficient
+anti_decay = 0.002             # anti-inflammatory decay (IL-10 t1/2 ~2-4h; Huhn et al. 1996, doi:10.1182/blood.V87.2.699.bloodjournal872699)
+anti_weight = 1.0              # weight for net = pro - weight*anti
