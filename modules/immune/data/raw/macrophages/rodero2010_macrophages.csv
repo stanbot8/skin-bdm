@@ -1,0 +1,15 @@
+source,Rodero MP & Khosrotehrani K (2010)
+pmc,PMC2933384
+figure,Fig 1 - macrophage recruitment during skin wound healing
+wound_type,excisional (murine)
+notes,"F4/80+ cell counts; normalized to peak at day 3-4"
+day,macrophages_normalized
+0,0.00
+1,0.45
+2,0.80
+3,1.00
+5,0.85
+7,0.55
+10,0.25
+14,0.08
+21,0.02

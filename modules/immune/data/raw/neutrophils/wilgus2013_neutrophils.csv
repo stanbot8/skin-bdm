@@ -1,0 +1,14 @@
+source,Wilgus TA et al. (2013)
+doi,10.1089/wound.2012.0383
+figure,Fig 1 - neutrophil temporal profile in cutaneous wounds
+wound_type,acute cutaneous (review composite)
+notes,"Review schematic; MPO activity as proxy for neutrophil density"
+day,neutrophils_normalized
+0,0.00
+0.5,0.45
+1,1.00
+2,0.95
+3,0.65
+5,0.15
+7,0.02
+14,0.00
