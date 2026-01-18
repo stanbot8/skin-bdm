@@ -1,0 +1,59 @@
+# Literature sources for immune module
+immune_cell_kinetics:
+  description: Neutrophil and macrophage counts, each peak-normalized independently
+  consensus: data/immune_cell_kinetics.csv
+  raw_files:
+  - data/raw/neutrophils/kim2008_neutrophils.csv
+  - data/raw/neutrophils/wilgus2013_neutrophils.csv
+  - data/raw/macrophages/krzyszczyk2018_macrophages.csv
+  - data/raw/macrophages/rodero2010_macrophages.csv
+  - data/raw/macrophages/lucas2010_macrophages.csv
+  columns:
+  - day
+  - neutrophils_normalized
+  - macrophages_normalized
+  units:
+    day: days
+    neutrophils_normalized: fraction of peak
+    macrophages_normalized: fraction of peak
+  normalization: peak-normalized per cell type (1.0 = maximum count)
+  notes: 'Neutrophils peak day 1 (~6x10^6 cells, Kim 2008). Macrophages peak day 3 (Krzyszczyk 2018, Rodero 2010).
+
+    '
+  sources:
+  - id: kim2008
+    authors: Kim MH, Liu W, Borjesson DL, Curry FR, Miller LS, Cheung AL, Liu FT, Isseroff RR, Simon SI
+    year: 2008
+    title: Dynamics of neutrophil infiltration during cutaneous wound healing and infection
+    journal: J Invest Dermatol 128(7):1812-1820
+    doi: 10.1038/sj.jid.5701223
+  - id: wilgus2013
+    authors: Wilgus TA, Roy S, McDaniel JC
+    year: 2013
+    title: 'Neutrophils and wound repair: positive actions and negative reactions'
+    journal: Adv Wound Care 2(7):379-388
+    doi: 10.1089/wound.2012.0383
+  - id: koh2011
+    authors: Koh TJ, DiPietro LA
+    year: 2011
+    title: 'Inflammation and wound healing: the role of the macrophage'
+    journal: Expert Rev Mol Med 13:e23
+    doi: 10.1017/S1462399411001943
+  - id: rodero2010
+    authors: Rodero MP, Khosrotehrani K
+    year: 2010
+    title: Skin wound healing modulation by macrophages
+    journal: Int J Clin Exp Pathol 3(7):643-653
+    pmc: PMC2933384
+  - id: krzyszczyk2018
+    authors: Krzyszczyk P, Schloss R, Palmer A, Berthiaume F
+    year: 2018
+    title: The role of macrophages in acute and chronic wound healing
+    journal: Front Physiol 9:419
+    doi: 10.3389/fphys.2018.00419
+  - id: lucas2010
+    authors: Lucas T, Waisman A, Ranjan R, Roes J, Krieg T, Muller W, Roers A, Eming SA
+    year: 2010
+    title: Differential roles of macrophages in diverse phases of skin repair
+    journal: J Immunol 184(7):3964-3977
+    doi: 10.4049/jimmunol.0903356

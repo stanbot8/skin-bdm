@@ -1,0 +1,37 @@
+# Module: immune -- immune cell response
+[skin.immune]
+cell_diameter = 3.0            # neutrophil/macrophage diameter
+neutrophil_spawn_delay_h = 2   # hours post-wound (Kim et al. 2008, doi:10.1038/sj.jid.5701223)
+neutrophil_spawn_waves = 3     # recruitment waves (gradual rise)
+neutrophil_spawn_window_h = 24 # hours between first and last wave
+neutrophil_lifespan_h = 48     # hours hard ceiling (Wilgus et al. 2013)
+neutrophil_min_survival_h = 12 # hours before apoptosis possible
+neutrophil_apoptosis_rate = 0.0029  # per-step death prob (half-life ~24h; Wilgus et al. 2013)
+macrophage_spawn_delay_h = 12  # hours post-wound (Rodero & Khosrotehrani 2010, PMC2933384)
+macrophage_spawn_threshold = 0.002 # inflammation level for monocyte extravasation (tuned for higher PDE decay)
+macrophage_spawn_rate = 0.8       # per-step recruitment probability coefficient (need 8-12 cells)
+macrophage_spawn_taper = 0.02    # per-hour decay of recruitment prob (chemokine gradient decline; half-life ~35h)
+macrophage_m1_duration_h = 48  # hours in M1 pro-inflammatory (Krzyszczyk et al. 2018, doi:10.3389/fphys.2018.00419)
+m1_transition_threshold = 0.003 # net inflammation below this triggers M1->M2 (tuned for higher PDE decay)
+m1_transition_min_age_h = 36   # min hours in M1 before cytokine transition (Krzyszczyk 2018)
+macrophage_lifespan_h = 672    # hours (28d) hard ceiling
+macrophage_min_survival_h = 24 # hours before apoptosis possible
+macrophage_apoptosis_rate = 0.0008   # per-step death prob (half-life ~87h; Lucas et al. 2010, doi:10.4049/jimmunol.0903356)
+macrophage_emigration_rate = 0.02    # M2 exit rate once stratum re-epithelialized (Rodero et al. 2010)
+cytokine_rate = 0.004          # inflammation added per cell per step (compensates for higher PDE decay; Eming et al. 2007)
+resolution_rate = 0.020        # inflammation consumed by M2 per step (Koh & DiPietro 2011, doi:10.1017/S1462399411001943)
+migration_speed = 1.5          # tractor force magnitude (Lammermann et al. 2008, doi:10.1038/nature06887)
+
+# Efferocytosis-triggered M1-to-M2
+efferocytosis_enabled = true   # proximity-based M1->M2
+efferocytosis_radius = 5.0     # search radius for dying neutrophils (Ravichandran 2010, doi:10.1084/jem.20101157)
+efferocytosis_age_fraction = 0.8  # PS exposure in aging neutrophils (Savill et al. 1989, doi:10.1172/JCI113970)
+
+# Chemotaxis-driven immune migration
+chemotaxis_enabled = true      # follow inflammation gradient
+chemotaxis_speed_scale = 1.0   # gradient speed scaling factor
+
+# Cytokine taper rates (exponential decay constants for age-dependent production)
+neutrophil_cytokine_taper = 0.004  # exp(-k*age); fast taper for sharp day-2 peak then decline
+m1_cytokine_taper = 0.003         # exp(-k*state_age); M1 cytokine output declines with age
+m2_tgfb_taper = 0.001            # exp(-k*state_age); M2 TGF-beta output declines as resolution progresses

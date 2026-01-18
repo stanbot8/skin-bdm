@@ -1,0 +1,16 @@
+source,Kim MH et al. (2008)
+doi,10.1038/sj.jid.5701223
+figure,Fig 2 - neutrophil infiltration kinetics
+wound_type,excisional punch biopsy (murine)
+notes,"Ly6G+ cells quantified by flow cytometry; peak ~6e6 cells at day 1"
+day,neutrophils_normalized
+0,0.00
+0.25,0.20
+0.5,0.55
+1,1.00
+2,0.85
+3,0.50
+4,0.20
+5,0.08
+7,0.01
+10,0.00

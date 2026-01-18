@@ -1,0 +1,13 @@
+source,Lucas T et al. (2010)
+doi,10.4049/jimmunol.0903356
+figure,Fig 1 - macrophage depletion phases
+wound_type,excisional (murine)
+notes,"F4/80+ macrophage quantification at wound site; peak day 3-5"
+day,macrophages_normalized
+0,0.00
+1,0.40
+3,1.00
+5,0.90
+7,0.60
+10,0.30
+14,0.10
