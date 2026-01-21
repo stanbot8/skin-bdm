@@ -1,0 +1,16 @@
+source,Darby IA et al. (2014)
+doi,10.2147/CCID.S50046
+figure,Fig 3 - myofibroblast temporal profile during wound repair
+wound_type,excisional (review composite)
+notes,"Review schematic; alpha-SMA+ differentiation and resolution timeline"
+day,myofibroblasts_normalized
+0,0.00
+3,0.00
+5,0.10
+7,0.40
+10,0.85
+12,1.00
+15,0.95
+18,0.75
+21,0.45
+28,0.15

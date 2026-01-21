@@ -1,0 +1,14 @@
+source,Zhou S et al. (2013)
+doi,10.1371/journal.pone.0058324
+figure,Fig 4 - collagen synthesis rate during wound healing
+wound_type,excisional (rat muscle/skin)
+notes,"480% synthesis increase day 2, 860% day 7; cumulative deposition estimated"
+day,collagen_normalized
+0,0.00
+2,0.02
+5,0.05
+7,0.12
+10,0.25
+14,0.42
+21,0.78
+28,1.00

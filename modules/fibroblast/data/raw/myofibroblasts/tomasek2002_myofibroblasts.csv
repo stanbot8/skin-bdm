@@ -1,0 +1,15 @@
+source,Tomasek JJ et al. (2002)
+doi,10.1038/nrm809
+figure,Fig 4 - proto-myofibroblast to myofibroblast differentiation timeline
+wound_type,connective tissue repair (review)
+notes,"Conceptual timeline; proto-myofibroblast appears day 4, full differentiation day 8-12"
+day,myofibroblasts_normalized
+0,0.00
+4,0.02
+6,0.20
+8,0.60
+12,1.00
+16,0.90
+20,0.55
+24,0.25
+28,0.10

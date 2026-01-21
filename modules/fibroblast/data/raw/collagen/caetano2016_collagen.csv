@@ -1,0 +1,12 @@
+source,Caetano GF et al. (2016)
+doi,10.3109/13880209.2016.1170861
+figure,Table 2 - hydroxyproline content at wound sites
+wound_type,excisional (rat)
+notes,"Hydroxyproline (ug/mg tissue) in control group; progressive increase to day 21"
+day,collagen_normalized
+0,0.00
+2,0.00
+7,0.10
+14,0.40
+21,0.80
+28,1.00

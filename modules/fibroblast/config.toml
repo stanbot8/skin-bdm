@@ -1,0 +1,46 @@
+# Module: fibroblast -- TGF-beta / collagen / scar remodeling
+[skin.fibroblast]
+enabled = true                        # master switch
+spawn_delay_h = 24                    # hours post-wound (day 1; Darby et al. 2014)
+spawn_waves = 6                       # recruitment pulses (smoother rise curve)
+spawn_window_h = 120                  # hours over which waves arrive (~5 days; compressed for day-7 peak; Darby et al. 2014)
+diameter = 4.0                        # cell diameter
+density_factor = 1.0                  # spawn count multiplier
+activation_delay_h = 60               # hours before auto-activation (resident fibroblasts respond faster; Darby et al. 2014, doi:10.2147/CCID.S50046)
+activation_threshold = 0.005           # TGF-beta for quiescent->activated (rescaled; Tomasek et al. 2002, doi:10.1038/nrm809)
+myofibroblast_delay_h = 48            # min hours in activated (~2d; myofib rise day 4-6; Van De Water et al. 2013, doi:10.1089/wound.2012.0393)
+myofibroblast_threshold = 0.015       # TGF-beta for activated->myofibroblast (rescaled; Tomasek et al. 2002, doi:10.1038/nrm809)
+apoptosis_threshold = 0.001           # TGF-beta below this triggers removal (rescaled; Hinz 2007, doi:10.1038/sj.jid.5700613)
+apoptosis_onset_h = 168               # hours as myofibroblast before stochastic apoptosis begins (~7d; Desmouliere et al. 1995, PMC1870783)
+apoptosis_rate = 0.0006               # per-step removal probability once eligible (Desmouliere et al. 1995, PMC1870783)
+min_lifespan_h = 168                  # hours before apoptosis eligible (7 days; Desmouliere et al. 1995, PMC1870783)
+lifespan_h = 1200                     # hard max lifespan (50 days; stochastic apoptosis handles natural decline)
+activated_apoptosis_onset_h = 168     # hours as activated fibroblast before stochastic death begins (~7d; not all activated cells differentiate)
+activated_apoptosis_rate = 0.0003     # per-step removal probability for activated fibroblasts (emigration and apoptosis; Grinnell 1994)
+migration_speed = 1.0                 # tractor force magnitude (McDougall et al. 2006, doi:10.1098/rsta.2006.1773)
+dermal_depth = -1.0                   # z-coordinate for seeding (papillary dermis, near TGF-beta sources)
+dermal_margin = 1.0                   # extra radius beyond wound for seeding ring (within wound mask)
+
+# TGF-beta dynamics
+tgfb_diffusion = 0.03                 # TGF-beta diffusion coefficient (Murphy et al. 2012, doi:10.1007/s11538-011-9712-y)
+tgfb_decay = 0.0                      # clearance now fully mechanistic (receptor endocytosis + decorin sequestration)
+tgfb_wound_seed = 0.04               # platelet alpha-granule TGF-beta1 bolus (Shah et al. 1992, doi:10.1016/0140-6736(92)90009-r)
+tgfb_rate = 0.001                     # TGF-beta per myofibroblast per step (secondary to M2 source)
+tgfb_taper_rate = 0.002               # exp(-k*state_age); mechanical tension decay (Tomasek 2002)
+m2_tgfb_rate = 0.005                  # TGF-beta per M2 macrophage per step (Koh & DiPietro 2011, doi:10.1017/S1462399411001943)
+
+# Collagen
+collagen_deposition_rate = 0.0005     # collagen per myofibroblast per step (constant; Murphy et al. 2012, doi:10.1007/s11538-011-9712-y)
+collagen_decay = 0.0                  # MMP remodeling rate (0 = permanent)
+decorin_sequestration_rate = 0.12     # collagen-bound decorin neutralizes active TGF-beta (Yamaguchi et al. 1990, doi:10.1038/346281a0)
+tgfb_receptor_consumption = 0.001    # per-cell TbRII/TbRI endocytosis rate (Vilar et al. 2006, doi:10.1371/journal.pcbi.0020003)
+tgfb_tissue_clearance = 0.025        # receptor clearance by resident tissue cells scaled by local density (keratinocytes, endothelium)
+
+# Lymphatic drainage
+lymphatic_clearance_rate = 0.5       # interstitial fluid clearance scaled by granulation tissue density (Paavonen et al. 2000, doi:10.1016/s0002-9440(10)65021-3)
+lymphatic_onset_h = 168              # hours post-wound before lymphangiogenesis begins (~7 days; lags angiogenesis)
+lymphatic_sigmoid_k = 0.04           # sigmoid steepness for lymphatic maturation curve
+perfusion_clearance_rate = 0.003     # venous washout of TGF-beta scaled by vascular density (Bramhall et al. 1999)
+
+# O2-dependent collagen hydroxylation
+collagen_o2_half_max = 0.15          # O2 for half-max prolyl hydroxylation (Myllyharju 2003, doi:10.1016/s0945-053x(03)00006-4)

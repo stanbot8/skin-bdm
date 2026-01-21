@@ -1,0 +1,14 @@
+source,Mathew-Steiner SS et al. (2021)
+doi,10.3390/bioengineering8050063
+figure,Fig 3 - collagen type III then type I transition
+wound_type,cutaneous wound (review)
+notes,"Collagen III first (day 5-7), type I replaces over weeks; total collagen normalized"
+day,collagen_normalized
+0,0.00
+5,0.02
+7,0.08
+10,0.18
+14,0.35
+18,0.52
+21,0.70
+28,1.00
