@@ -1,0 +1,6 @@
+# Module: scar -- scar formation and proportional scarring
+[skin.scar]
+enabled = true                 # dissolved agents stamp scar values into Stratum field
+proportional_enabled = true    # cumulative scar via collagen or inflammation integral (Ogawa 2017, doi:10.3390/ijms18030606)
+accumulation_rate = 0.001      # scar += inflammation * rate per step (fallback when fibroblasts disabled)
+collagen_threshold = 0.003     # local collagen above this -> scar, below -> normal stratum (emergent)
