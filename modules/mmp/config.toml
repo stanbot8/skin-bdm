@@ -1,0 +1,30 @@
+# Module: mmp -- matrix metalloproteinase dynamics
+# Sources: Lobmann et al. 2002 (doi:10.1007/s00125-002-0868-8),
+#          Nagase et al. 1999 (doi:10.1074/jbc.274.31.21491),
+#          Ladwig et al. 2002 (doi:10.1046/j.1524-475x.2002.10903.x)
+[skin.mmp]
+enabled = true                        # master switch
+diffusion = 0.02                      # MMP diffusion coefficient (Nagase et al. 1999)
+m1_rate = 0.003                       # MMP-9 production per M1 macrophage per step (Lobmann et al. 2002)
+neutrophil_rate = 0.002               # MMP-8 production per neutrophil per step (Nwomeh et al. 1998; dominant MMP source)
+fibroblast_rate = 0.0002              # MMP-1/3 production per fibroblast per step (Nagase et al. 1999)
+keratinocyte_rate = 0.0               # MMP-1 from wound-edge keratinocytes (Pilcher et al. 1997, doi:10.1083/jcb.137.6.1445)
+collagen_degradation = 0.002          # MMP-mediated collagen lysis rate (Ladwig et al. 2002)
+fibronectin_degradation = 0.008       # MMP-mediated fibronectin lysis rate (Ladwig et al. 2002)
+residual_decay = 0.015                # non-TIMP MMP clearance (endocytosis, LRP1-mediated uptake, auto-degradation)
+
+# TIMP dynamics (tissue inhibitor of metalloproteinases)
+# Brew et al. 2000 (doi:10.1016/S0167-4838(99)00279-4)
+timp_diffusion = 0.02                 # TIMP diffusion (similar MW to MMP)
+timp_decay = 0.005                    # TIMP natural degradation (more stable than MMP)
+timp_fibroblast_rate = 0.002          # TIMP-1 from activated fibroblasts (primary source; Vaalamo et al. 1999)
+timp_macrophage_rate = 0.001          # TIMP-1 from M2 macrophages (pro-resolution; Mantovani et al. 2004)
+timp_keratinocyte_rate = 0.0005       # TIMP-1 from wound-edge keratinocytes (Saarialho-Kere et al. 1995)
+mmp_timp_inhibition_rate = 0.08       # second-order MMP*TIMP neutralization (1:1 stoichiometry)
+matrikine_mmp_boost = 0.02            # ECM degradation fragment positive feedback on MMP (self-limiting; Visse & Nagase 2003)
+
+# Pro-MMP zymogen activation cascade
+# Visse & Nagase 2003 (doi:10.1161/01.res.0000070112.80711.3d)
+prommp_decay = 0.002                  # pro-MMP natural degradation (slower than active MMP)
+prommp_activation_rate = 0.08         # basal plasmin-mediated zymogen cleavage rate (plasmin accumulates gradually; Visse & Nagase 2003)
+prommp_autocatalytic_rate = 0.02      # MMP-3 autocatalytic positive feedback (rate * proMMP * MMP)
