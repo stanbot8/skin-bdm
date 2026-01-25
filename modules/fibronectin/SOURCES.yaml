@@ -1,0 +1,95 @@
+# Literature sources for fibronectin module
+fibronectin_provisional_matrix:
+  description: Fibronectin dynamics as provisional wound matrix scaffold
+  sources:
+  - id: clark1990
+    authors: Clark RAF
+    year: 1990
+    title: Fibronectin matrix deposition and fibronectin receptor expression in healing and normal skin
+    journal: J Invest Dermatol 94(6 Suppl):128S-134S
+    doi: 10.1111/1523-1747.ep12876104
+    notes: 'Plasma fibronectin provides initial wound matrix; cellular fibronectin deposited by fibroblasts replaces it. Supports
+      fibronectin_serum_rate and fibronectin_deposition_rate parameters.
+
+      '
+  - id: grinnell1984
+    authors: Grinnell F
+    year: 1984
+    title: Fibronectin and wound healing
+    journal: J Cell Biochem 26(2):107-116
+    doi: 10.1002/jcb.240260206
+    notes: 'Fibronectin promotes keratinocyte migration via integrin alpha5-beta1. Supports fibronectin_migration_boost parameter.
+
+      '
+  - id: hynes1990
+    authors: Hynes RO
+    year: 1990
+    title: Fibronectins
+    journal: Springer Series in Molecular Biology
+    doi: 10.1007/978-1-4612-3264-3
+    notes: 'Comprehensive monograph on fibronectin structure, function, and role in cell adhesion and wound healing. General
+      reference for fibronectin module parameters.
+
+      '
+fibronectin_kinetics:
+  description: Fibronectin provisional matrix density, peak-normalized
+  consensus: data/fibronectin_kinetics.csv
+  columns:
+  - day
+  - fibronectin_normalized
+  units:
+    day: days
+    fibronectin_normalized: fraction of peak
+  normalization: peak-normalized (1.0 = maximum at day 10)
+  notes: 'Plasma fibronectin appears within hours on fibrin strands. Fibroblast-derived cellular fibronectin builds the provisional
+    matrix peaking day 7 to 10. Gradually replaced by collagen type I during remodeling.
+
+    '
+  sources:
+  - id: grinnell1981
+    authors: Grinnell F, Billingham RE, Burgess L
+    year: 1981
+    title: Distribution of fibronectin during wound healing in vivo
+    journal: J Invest Dermatol 76(3):181-189
+    doi: 10.1111/1523-1747.ep12525694
+  - id: clark1982
+    authors: Clark RAF, Lanigan JM, DellaPelle P, Manseau E, Dvorak HF, Colvin RB
+    year: 1982
+    title: Fibronectin and fibrin provide a provisional matrix for epidermal cell migration during wound reepithelialization
+    journal: J Invest Dermatol 79(5):264-269
+    doi: 10.1111/1523-1747.ep12500075
+  - id: welch1990
+    authors: Welch MP, Odland GF, Clark RAF
+    year: 1990
+    title: Temporal relationships of F-actin bundle formation, collagen and fibronectin matrix assembly, and fibronectin receptor
+      expression to wound contraction
+    journal: J Cell Biol 110(1):133-145
+    doi: 10.1083/jcb.110.1.133
+fibronectin_regulation:
+  description: TGF-beta and myofibroblast regulation of fibronectin production
+  sources:
+  - id: ignotz1986
+    authors: Ignotz RA, Massague J
+    year: 1986
+    title: Transforming growth factor-beta stimulates the expression of fibronectin and collagen and their incorporation into
+      the extracellular matrix
+    journal: J Biol Chem 261(9):4337-4345
+    doi: 10.1016/s0021-9258(17)35666-1
+    notes: TGF-beta increases fibronectin expression up to 2-fold. Supports tgfb_max_boost parameter.
+  - id: serini1998
+    authors: Serini G, Bochaton-Piallat ML, Ropraz P, Geinoz A, Borsi L, Zardi L, Gabbiani G
+    year: 1998
+    title: The fibronectin domain ED-A is crucial for myofibroblastic phenotype induction by transforming growth factor-beta1
+    journal: J Cell Biol 142(3):873-881
+    doi: 10.1083/jcb.142.3.873
+    notes: EDA-fibronectin from myofibroblasts is required for alpha-SMA expression. Supports myofibroblast_fn_fraction parameter.
+fibronectin_wound_seed:
+  description: Plasma fibronectin co-deposited with fibrin clot at wounding
+  sources:
+  - id: clark1996
+    authors: Clark RAF
+    year: 1996
+    title: The Molecular and Cellular Biology of Wound Repair
+    journal: 2nd ed. Plenum Press
+    doi: 10.1007/978-1-4615-1795-5
+    notes: Plasma fibronectin co-deposited with fibrin clot during hemostasis. Supports wound_seed parameter.
