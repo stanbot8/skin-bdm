@@ -1,0 +1,32 @@
+# Module: fibroblast -- TGF-beta / collagen / scar remodeling
+[skin.fibroblast]
+enabled = true                        # master switch
+spawn_delay_h = 1                     # hours post-wound (dermal residents nearby)
+spawn_waves = 4                       # recruitment pulses (staggered differentiation)
+spawn_window_h = 96                   # hours over which waves arrive (~4 days)
+diameter = 4.0                        # cell diameter
+density_factor = 1.0                  # spawn count multiplier
+activation_delay_h = 60               # hours before auto-activation (resident fibroblasts respond faster; Darby et al. 2014, doi:10.2147/CCID.S50046)
+activation_threshold = 0.005           # TGF-beta for quiescent->activated (rescaled; Tomasek et al. 2002, doi:10.1038/nrm809)
+myofibroblast_delay_h = 96            # min hours in activated (~4d; myofib rise day 6-8; Van De Water et al. 2013, doi:10.1089/wound.2012.0393)
+myofibroblast_threshold = 0.015       # TGF-beta for activated->myofibroblast (rescaled; Tomasek et al. 2002, doi:10.1038/nrm809)
+apoptosis_threshold = 0.003           # TGF-beta below this triggers removal (rescaled; Hinz 2007, doi:10.1038/sj.jid.5700613)
+apoptosis_onset_h = 192               # hours as myofibroblast before stochastic apoptosis begins (~8d; extends plateau; Desmouliere et al. 1995, PMC1870783)
+apoptosis_rate = 0.0004               # per-step removal probability once eligible (extended plateau; Desmouliere et al. 1995, PMC1870783)
+min_lifespan_h = 168                  # hours before apoptosis eligible (7 days; Desmouliere et al. 1995, PMC1870783)
+lifespan_h = 672                      # hard max lifespan (28 days; Desmouliere et al. 1995, PMC1870783)
+migration_speed = 1.0                 # tractor force magnitude (McDougall et al. 2006, doi:10.1098/rsta.2006.1773)
+dermal_depth = -1.0                   # z-coordinate for seeding (papillary dermis, near TGF-beta sources)
+dermal_margin = 1.0                   # extra radius beyond wound for seeding ring (within wound mask)
+
+# TGF-beta dynamics
+tgfb_diffusion = 0.03                 # TGF-beta diffusion coefficient (Murphy et al. 2012, doi:10.1007/s11538-011-9712-y)
+tgfb_decay = 0.012                    # TGF-beta decay rate (Murphy et al. 2012, doi:10.1007/s11538-011-9712-y)
+tgfb_wound_seed = 0.10               # platelet alpha-granule TGF-beta1 bolus (Shah et al. 1995, doi:10.1016/S0140-6736(95)90124-8)
+tgfb_rate = 0.001                     # TGF-beta per myofibroblast per step (secondary to M2 source)
+tgfb_taper_rate = 0.002               # exp(-k*state_age); mechanical tension decay (Tomasek 2002)
+m2_tgfb_rate = 0.005                  # TGF-beta per M2 macrophage per step (Koh & DiPietro 2011, doi:10.1017/S1462399411001943)
+
+# Collagen
+collagen_deposition_rate = 0.0005     # collagen per myofibroblast per step (constant; Murphy et al. 2012, doi:10.1007/s11538-011-9712-y)
+collagen_decay = 0.0                  # MMP remodeling rate (0 = permanent)

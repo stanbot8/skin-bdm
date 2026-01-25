@@ -1,0 +1,14 @@
+source,Hinz B (2007)
+doi,10.1038/sj.jid.5700613
+figure,Fig 1 - myofibroblast life cycle during tissue repair
+wound_type,dermal wound (review)
+notes,"Schematic timeline; stress fiber acquisition day 4-6, peak contraction day 10-15"
+day,myofibroblasts_normalized
+0,0.00
+4,0.05
+6,0.30
+10,0.90
+14,1.00
+18,0.70
+22,0.35
+28,0.10

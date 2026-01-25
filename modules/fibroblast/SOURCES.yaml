@@ -1,0 +1,177 @@
+# Literature sources for fibroblast module
+myofibroblast_kinetics:
+  description: Alpha-SMA+ myofibroblast density, peak-normalized
+  consensus: data/myofibroblast_kinetics.csv
+  raw_files:
+  - data/raw/myofibroblasts/desmouliere1995_myofibroblasts.csv
+  - data/raw/myofibroblasts/darby2014_myofibroblasts.csv
+  - data/raw/myofibroblasts/tomasek2002_myofibroblasts.csv
+  - data/raw/myofibroblasts/hinz2007_myofibroblasts.csv
+  columns:
+  - day
+  - myofibroblasts_normalized
+  units:
+    day: days
+    myofibroblasts_normalized: fraction of peak density
+  normalization: peak-normalized (1.0 = maximum alpha-SMA+ cells at day 12)
+  notes: 'Myofibroblasts first appear day 4-6 as proto-myofibroblasts acquire alpha-SMA. Peak density day 10-15 during active
+    contraction. Apoptosis begins ~day 12, peaks ~day 20 (Desmouliere 1995). Largely resolved by day 30 in normal healing.
+
+    '
+  sources:
+  - id: desmouliere1995
+    authors: Desmouliere A, Redard M, Darby I, Gabbiani G
+    year: 1995
+    title: Apoptosis mediates the decrease in cellularity during the transition between granulation tissue and scar
+    journal: Am J Pathol 146(1):56-66
+    pmc: PMC1870783
+  - id: darby2014
+    authors: Darby IA, Laverdet B, Bonte F, Desmouliere A
+    year: 2014
+    title: Fibroblasts and myofibroblasts in wound healing
+    journal: Clin Cosmet Investig Dermatol 7:301-311
+    doi: 10.2147/CCID.S50046
+  - id: tomasek2002
+    authors: Tomasek JJ, Gabbiani G, Hinz B, Chaponnier C, Brown RA
+    year: 2002
+    title: Myofibroblasts and mechano-regulation of connective tissue remodelling
+    journal: Nat Rev Mol Cell Biol 3(5):349-363
+    doi: 10.1038/nrm809
+  - id: hinz2007
+    authors: Hinz B
+    year: 2007
+    title: Formation and function of the myofibroblast during tissue repair
+    journal: J Invest Dermatol 127(3):526-537
+    doi: 10.1038/sj.jid.5700613
+  - id: statpearls_wound
+    authors: Wound Healing Phases, StatPearls
+    year: 2024
+    title: Wound Healing Phases
+    journal: StatPearls (NBK470443)
+    url: https://www.ncbi.nlm.nih.gov/books/NBK470443/
+collagen_deposition:
+  description: Collagen accumulation during proliferative/remodeling phases, end-normalized
+  consensus: data/collagen_deposition.csv
+  raw_files:
+  - data/raw/collagen/gonzalez2016_collagen.csv
+  - data/raw/collagen/zhou2013_collagen.csv
+  - data/raw/collagen/mathew2021_collagen.csv
+  - data/raw/collagen/caetano2016_collagen.csv
+  columns:
+  - day
+  - collagen_normalized
+  units:
+    day: days
+    collagen_normalized: fraction of day-28 value
+  normalization: end-normalized (1.0 = collagen at day 28)
+  notes: 'Collagen deposition begins day 5-7, rises through proliferative phase, continues actively for 4-5 weeks. Tensile
+    strength as proxy: week 1 ~3%, week 3 ~20%, 3 months ~80%. This represents the rising phase of a curve that plateaus at
+    ~80% over months.
+
+    '
+  sources:
+  - id: gonzalez2016
+    authors: Gonzalez ACDO, Costa TF, Andrade ZA, Medrado ARAP
+    year: 2016
+    title: 'Wound healing: a literature review'
+    journal: An Bras Dermatol 91(5):614-620
+    doi: 10.1590/abd1806-4841.20164741
+  - id: statpearls_wound
+    authors: Wound Healing Phases, StatPearls
+    year: 2024
+    title: Wound Healing Phases
+    journal: StatPearls (NBK470443)
+    url: https://www.ncbi.nlm.nih.gov/books/NBK470443/
+  - id: zhou2013
+    authors: Zhou S, Salisbury J, Preedy VR, Emery PW
+    year: 2013
+    title: Increased collagen synthesis rate during wound healing in muscle
+    journal: PLoS One 8(3):e58324
+    doi: 10.1371/journal.pone.0058324
+  - id: mathew2021
+    authors: Mathew-Steiner SS, Roy S, Sen CK
+    year: 2021
+    title: Collagen in wound healing
+    journal: Bioengineering 8(5):63
+    doi: 10.3390/bioengineering8050063
+  - id: caetano2016
+    authors: Caetano GF, Fronza M, Leite MN, Gomes A, Frade MAC
+    year: 2016
+    title: Comparison of collagen content in skin wounds
+    journal: Pharm Biol 54(11):2555-2559
+    doi: 10.3109/13880209.2016.1170861
+tgfb_kinetics:
+  description: TGF-beta1 timecourse, peak-normalized (cell-derived production)
+  consensus: data/tgfb_kinetics.csv
+  columns:
+  - day
+  - tgfb_normalized
+  units:
+    day: days
+    tgfb_normalized: fraction of peak
+  normalization: peak-normalized (1.0 = maximum at day 5)
+  notes: 'TGF-beta1 has biphasic kinetics: an immediate platelet-derived spike (minutes) followed by sustained macrophage
+    and fibroblast production peaking at day 5 to 7. The consensus curve tracks cell-derived production relevant to tissue-level
+    signaling.
+
+    '
+  sources:
+  - id: frank1996
+    authors: Frank S, Madlener M, Werner S
+    year: 1996
+    title: Transforming growth factors beta1, beta2, and beta3 and their receptors are differentially regulated during normal
+      and impaired wound healing
+    journal: J Biol Chem 271(17):10188-10193
+    doi: 10.1074/jbc.271.17.10188
+  - id: shah1995
+    authors: Shah M, Foreman DM, Ferguson MWJ
+    year: 1995
+    title: Neutralisation of TGF-beta 1 and TGF-beta 2 or exogenous addition of TGF-beta 3 to cutaneous rat wounds reduces
+      scarring
+    journal: J Cell Sci 108(3):985-1002
+    doi: 10.1242/jcs.108.3.985
+  - id: werner2003
+    authors: Werner S, Grose R
+    year: 2003
+    title: Regulation of wound healing by growth factors and cytokines
+    journal: Physiol Rev 83(3):835-870
+    doi: 10.1152/physrev.2003.83.3.835
+  - id: barrientos2008
+    authors: Barrientos S, Stojadinovic O, Golinko MS, Brem H, Tomic-Canic M
+    year: 2008
+    title: Growth factors and cytokines in wound healing
+    journal: Wound Repair Regen 16(5):585-601
+    doi: 10.1111/j.1524-475X.2008.00410.x
+fibroblast_kinetics:
+  description: Fibroblast infiltration density, peak-normalized
+  consensus: data/fibroblast_kinetics.csv
+  columns:
+  - day
+  - fibroblasts_normalized
+  units:
+    day: days
+    fibroblasts_normalized: fraction of peak
+  normalization: peak-normalized (1.0 = maximum density at day 10)
+  notes: 'Fibroblasts infiltrate the wound starting day 2 to 3, become the dominant cell type by end of week 1, peak around
+    day 7 to 10, then decline through apoptosis during remodeling.
+
+    '
+  sources:
+  - id: singer1999
+    authors: Singer AJ, Clark RAF
+    year: 1999
+    title: Cutaneous wound healing
+    journal: N Engl J Med 341(10):738-746
+    doi: 10.1056/NEJM199909023411006
+  - id: werner2007
+    authors: Werner S, Krieg T, Smola H
+    year: 2007
+    title: Keratinocyte-fibroblast interactions in wound healing
+    journal: J Invest Dermatol 127(5):998-1008
+    doi: 10.1038/sj.jid.5700786
+  - id: clark1996
+    authors: Clark RAF
+    year: 1996
+    title: The Molecular and Cellular Biology of Wound Repair
+    journal: 2nd ed. Plenum Press
+    doi: 10.1007/978-1-4615-1795-5
