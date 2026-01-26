@@ -1,0 +1,146 @@
+# Literature sources for scar module
+scar_formation_parameters:
+  description: 'Literature sources validating fibroblast module and scar formation parameters. Complements myofibroblast_kinetics
+    (timecourse) and collagen_deposition (accumulation curve) with sources for specific parameter choices.
+
+    '
+  sources:
+  - id: desmouliere1995
+    authors: Desmouliere A, Redard M, Darby I, Gabbiani G
+    year: 1995
+    title: Apoptosis mediates the decrease in cellularity during the transition between granulation tissue and scar
+    journal: Am J Pathol 146(1):56-66
+    pmc: PMC1870783
+    notes: 'Myofibroblasts first appear day 4-6, peak day 10-15, apoptosis begins ~day 12, largely resolved by day 30. Supports
+      fibroblast_min_lifespan=1680 (7d) and fibroblast_lifespan=6720 (28d).
+
+      '
+  - id: tomasek2002
+    authors: Tomasek JJ, Gabbiani G, Hinz B, Chaponnier C, Brown RA
+    year: 2002
+    title: Myofibroblasts and mechano-regulation of connective tissue remodelling
+    journal: Nat Rev Mol Cell Biol 3(5):349-363
+    doi: 10.1038/nrm809
+    notes: 'Two-stage model: fibroblast -> proto-myofibroblast (stress fibers) -> myofibroblast (alpha-SMA). Requires both
+      TGF-beta1 and mechanical tension. Supports fibroblast_activation_threshold and _myofibroblast_threshold as sequential
+      TGF-beta gates.
+
+      '
+  - id: vandewater2013
+    authors: Van De Water L, Varney S, Tomasek JJ
+    year: 2013
+    title: 'Mechanoregulation of the myofibroblast in wound contraction, scarring, and fibrosis: opportunities for new therapeutic
+      intervention'
+    journal: Adv Wound Care 2(4):122-141
+    doi: 10.1089/wound.2012.0393
+    notes: 'In vitro differentiation to myofibroblast takes 3-5 days on rigid substrate with TGF-beta1. Supports fibroblast_myofibroblast_delay=480
+      (48h = 2d in vivo with higher TGF-beta bioavailability).
+
+      '
+  - id: hinz2007
+    authors: Hinz B
+    year: 2007
+    title: Formation and function of the myofibroblast during tissue repair
+    journal: J Invest Dermatol 127(3):526-537
+    doi: 10.1038/sj.jid.5700613
+    notes: 'TGF-beta1 drives alpha-SMA expression; myofibroblasts generate 2x more contractile force than proto-myofibroblasts.
+      Apoptosis triggered by loss of mechanical load and reduced TGF-beta. Supports fibroblast_apoptosis_threshold as low-TGF-beta
+      trigger.
+
+      '
+  - id: shah1995
+    authors: Shah M, Foreman DM, Ferguson MW
+    year: 1995
+    title: Neutralisation of TGF-beta 1 and TGF-beta 2 or exogenous addition of TGF-beta 3 to cutaneous rat wounds reduces
+      scarring
+    journal: J Cell Sci 108(3):985-1002
+    doi: 10.1016/S0140-6736(95)90124-8
+    notes: 'Platelet alpha-granule degranulation releases TGF-beta1/2 within minutes of clot formation. Peak wound TGF-beta
+      at day 3 to 5. Supports tgfb_wound_seed parameter.
+
+      '
+  - id: darby2014
+    authors: Darby IA, Laverdet B, Bonte F, Desmouliere A
+    year: 2014
+    title: Fibroblasts and myofibroblasts in wound healing
+    journal: Clin Cosmet Investig Dermatol 7:301-311
+    doi: 10.2147/CCID.S50046
+    notes: 'Resident dermal fibroblasts activate within 24 to 48 hours in response to wound signals. Supports activation_delay_h=48.
+
+      '
+  - id: murphy2012
+    authors: Murphy KE, Hall CL, Maini PK, McCue SW, McElwain DLS
+    year: 2012
+    title: A fibrocontractive mechanochemical model of dermal wound closure incorporating realistic growth factor kinetics
+    journal: Bull Math Biol 74(5):1143-1170
+    doi: 10.1007/s11538-011-9712-y
+    notes: 'Comprehensive parameter table for TGF-beta kinetics in wound closure: growth factor diffusion, decay, fibroblast
+      chemotactic sensitivity, and collagen production rates. Supports order-of-magnitude calibration of tgfb_diffusion=0.03,
+      tgfb_decay=0.005, collagen_deposition_rate=0.002.
+
+      '
+  - id: dallon2001
+    authors: Dallon JC, Sherratt JA, Maini PK
+    year: 2001
+    title: Modeling the effects of transforming growth factor-beta on extracellular matrix alignment in dermal wound repair
+    journal: Wound Repair Regen 9(4):278-286
+    doi: 10.1046/j.1524-475X.2001.00278.x
+    notes: 'TGF-beta modulates fibroblast speed and collagen alignment over 240h simulation window. Cell speed increases with
+      TGF-beta concentration. Supports fibroblast_migration_speed scaling and chemotaxis model.
+
+      '
+  - id: koh2011
+    authors: Koh TJ, DiPietro LA
+    year: 2011
+    title: 'Inflammation and wound healing: the role of the macrophage'
+    journal: Expert Rev Mol Med 13:e23
+    doi: 10.1017/S1462399411001943
+    notes: 'M2 macrophages are the primary source of TGF-beta1 in wound granulation tissue. Transition from M1 to M2 phenotype
+      initiates the fibroblast activation cascade. Supports m2_tgfb_rate parameter.
+
+      '
+  - id: ogawa2017
+    authors: Ogawa R
+    year: 2017
+    title: Keloid and hypertrophic scars are the result of chronic inflammation in the reticular dermis
+    journal: Int J Mol Sci 18(3):606
+    doi: 10.3390/ijms18030606
+    notes: 'Pathological scars are inflammatory disorders; scar severity reflects inflammation intensity, frequency, and duration.
+      Supports scar_proportional_enabled model (scar = inflammation integral).
+
+      '
+  - id: gauglitz2011
+    authors: Gauglitz GG, Korting HC, Pavicic T, Ruzicka T, Jeschke MG
+    year: 2011
+    title: 'Hypertrophic scarring and keloids: pathomechanisms and current and emerging treatment strategies'
+    journal: Mol Med 17(1-2):113-125
+    doi: 10.2119/molmed.2009.00153
+    notes: 'Delayed epithelialization beyond 10-14 days dramatically increases hypertrophic scarring incidence. Prolonged
+      inflammation is a primary driver. Supports inflammation-proportional scar model.
+
+      '
+scar_remodeling:
+  description: 'Additional literature for scar formation and collagen remodeling beyond the scar_formation dataset.
+
+    '
+  sources:
+  - id: xue2015
+    authors: Xue M, Jackson CJ
+    year: 2015
+    title: Extracellular matrix reorganization during wound healing and its impact on abnormal scarring
+    journal: Adv Wound Care 4(3):119-136
+    doi: 10.1089/wound.2013.0485
+    notes: 'Collagen type III to type I transition during scar maturation. Lysyl oxidase cross-linking increases tensile strength
+      over months. Supports scar accumulation model from collagen deposition.
+
+      '
+  - id: bailey1998
+    authors: Bailey AJ, Paul RG, Knott L
+    year: 1998
+    title: Mechanisms of maturation and ageing of collagen
+    journal: Mech Ageing Dev 106(1-2):1-56
+    doi: 10.1016/S0047-6374(98)00119-5
+    notes: 'Enzymatic (lysyl oxidase) and non-enzymatic (glycation) collagen cross-linking pathways. Divalent cross-links
+      mature into stable multivalent forms. Reference for long-term scar maturation.
+
+      '
