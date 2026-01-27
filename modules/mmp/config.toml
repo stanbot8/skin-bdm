@@ -1,0 +1,14 @@
+# Module: mmp -- matrix metalloproteinase dynamics
+# Sources: Lobmann et al. 2002 (doi:10.1007/s00125-002-0868-8),
+#          Nagase et al. 1999 (doi:10.1074/jbc.274.31.21491),
+#          Ladwig et al. 2002 (doi:10.1046/j.1524-475x.2002.10903.x)
+[skin.mmp]
+enabled = true                        # master switch
+diffusion = 0.02                      # MMP diffusion coefficient (Nagase et al. 1999)
+decay = 0.02                          # MMP half-life ~35h, TIMP-mediated inactivation (Nagase et al. 1999)
+m1_rate = 0.003                       # MMP-9 production per M1 macrophage per step (Lobmann et al. 2002)
+neutrophil_rate = 0.002               # MMP-8 production per neutrophil per step (Nwomeh et al. 1998; dominant MMP source)
+fibroblast_rate = 0.0002              # MMP-1/3 production per fibroblast per step (Nagase et al. 1999)
+keratinocyte_rate = 0.0               # MMP-1 from wound-edge keratinocytes (Pilcher et al. 1997, doi:10.1083/jcb.137.6.1445)
+collagen_degradation = 0.002          # MMP-mediated collagen lysis rate (Ladwig et al. 2002)
+fibronectin_degradation = 0.008       # MMP-mediated fibronectin lysis rate (Ladwig et al. 2002)

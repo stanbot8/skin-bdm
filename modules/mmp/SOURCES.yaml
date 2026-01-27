@@ -1,0 +1,77 @@
+# Literature sources for mmp module
+mmp_ecm_remodeling:
+  description: MMP/TIMP dynamics and ECM degradation in wound healing
+  sources:
+  - id: lobmann2002
+    authors: Lobmann R, Ambrosch A, Schultz G, Waldmann K, Schiweck S, Lehnert H
+    year: 2002
+    title: Expression of matrix-metalloproteinases and their inhibitors in the wounds of diabetic and non-diabetic patients
+    journal: Diabetologia 45:1011-1016
+    doi: 10.1007/s00125-002-0868-8
+    notes: 'MMP-1 elevated 65-fold and MMP-9 14-fold in diabetic vs acute wounds. TIMP-2 reduced 2-fold. Supports diabetic_mmp_factor=3.0
+      and diabetic_timp_factor=0.5 parameters.
+
+      '
+  - id: nagase1999
+    authors: Nagase H, Woessner JF
+    year: 1999
+    title: Matrix metalloproteinases
+    journal: J Biol Chem 274(31):21491-21494
+    doi: 10.1074/jbc.274.31.21491
+    notes: 'Review of MMP family biochemistry. MMP-1 (fibroblast collagenase), MMP-9 (gelatinase B from macrophages/neutrophils).
+      Supports mmp_diffusion and fibroblast MMP production parameters.
+
+      '
+  - id: ladwig2002
+    authors: Ladwig GP, Robson MC, Liu R, Kuhn MA, Muir DF, Schultz GS
+    year: 2002
+    title: Ratios of activated matrix metalloproteinase-9 to tissue inhibitor of matrix metalloproteinase-1 in wound fluids
+      are inversely correlated with healing of pressure ulcers
+    journal: Wound Repair Regen 10(1):26-37
+    doi: 10.1046/j.1524-475x.2002.10903.x
+    notes: 'High MMP-9:TIMP-1 ratio inversely correlates with healing. Supports MMP-collagen degradation rate calibration.
+
+      '
+  - id: pilcher1997
+    authors: Pilcher BK, Dumin JA, Sudbeck BD, Krane SM, Welgus HG, Parks WC
+    year: 1997
+    title: The activity of collagenase-1 is required for keratinocyte migration on a type I collagen matrix
+    journal: J Cell Biol 137(6):1445-1457
+    doi: 10.1083/jcb.137.6.1445
+    notes: 'Keratinocytes at the wound migration front produce MMP-1 (collagenase-1) to cleave collagen I and enable re-epithelialization.
+      Supports mmp_keratinocyte_rate parameter.
+
+      '
+mmp_kinetics:
+  description: Aggregate MMP activity (MMP-1, -2, -8, -9), peak-normalized
+  consensus: data/mmp_kinetics.csv
+  columns:
+  - day
+  - mmp_normalized
+  units:
+    day: days
+    mmp_normalized: fraction of peak
+  normalization: peak-normalized (1.0 = maximum at day 3 to 5)
+  notes: 'Aggregate MMP activity weighted toward MMP-8 (neutrophil collagenase, 100x to 200x more abundant than MMP-1). MMP-9
+    peaks at 24h, MMP-8 at day 4, MMP-1 at day 7. Activity normalizes by day 14 to 21 as TIMP-1 rises.
+
+    '
+  sources:
+  - id: nwomeh1998
+    authors: Nwomeh BC, Liang HX, Diegelmann RF, Cohen IK, Yager DR
+    year: 1998
+    title: Dynamics of the matrix metalloproteinases MMP-1 and MMP-8 in acute open human dermal wounds
+    journal: Wound Repair Regen 6(2):127-134
+    doi: 10.1046/j.1524-475X.1998.60206.x
+  - id: gill2008
+    authors: Gill SE, Parks WC
+    year: 2008
+    title: 'Metalloproteinases and their inhibitors: regulators of wound healing'
+    journal: Int J Biochem Cell Biol 40(6-7):1334-1347
+    doi: 10.1016/j.biocel.2007.10.024
+  - id: caley2015
+    authors: Caley MP, Martins VLC, O'Toole EA
+    year: 2015
+    title: Metalloproteinases and wound healing
+    journal: Adv Wound Care 4(4):225-234
+    doi: 10.1089/wound.2014.0581
