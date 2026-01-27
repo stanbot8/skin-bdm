@@ -1,0 +1,19 @@
+# Module: perfusion -- vascular perfusion field
+# Sources: Singer & Clark 1999 (doi:10.1056/NEJM199909023411006),
+#          Schugart et al. 2008 (doi:10.1073/pnas.0711642105)
+[skin.perfusion]
+diffusion = 0.03               # capillary sprouting / lateral spread
+decay = 0.0                    # no decay (stable vessels)
+basal = 1.0                    # healthy dermis = fully perfused
+angio_rate = 0.005             # angiogenesis recovery speed per step (Schugart et al. 2008)
+angio_delay_h = 24             # hours before sprouting begins (Singer & Clark 1999)
+
+# Per-layer perfusion profiles (fraction of basal; Braverman 2000, doi:10.1046/j.1087-0024.2000.00010.x)
+papillary_fraction = 1.0      # dense capillary loops (highest perfusion)
+reticular_fraction = 0.7      # arterioles and venules (moderate)
+hypodermis_fraction = 0.3     # sparse large vessels (lowest)
+
+# Per-layer angiogenesis rate multipliers
+angio_papillary_factor = 1.5  # capillaries regrow fastest (close to wound bed)
+angio_reticular_factor = 1.0  # baseline rate
+angio_hypodermis_factor = 0.5 # deep vessels recover slowly
