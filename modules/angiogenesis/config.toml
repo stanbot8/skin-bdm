@@ -1,0 +1,15 @@
+# Module: angiogenesis -- VEGF-driven vascular recovery
+# Sources: Catrina et al. 2004 (doi:10.2337/diabetes.53.12.3226),
+#          Thangarajah et al. 2009 (doi:10.1073/pnas.0906670106),
+#          Jetten et al. 2014 (doi:10.1007/s10456-013-9381-6)
+[skin.angiogenesis]
+enabled = true                        # master switch
+vegf_diffusion = 0.08                 # VEGF diffusion coefficient
+vegf_decay = 0.01                     # VEGF natural decay rate
+vegf_production_rate = 0.002          # hypoxia-driven VEGF production (Johnson & Wilgus 2014, doi:10.1089/wound.2013.0517)
+vegf_hypoxia_threshold = 0.5          # O2 threshold for HIF-1alpha VEGF induction (Schugart et al. 2008, doi:10.1073/pnas.0711642105)
+vegf_consumption_rate = 0.1           # VEGF consumed per unit perfusion recovery
+angio_vegf_rate = 0.01                # perfusion recovery per unit VEGF per step (Flegg et al. 2012, doi:10.1016/j.jtbi.2012.01.043)
+m2_vegf_rate = 0.001                  # VEGF produced by M2 macrophages per step (Jetten et al. 2014)
+vegf_production_taper = 0.001          # PHD2/3 desensitization: exp(-k*wound_age) on VEGF production (Berra et al. 2003, doi:10.1093/emboj/cdg291)
+vegf_receptor_clearance = 0.005       # VEGFR-2 internalization per vascular density (Ferrara et al. 2003, doi:10.1038/nm0603-669)

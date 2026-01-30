@@ -1,0 +1,90 @@
+# Literature sources for angiogenesis module
+angiogenesis_parameters:
+  description: 'Literature sources validating angiogenesis and VEGF module parameters.
+
+    '
+  sources:
+  - id: catrina2004
+    authors: Catrina SB, Okamoto K, Pereira T, Brismar K, Poellinger L
+    year: 2004
+    title: Hyperglycemia regulates hypoxia-inducible factor-1alpha protein stability and function
+    journal: Diabetes 53(12):3226-3232
+    doi: 10.2337/diabetes.53.12.3226
+    notes: 'Hyperglycemia destabilizes HIF-1alpha, reducing VEGF transcription. Supports diabetic_vegf_factor=0.4 and hypoxia-driven
+      VEGF production model.
+
+      '
+  - id: thangarajah2009
+    authors: Thangarajah H, Yao D, Chang EI, Shi Y, Jazayeri L, Vial IN, et al.
+    year: 2009
+    title: The molecular basis for impaired hypoxia-induced VEGF expression in diabetic tissues
+    journal: Proc Natl Acad Sci USA 106(32):13505-13510
+    doi: 10.1073/pnas.0906670106
+    notes: 'Methylglyoxal modification of HIF-1alpha p300 binding domain reduces VEGF transcriptional response to hypoxia
+      by ~60%. Supports vegf_factor=0.4 and vegf_hypoxia_threshold.
+
+      '
+  - id: jetten2014
+    authors: Jetten N, Verbruggen S, Gijbels MJ, Post MJ, De Winther MP, Donners MM
+    year: 2014
+    title: Anti-inflammatory M2, but not pro-inflammatory M1 macrophages promote angiogenesis in vivo
+    journal: Angiogenesis 17(1):109-118
+    doi: 10.1007/s10456-013-9381-6
+    notes: 'M2 macrophages are the primary VEGF source in wound angiogenesis. Supports M2-specific VEGF production (immune::ProduceVEGF)
+      and the coupling between M1-to-M2 transition and vascular recovery.
+
+      '
+  - id: ferrara2003
+    authors: Ferrara N, Gerber HP, LeCouter J
+    year: 2003
+    title: The biology of VEGF and its receptors
+    journal: Nat Med 9(6):669-676
+    doi: 10.1038/nm0603-669
+    notes: 'VEGFR-2 is the primary signaling receptor for VEGF, mediating receptor-mediated endocytosis and ligand clearance
+      proportional to endothelial cell density. Supports vegf_receptor_clearance parameter.
+
+      '
+  - id: berra2003
+    authors: Berra E, Benizri E, Ginouves A, Volmat V, Roux D, Pouyssegur J
+    year: 2003
+    title: HIF prolyl-hydroxylase 2 is the key oxygen sensor setting low steady-state levels of HIF-1alpha in normoxia
+    journal: EMBO J 22(16):4082-4090
+    doi: 10.1093/emboj/cdg291
+    notes: 'PHD2/3 are HIF target genes creating negative feedback that desensitizes HIF-1alpha under sustained hypoxia. Supports
+      vegf_production_taper parameter.
+
+      '
+vegf_kinetics:
+  description: VEGF timecourse, peak-normalized
+  consensus: data/vegf_kinetics.csv
+  columns:
+  - day
+  - vegf_normalized
+  units:
+    day: days
+    vegf_normalized: fraction of peak
+  normalization: peak-normalized (1.0 = maximum at day 5)
+  notes: 'VEGF rises with macrophage and keratinocyte production, peaks around day 3 to 5 when capillary growth is maximal,
+    then declines and normalizes by day 14 as vessel regression begins.
+
+    '
+  sources:
+  - id: nissen1998
+    authors: Nissen NN, Polverini PJ, Koch AE, Volin MV, Gamelli RL, DiPietro LA
+    year: 1998
+    title: Vascular endothelial growth factor mediates angiogenic activity during the proliferative phase of wound healing
+    journal: Am J Pathol 152(6):1445-1452
+    pmc: PMC1858442
+  - id: brown1992
+    authors: Brown LF, Yeo KT, Berse B, Yeo TK, Senger DR, Dvorak HF, van de Water L
+    year: 1992
+    title: Expression of vascular permeability factor (vascular endothelial growth factor) by epidermal keratinocytes during
+      wound healing
+    journal: J Exp Med 176(5):1375-1379
+    doi: 10.1084/jem.176.5.1375
+  - id: johnson2014
+    authors: Johnson KE, Wilgus TA
+    year: 2014
+    title: Vascular endothelial growth factor and angiogenesis in the regulation of cutaneous wound repair
+    journal: Adv Wound Care 3(10):647-661
+    doi: 10.1089/wound.2013.0517
