@@ -1,0 +1,47 @@
+# Literature sources for hyaluronan module
+hyaluronan_parameters:
+  description: 'Literature sources for hyaluronan (HA) dynamics in wound healing: synthesis, degradation, migration scaffold,
+    and water retention.
+
+    '
+  sources:
+  - id: toole2004
+    authors: Toole BP
+    year: 2004
+    title: 'Hyaluronan: from extracellular glue to pericellular cue'
+    journal: Nat Rev Cancer 4(7):528-539
+    doi: 10.1038/nrc1391
+    notes: 'HA as pericellular coat and migration scaffold. CD44-mediated signaling drives keratinocyte and fibroblast motility.
+      General reference for hyaluronan module.
+
+      '
+  - id: stern2006
+    authors: Stern R, Asari AA, Sugahara KN
+    year: 2006
+    title: 'Hyaluronan fragments: an information-rich system'
+    journal: Eur J Cell Biol 85(8):699-715
+    doi: 10.1016/j.ejcb.2006.05.009
+    notes: 'HA fragment size determines signaling: high-MW HA is anti-inflammatory, low-MW fragments (via hyaluronidase) are
+      pro-inflammatory and pro-angiogenic. Supports ha_decay parameter.
+
+      '
+  - id: aya2014
+    authors: Aya KL, Stern R
+    year: 2014
+    title: 'Hyaluronan in wound healing: rediscovering a major player'
+    journal: Wound Repair Regen 22(5):579-593
+    doi: 10.1111/wrr.12214
+    notes: 'Review of HA roles across all wound phases. CD44-mediated keratinocyte migration, HA-rich provisional matrix,
+      MW-dependent immune modulation.
+
+      '
+  - id: chen1999
+    authors: Chen WY, Abatangelo G
+    year: 1999
+    title: Functions of hyaluronan in wound repair
+    journal: Wound Repair Regen 7(2):79-89
+    doi: 10.1046/j.1524-475x.1999.00079.x
+    notes: 'HA as provisional matrix scaffold for cell migration and proliferation. Covers synthesis/degradation kinetics
+      and the transition from HA-rich granulation tissue to collagen-rich scar.
+
+      '
