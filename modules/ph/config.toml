@@ -1,0 +1,10 @@
+# Module: ph -- wound bed alkalinity (acid mantle disruption)
+# Sources: Schneider et al. 2007 (doi:10.1007/s00403-006-0713-x),
+#          Gethin 2007 (Wounds UK, no DOI),
+#          Leveen et al. 1994 (PMID:7906335)
+[skin.ph]
+recovery_rate = 0.003                 # acidification per step (scaled by perfusion)
+migration_suppression = 0.5           # max migration speed reduction at full alkalinity
+mmp_boost = 0.5                       # MMP activity amplification at full alkalinity
+biofilm_boost = 0.4                   # biofilm growth rate boost at full alkalinity
+bohr_factor = 0.3                     # O2 delivery reduction at full alkalinity (Bohr effect)
