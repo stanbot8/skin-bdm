@@ -1,0 +1,322 @@
+# Literature sources for diabetic module
+diabetic_wound_healing:
+  description: 'Literature sources validating diabetic wound model parameters. No digitized timeseries yet; citations support
+    parameter magnitudes.
+
+    '
+  sources:
+  - id: mirza2011
+    authors: Mirza R, Koh TJ
+    year: 2011
+    title: Dysregulation of monocyte/macrophage phenotype in wounds of diabetic mice
+    journal: Cytokine 56(2):256-264
+    doi: 10.1016/j.cyto.2011.06.016
+    notes: 'Diabetic mouse wounds show persistent M1 markers (iNOS, TNF-alpha) and delayed M2 markers (Arg1, IL-10). Supports
+      m1_duration_factor=3.0 and resolution_factor=0.3.
+
+      '
+  - id: louiselle2021
+    authors: Louiselle AE, Niemiec SM, Zgheib C, Liechty KW
+    year: 2021
+    title: Macrophage polarization and diabetic wound healing
+    journal: Transl Res 236:109-116
+    doi: 10.1016/j.trsl.2021.05.006
+    pmc: PMC9797953
+    notes: 'Review: diabetic macrophages fail M1-to-M2 switch; sustained TNF-alpha/ IL-1/IL-6 impairs re-epithelialization.
+
+      '
+  - id: wong2015
+    authors: Wong SL, Demers M, Martinod K, Gallant M, Wang Y, Goldenberg AB, Bhatt DL, et al.
+    year: 2015
+    title: Diabetes primes neutrophils to undergo NETosis, which impairs wound healing
+    journal: Nat Med 21(7):815-819
+    doi: 10.1038/nm.3887
+    notes: 'Hyperglycemia primes excessive NET release; NET-laden wounds show ~2x neutrophil burden vs. controls. Supports
+      neutrophil_factor=1.8.
+
+      '
+  - id: brem2007
+    authors: Brem H, Tomic-Canic M
+    year: 2007
+    title: Cellular and molecular basis of wound healing in diabetes
+    journal: J Clin Invest 117(5):1219-1222
+    doi: 10.1172/JCI32169
+    notes: 'Review: neutrophil apoptosis delayed in diabetic wounds; prolonged protease release damages ECM. Supports neutrophil_lifespan_factor=1.5.
+
+      '
+  - id: albaloureiro2007
+    authors: Alba-Loureiro TC, Munhoz CD, Martins JO, Cerchiaro GA, Scavone C, Curi R, Sannomiya P
+    year: 2007
+    title: Neutrophil function and metabolism in individuals with diabetes mellitus
+    journal: Braz J Med Biol Res 40(8):1037-1044
+    doi: 10.1016/j.lfs.2006.10.001
+    notes: 'Impaired neutrophil apoptosis in diabetes; reduced caspase-3 activity and delayed phosphatidylserine exposure.
+      Supports neutrophil_apoptosis_factor=0.3.
+
+      '
+  - id: khanna2010
+    authors: Khanna S, Biswas S, Shang Y, Collard E, Azad A, Kauh C, et al.
+    year: 2010
+    title: Macrophage dysfunction impairs resolution of inflammation in the wounds of diabetic mice
+    journal: PLoS One 5(3):e9539
+    doi: 10.1371/journal.pone.0009539
+    notes: 'Diabetic wound macrophages show ~50% reduction in phagocytic clearance of apoptotic cells. Supports efferocytosis_factor=0.5.
+
+      '
+  - id: wang2020
+    authors: Wang Y, Graves DT
+    year: 2020
+    title: Keratinocyte function in normal and diabetic wounds and modulation by FOXO1
+    journal: J Diabetes Res 2020:3714704
+    doi: 10.1155/2020/3714704
+    notes: 'Hyperglycemia attenuates p125FAK phosphorylation critical for cell cycle progression; PI3K/Akt signaling and ClC-2
+      function reduced, cutting migration speed 40-60%. Supports prolif_factor=0.5, migration_factor=0.6.
+
+      '
+  - id: lerman2003
+    authors: Lerman OZ, Galiano RD, Armour M, Levine JP, Gurtner GC
+    year: 2003
+    title: 'Cellular dysfunction in the diabetic fibroblast: impairment in migration, vascular endothelial growth factor production,
+      and response to hypoxia'
+    journal: Am J Pathol 162(1):303-312
+    pmc: PMC1851127
+    notes: 'Diabetic fibroblasts show delayed activation, reduced VEGF production, and impaired hypoxia response. Supports
+      fibroblast_activation_factor=2.0, fibroblast_lifespan_factor=0.6.
+
+      '
+  - id: goldberg2007
+    authors: Goldberg MT, Han YP, Yan C, Shaw MC, Garner WL
+    year: 2007
+    title: TNF-alpha suppresses alpha-smooth muscle actin expression in human dermal fibroblasts
+    journal: J Invest Dermatol 127(11):2645-2655
+    doi: 10.1038/sj.jid.5700890
+    notes: 'Chronic TNF-alpha (as in diabetic wounds) suppresses myofibroblast differentiation and collagen synthesis. Supports
+      collagen_factor=0.4.
+
+      '
+  - id: spanheimer1988
+    authors: Spanheimer RG
+    year: 1988
+    title: Direct inhibition of collagen production in vitro by diabetic rat serum
+    journal: Metabolism 37(5):479-485
+    doi: 10.1016/0026-0495(88)90050-9
+    notes: 'Collagen synthesis fell to ~58% of control in diabetic serum; dose-dependent inhibition by diabetic rat serum
+      factors. Supports collagen_factor=0.4.
+
+      '
+  - id: dinh2005
+    authors: Dinh T, Veves A
+    year: 2005
+    title: A review of the mechanisms implicated in the pathogenesis of the diabetic foot
+    journal: Int J Low Extrem Wounds 4(3):154-159
+    doi: 10.1177/1534734605280130
+    notes: 'Capillary density -22%, lumen area -58% in diabetic foot skin. Supports perfusion_basal=0.7.
+
+      '
+  - id: brem2016
+    authors: Brem H, Sheehan P, Rosenberg HJ, Schneider JS, Boulton AJ
+    year: 2006
+    title: Evidence-based protocol for diabetic foot ulcers
+    journal: Plast Reconstr Surg 117(7 Suppl):193S-209S
+    doi: 10.1097/01.prs.0000225459.93750.29
+    notes: 'Review: impaired VEGF/FGF signaling slows angiogenesis. Reduced NO bioavailability further limits vessel formation.
+      Supports perfusion_angio_rate=0.002 (vs. normal 0.005).
+
+      '
+  - id: sakai2005
+    authors: Sakai S, Kikuchi K, Satoh J, Tagami H, Inoue S
+    year: 2005
+    title: 'Functional properties of the stratum corneum in patients with diabetes mellitus: similarities to senile xerosis'
+    journal: Br J Dermatol 153(2):319-323
+    doi: 10.1111/j.1365-2133.2005.06756.x
+    notes: 'Diabetic patients show reduced stratum corneum hydration (lower HFC) and decreased sebaceous gland activity vs.
+      controls. Supports compound reduction in water_recovery_rate (0.05 -> 0.02).
+
+      '
+  - id: li2017
+    authors: Li X, Xu J, He Y, Yang Y, Huang L, et al.
+    year: 2017
+    title: Diabetic and sympathetic influences on the water permeability barrier function of human skin as measured using
+      transepidermal water loss
+    journal: Medicine 96(45):e8611
+    doi: 10.1097/MD.0000000000008611
+    notes: 'Diabetic skin shows altered water permeability barrier function related to peripheral sympathetic neuropathy.
+      Reduced TEWL on distal limbs indicates impaired barrier homeostasis.
+
+      '
+  - id: dinh2012
+    authors: Dinh T, Tecilazich F, Kafanas A, Doupis J, Gnardellis C, Leal E, et al.
+    year: 2012
+    title: Mechanisms involved in the development and healing of diabetic foot ulceration
+    journal: Diabetes 61(11):2937-2947
+    doi: 10.2337/db12-0227
+    notes: 'Elevated baseline IL-1beta, TNF-alpha, IL-6 in diabetic serum even before wounding (AGE/RAGE pathway).
+
+      '
+  - id: bierhaus2005
+    authors: Bierhaus A, Humpert PM, Morcos M, Wendt T, Chavakis T, Arnold B, et al.
+    year: 2005
+    title: Understanding RAGE, the receptor for advanced glycation end products
+    journal: J Mol Med 83(11):876-886
+    doi: 10.1007/s00109-005-0688-7
+    notes: 'RAGE-NF-kB axis produces sustained constitutive inflammation in diabetic tissue; AGE accumulation drives persistent
+      cytokine production independent of acute injury. Supports baseline_inflammation=0.001.
+
+      '
+  - id: rasik2000
+    authors: Rasik AM, Shukla A
+    year: 2000
+    title: Antioxidant status in delayed healing type of wounds
+    journal: Int J Exp Pathol 81(4):257-263
+    doi: 10.1046/j.1365-2613.2000.00158.x
+    notes: 'Diabetic wound tissue shows ~50% reduced SOD and catalase activity, making keratinocytes more vulnerable to oxidative
+      damage from equivalent inflammation levels. Supports inflammation_sensitivity=2.0.
+
+      '
+  - id: lobmann2002
+    authors: Lobmann R, Ambrosch A, Schultz G, Waldmann K, Schiweck S, Lehnert H
+    year: 2002
+    title: Expression of matrix-metalloproteinases and their inhibitors in the wounds of diabetic and non-diabetic patients
+    journal: Diabetologia 45(7):1011-1016
+    doi: 10.1007/s00125-002-0868-8
+    notes: 'MMP-1 65-fold and MMP-9 14-fold elevated in diabetic foot ulcers vs. traumatic wounds; TIMP-2 reduced. Elevated
+      MMPs degrade growth factors (EGF, PDGF, TGF-beta) at the wound bed, amplifying the effective impact of inflammation
+      on keratinocyte function. Supports inflammation_sensitivity=2.0.
+
+      '
+  - id: brownlee2005
+    authors: Brownlee M
+    year: 2005
+    title: 'The pathobiology of diabetic complications: a unifying mechanism'
+    journal: Diabetes 54(6):1615-1625
+    doi: 10.2337/diabetes.54.6.1615
+    notes: 'Unifying mechanism: hyperglycemia-driven mitochondrial superoxide overproduction activates four major damage pathways
+      (polyol, AGE, PKC, hexosamine). Provides mechanistic basis for increased keratinocyte sensitivity to inflammatory mediators.
+
+      '
+  - id: yosipovitch1993
+    authors: Yosipovitch G, Tur E, Cohen O, Rusecki Y
+    year: 1993
+    title: 'Skin surface pH in intertriginous areas in NIDDM patients: possible correlation to candidal intertrigo'
+    journal: Diabetes Care 16(4):560-563
+    doi: 10.1111/j.1600-0625.1993.tb00025.x
+    notes: 'Diabetic patients show elevated skin surface pH due to autonomic neuropathy and reduced sweating. Supports ph_recovery_factor=0.5.
+
+      '
+diabetic_closure_kinetics:
+  description: 'Diabetic wound closure trajectory, scaled from normal punch biopsy consensus using murine db/db data. 1.8x
+    overall time-stretch with steeper delay in early phase (~3x at day 3-7) and convergence in late phase (~1.5x at day 14-21).
+
+    '
+  consensus: data/diabetic_closure_kinetics.csv
+  columns:
+  - day
+  - closure_pct
+  units:
+    day: days
+    closure_pct: percent
+  normalization: absolute (0-100%)
+  notes: 'Scaling factors from Galiano 2004, Michaels 2007: db/db mice complete healing at 27.75d vs 11.86d for controls (2.3x).
+    Day 7: 20-30% vs 70-80% (3x early delay). Day 14: 55-70% vs 95-100%.
+
+    '
+  sources:
+  - id: galiano2004
+    authors: Galiano RD, Michaels J, Dobryansky M, Levine JP, Gurtner GC
+    year: 2004
+    title: Quantitative and reproducible murine model of excisional wound healing
+    journal: Wound Repair Regen 12(4):485-492
+    doi: 10.1111/j.1067-1927.2004.12404.x
+  - id: michaels2007
+    authors: Michaels JT, Churgin SS, Blechman KM, Greives MR, Ber S, Gurtner GC
+    year: 2007
+    title: db/db mice exhibit severe wound-healing impairments compared with other murine diabetic strains
+    journal: Wound Repair Regen 15(5):665-670
+    doi: 10.1111/j.1524-475X.2007.00273.x
+  - id: falanga2005
+    authors: Falanga V
+    year: 2005
+    title: Wound healing and its impairment in the diabetic foot
+    journal: Lancet 366(9498):1736-1743
+    doi: 10.1016/S0140-6736(05)67700-8
+diabetic_immune_cell_kinetics:
+  description: 'Diabetic wound immune cell kinetics, scaled from normal consensus. Neutrophils: 5x reduced early (6h), peak
+    shifted to day 5, persistent through day 14+. Macrophages: 0.3-0.5x early, peak shifted to day 7, elevated and persistent
+    through day 28.
+
+    '
+  consensus: data/diabetic_immune_cell_kinetics.csv
+  columns:
+  - day
+  - neutrophils_normalized
+  - macrophages_normalized
+  units:
+    day: days
+    neutrophils_normalized: fraction of peak
+    macrophages_normalized: fraction of peak
+  normalization: peak-normalized per cell type (1.0 = maximum count)
+  notes: 'Neutrophil scaling from Wetzler 2000 (persistent day 13+), Clayton 2024 (5x reduced early). Macrophage scaling from
+    Mirza & Koh 2011 (reduced early, elevated late), Khanna 2010 (persistent, failed resolution).
+
+    '
+  sources:
+  - id: mirza2011
+    authors: Mirza R, Koh TJ
+    year: 2011
+    title: Dysregulation of monocyte/macrophage phenotype in wounds of diabetic mice
+    journal: Cytokine 56(2):256-264
+    doi: 10.1016/j.cyto.2011.06.016
+  - id: wetzler2000
+    authors: Wetzler C, Kampfer H, Stallmeyer B, Pfeilschifter J, Frank S
+    year: 2000
+    title: Large and sustained induction of chemokines during impaired wound healing in the genetically diabetic mouse
+    journal: J Invest Dermatol 115(2):245-253
+    doi: 10.1046/j.1523-1747.2000.00029.x
+  - id: khanna2010
+    authors: Khanna S, Biswas S, Shang Y, Collard E, Azad A, Kauh C, et al.
+    year: 2010
+    title: Macrophage dysfunction impairs resolution of inflammation in the wounds of diabetic mice
+    journal: PLoS One 5(3):e9539
+    doi: 10.1371/journal.pone.0009539
+  - id: clayton2024
+    authors: Clayton SM, Shafikhani SH, Soulika AM
+    year: 2024
+    title: Macrophage and neutrophil dysfunction in diabetic wounds
+    journal: Adv Wound Care 13(9):463-484
+    doi: 10.1089/wound.2023.0149
+diabetic_inflammation_timecourse:
+  description: 'Diabetic wound inflammation, scaled from normal consensus. Peak shifted from day 2 to day 3, resolution delayed
+    >2x, persistent chronic baseline (~0.12 at day 28 vs 0.02 normal).
+
+    '
+  consensus: data/diabetic_inflammation_timecourse.csv
+  columns:
+  - day
+  - inflammation_normalized
+  units:
+    day: days
+    inflammation_normalized: fraction of peak
+  normalization: peak-normalized (1.0 = maximum)
+  notes: 'Cytokines 2x higher at day 10 (Mirza & Koh 2011). TNF-alpha/IL-1beta 100x elevated in chronic wound fluid (Krzyszczyk
+    2018). Resolution fails or delayed beyond day 13-15 (Wetzler 2000, Louiselle 2021).
+
+    '
+  sources:
+  - id: mirza2011
+    authors: Mirza R, Koh TJ
+    year: 2011
+    title: Dysregulation of monocyte/macrophage phenotype in wounds of diabetic mice
+    journal: Cytokine 56(2):256-264
+    doi: 10.1016/j.cyto.2011.06.016
+  - id: louiselle2021
+    authors: Louiselle AE, Niemiec SM, Zgheib C, Liechty KW
+    year: 2021
+    title: Macrophage polarization and diabetic wound healing
+    journal: Transl Res 236:109-116
+    doi: 10.1016/j.trsl.2021.05.006
+  - id: eming2014
+    authors: Eming SA, Martin P, Tomic-Canic M
+    year: 2014
+    title: 'Wound repair and regeneration: mechanisms, signaling, and translation'
+    journal: Sci Transl Med 6(265):265sr6
+    doi: 10.1126/scitranslmed.3009337

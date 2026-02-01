@@ -1,0 +1,41 @@
+# Module: diabetic -- chronic wound modifiers
+# Sources: see literature/data/SOURCES.yaml, diabetic_wound_healing section
+[skin.diabetic]
+mode = false                          # master switch for diabetic impairments
+
+# Immune dysfunction
+m1_duration_factor = 3.0              # M1 duration multiplier (Mirza & Koh 2011, doi:10.1016/j.cyto.2011.06.016)
+resolution_factor = 0.3               # M2 resolution rate multiplier (Louiselle et al. 2021, doi:10.1016/j.trsl.2021.05.006)
+efferocytosis_factor = 0.5            # efferocytosis probability multiplier (Khanna et al. 2010, doi:10.1371/journal.pone.0009539)
+neutrophil_factor = 1.8               # neutrophil spawn count multiplier (Wong et al. 2015, doi:10.1038/nm.3887)
+neutrophil_lifespan_factor = 3.0      # neutrophil lifespan multiplier (Brem & Tomic-Canic 2007, doi:10.1172/JCI32169)
+neutrophil_apoptosis_factor = 0.3     # impaired neutrophil apoptosis (Alba-Loureiro et al. 2007, doi:10.1016/j.lfs.2006.10.001)
+neutrophil_waves_factor = 2.0         # double recruitment waves (chronic chemokines; Wetzler et al. 2000)
+neutrophil_window_factor = 3.0        # triple spawn window (sustained IL-8; Acosta et al. 2008)
+macrophage_taper_factor = 0.3         # slow recruitment decay (chronic MCP-1; Wood et al. 2007)
+macrophage_emigration_factor = 0.5    # impaired M2 lymphatic clearance (Louiselle et al. 2021)
+
+# Keratinocyte dysfunction
+prolif_factor = 0.5                   # keratinocyte G1->S multiplier (Wang & Graves 2020, doi:10.1155/2020/3714704)
+migration_factor = 0.45               # keratinocyte migration speed multiplier (Wang & Graves 2020)
+
+# Fibroblast dysfunction
+fibroblast_activation_factor = 2.0    # activation delay multiplier (>1 = slower; Lerman et al. 2003, PMC1851127)
+collagen_factor = 0.4                 # collagen deposition multiplier (Goldberg et al. 2007, doi:10.1038/sj.jid.5700890)
+fibroblast_lifespan_factor = 0.6      # fibroblast lifespan multiplier (Lerman et al. 2003)
+
+# Chronic inflammation
+baseline_inflammation = 0.001         # per-step AGE/RAGE inflammation (Bierhaus et al. 2005, doi:10.1007/s00109-005-0688-7)
+inflammation_sensitivity = 2.0        # keratinocyte sensitivity multiplier (Rasik & Shukla 2000, doi:10.1046/j.1365-2613.2000.00158.x)
+                                      # MMP growth factor degradation (Lobmann et al. 2002, doi:10.1007/s00125-002-0868-8)
+migration_infl_K = 0.15              # Hill half-max for migration inflammation gating (normal K=1.0; Brownlee 2005, doi:10.2337/diabetes.54.6.1615)
+prolif_infl_K = 0.20                 # Hill half-max for proliferation inflammation gating (normal K=1.5; Rasik & Shukla 2000)
+
+# ECM remodeling imbalance
+mmp_factor = 3.0                      # MMP upregulation (Lobmann et al. 2002, doi:10.1007/s00125-002-0868-8; 65x MMP-1 in diabetic ulcers)
+timp_factor = 0.5                     # TIMP downregulation (Lobmann et al. 2002; net MMP:TIMP ratio elevated)
+
+# Biofilm / vascular impairment
+biofilm_clearance_factor = 0.5        # impaired neutrophil phagocytosis (Bjarnsholt et al. 2008, doi:10.1111/j.1524-475X.2007.00283.x)
+vegf_factor = 0.4                     # HIF-1alpha impairment (Thangarajah et al. 2009, doi:10.1073/pnas.0906670106)
+ph_recovery_factor = 0.5             # impaired acid mantle restoration (Yosipovitch et al. 1993, doi:10.1111/j.1600-0625.1993.tb00025.x)
