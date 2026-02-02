@@ -1,0 +1,37 @@
+# Literature sources for elastin module
+elastin_parameters:
+  description: 'Literature sources for elastic fiber network dynamics: tropoelastin deposition, lysyl oxidase cross-linking,
+    and wound recovery.
+
+    '
+  sources:
+  - id: kielty2002
+    authors: Kielty CM, Sherratt MJ, Shuttleworth CA
+    year: 2002
+    title: Elastic fibres
+    journal: J Cell Sci 115(14):2817-2828
+    doi: 10.1002/path.1107
+    notes: 'Elastic fiber architecture: tropoelastin monomers, microfibril scaffolds, lysyl oxidase cross-linking to desmosine.
+      Supports elastin_crosslink_rate and recovery parameters.
+
+      '
+  - id: almine2012
+    authors: Almine JF, Wise SG, Weiss AS
+    year: 2012
+    title: Elastin signaling in wound repair
+    journal: Birth Defects Res C Embryo Today 96(3):248-257
+    doi: 10.1002/bdrc.21016
+    notes: 'Elastin fragments (matrikines) signal via elastin-binding protein to drive cell migration and protease production
+      during repair. Covers temporal limitations of tropoelastin re-expression in scars.
+
+      '
+  - id: mithieux2005
+    authors: Mithieux SM, Weiss AS
+    year: 2005
+    title: Elastin
+    journal: Adv Protein Chem 70:437-461
+    doi: 10.1016/S0065-3233(05)70013-9
+    notes: 'Tropoelastin domain structure, coacervation, and elastic fiber assembly. Quantitative data on secretion and assembly
+      rates. Supports elastin_recovery_rate parameter.
+
+      '

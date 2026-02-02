@@ -1,0 +1,11 @@
+# Module: elastin -- elastic fiber network
+# Sources: Kielty et al. 2002 (doi:10.1002/path.1107),
+#          Mithieux & Weiss 2005 (doi:10.1016/S0065-3233(05)70013-9)
+[skin.elastin]
+enabled = false                       # master switch (groundwork)
+diffusion = 0.0                       # structural ECM, immobile
+decay = 0.0002                        # very slow turnover (elastin t1/2 ~70yr)
+basal_density = 0.5                   # normalized baseline in reticular dermis
+papillary_density = 0.3               # thinner fibers in papillary dermis
+production_rate = 0.0005              # tropoelastin from fibroblasts (Mithieux & Weiss 2005)
+mmp_degradation = 0.003               # elastase/MMP-9 degrades elastin (Kielty et al. 2002)
