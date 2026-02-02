@@ -1,0 +1,16 @@
+# Module: dermis -- dermal tissue integrity (ECM structural state)
+# Sources: Clark 1996 (doi:10.1007/978-1-4899-0185-9),
+#          Schultz & Wysocki 2009 (doi:10.1111/j.1524-475X.2009.00466.x)
+[skin.dermis]
+enabled = true                           # master switch
+diffusion = 0.001                        # minimal lateral coupling
+decay = 0.0                              # no spontaneous decay
+papillary_density = 1.0                  # healthy papillary dermis (loose CT, fully intact)
+reticular_density = 0.8                  # healthy reticular dermis (dense collagen)
+hypodermis_density = 0.5                 # healthy hypodermis (adipose-dominated)
+collagen_threshold = 0.05                # collagen needed to drive recovery
+collagen_recovery_rate = 0.002           # recovery from collagen (ECM rebuilding)
+mmp_degradation = 0.004                  # tissue breakdown per MMP unit (Schultz 2009)
+papillary_rate_factor = 1.5              # papillary recovers fastest
+reticular_rate_factor = 1.0              # reticular baseline rate
+hypodermis_rate_factor = 0.5             # hypodermis recovers slowest
