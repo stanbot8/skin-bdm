@@ -1,0 +1,12 @@
+# Module: hyaluronan -- hyaluronic acid / glycosaminoglycan ground substance
+# Sources: Toole 2004 (doi:10.1038/nrc1391),
+#          Stern et al. 2006 (doi:10.1016/j.ejcb.2006.05.009)
+[skin.hyaluronan]
+enabled = false                       # master switch (groundwork)
+diffusion = 0.01                      # slow lateral spread (high MW HA is viscous)
+decay = 0.005                         # hyaluronidase turnover (Stern et al. 2006)
+basal_density = 0.8                   # normalized baseline in papillary dermis (HA-rich)
+reticular_density = 0.4               # lower in reticular dermis
+production_rate = 0.002               # fibroblast HA synthesis
+water_retention_factor = 0.5          # HA * factor added to local water capacity
+migration_scaffold_factor = 0.3       # HA facilitates cell migration
