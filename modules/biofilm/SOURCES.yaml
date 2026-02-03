@@ -1,0 +1,67 @@
+# Literature sources for biofilm module
+biofilm_parameters:
+  description: 'Literature sources validating biofilm module parameters. Citations support colonization prevalence, growth
+    dynamics, and inflammatory effects.
+
+    '
+  sources:
+  - id: james2008
+    authors: James GA, Swogger E, Wolcott R, Pulcini ED, Secor P, Sestrich J, et al.
+    year: 2008
+    title: Biofilms in chronic wounds
+    journal: Wound Repair Regen 16(1):37-44
+    doi: 10.1111/j.1524-475X.2007.00321.x
+    notes: '60% of chronic wounds contain biofilms vs 6% of acute wounds. Supports biofilm_enabled and biofilm_seed_delay
+      parameters.
+
+      '
+  - id: bjarnsholt2008
+    authors: Bjarnsholt T, Kirketerp-Moller K, Jensen PO, Madsen KG, Phipps R, Krogfelt K, et al.
+    year: 2008
+    title: 'Why chronic wounds will not heal: a novel hypothesis'
+    journal: Wound Repair Regen 16(1):2-10
+    doi: 10.1111/j.1524-475X.2007.00283.x
+    notes: 'Biofilm presence drives persistent inflammation via PAMPs; impairs neutrophil phagocytosis and macrophage function.
+      Supports biofilm_inflammation_rate and biofilm_m1_block_threshold.
+
+      '
+  - id: robson1997
+    authors: Robson MC
+    year: 1997
+    title: 'Wound infection: a failure of wound healing caused by an imbalance of bacteria'
+    journal: Surg Clin North Am 77(3):637-650
+    doi: 10.1016/S0039-6109(05)70572-7
+    notes: 'Foundational paper establishing 10^5 CFU/g as the critical bacterial load threshold for wound infection. Host-bacteria
+      equilibrium model. Supports carrying_capacity normalization.
+
+      '
+  - id: gibson2018
+    authors: Gibson B, Wilson DJ, Feil E, Eyre-Walker A
+    year: 2018
+    title: The distribution of bacterial doubling times in the wild
+    journal: Proc R Soc B 285:20180789
+    doi: 10.1098/rspb.2018.0789
+    notes: 'Microbial community ecology and competitive growth dynamics in polymicrobial environments. Supports growth_rate
+      parameter.
+
+      '
+  - id: davis2008
+    authors: Davis SC, Ricotti C, Cazzaniga A, Welsh E, Eaglstein WH, Mertz PM
+    year: 2008
+    title: Microscopic and physiologic evidence for biofilm-associated wound colonization in vivo
+    journal: Wound Repair Regen 16(1):23-29
+    doi: 10.1111/j.1524-475X.2007.00303.x
+    notes: 'In vivo evidence of biofilm colonization timeline in wounds, demonstrating early bacterial attachment and maturation
+      phases. Supports seed_delay_h parameter.
+
+      '
+  - id: jesaitis2003
+    authors: Jesaitis AJ, Franklin MJ, Berber D, Tiber M, Seshu J, Vu C, et al.
+    year: 2003
+    title: 'Compromised host defense on Pseudomonas aeruginosa biofilms: characterization of neutrophil and biofilm interactions'
+    journal: J Immunol 171(8):4329-4339
+    doi: 10.4049/jimmunol.171.8.4329
+    notes: 'Neutrophils settle on biofilms but fail to clear them; biofilm matrix frustrates phagocytosis and oxidative burst.
+      Supports neutrophil_clearance parameter.
+
+      '
