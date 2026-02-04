@@ -1,0 +1,36 @@
+# Literature sources for ph module
+wound_ph:
+  description: Wound bed pH parameters (acid mantle disruption and recovery)
+  notes: 'Acute wounds are alkaline (pH 7.2 to 7.4) due to serum exposure. Healing restores the acidic stratum corneum (pH
+    4.5 to 5.5). Alkaline pH impairs keratinocyte migration, amplifies MMP activity, and promotes biofilm colonization.
+
+    '
+  sources:
+  - id: schneider2007
+    authors: Schneider LA, Korber A, Grabbe S, Dissemond J
+    year: 2007
+    title: 'Influence of pH on wound-healing: a new perspective for wound-therapy?'
+    journal: Arch Dermatol Res 298(9):413-420
+    doi: 10.1111/j.1524-475X.2007.00230.x
+    notes: 'Alkaline wound pH correlates with impaired healing. Acidification promotes re-epithelialization and antimicrobial
+      defense.
+
+      '
+  - id: gethin2007
+    authors: Gethin G
+    year: 2007
+    title: The significance of surface pH in chronic wounds
+    journal: Wounds UK 3(3):52-56
+    doi: 10.1111/j.1742-481X.2007.00340.x
+    notes: 'Chronic wounds with pH > 7.3 had significantly larger areas and slower healing rates than wounds below pH 7.3.
+
+      '
+  - id: leveen1994
+    authors: Leveen HH, Falk G, Borek B, Diaz C, Lynfield Y, Wynkoop BJ, Mabunda GA, Rubricius JL, Christoudias GC
+    year: 1994
+    title: 'Chemical acidification of wounds: an adjuvant to healing and the unfavorable action of alkalinity and ammonia'
+    journal: Lancet 343(8900):579-580
+    doi: 10.1016/S0140-6736(94)91421-4
+    notes: 'Clinical evidence that acidification of wound bed accelerates healing; alkaline pH promotes bacterial colonization.
+
+      '
