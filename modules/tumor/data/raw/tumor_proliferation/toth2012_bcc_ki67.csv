@@ -1,0 +1,11 @@
+source,Toth et al. 2012
+doi,10.2478/s11756-012-0035-8
+figure,Table 1 Ki-67 index by BCC subtype
+tumor_type,Basal cell carcinoma (all subtypes)
+notes,Immunohistochemical Ki-67 index in 56 BCCs. Mean 27.4% overall. Range 2-70%. Higher in aggressive subtypes.
+subtype,ki67_pct_mean,ki67_pct_range_lo,ki67_pct_range_hi
+nodular,21.7,2,45
+superficial,35.7,15,55
+infiltrative,38.1,20,70
+morpheaform,37.0,18,60
+all_bcc,27.4,2,70

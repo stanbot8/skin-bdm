@@ -1,0 +1,12 @@
+source,Fijalkowska et al. 2023
+doi,10.5114/ada.2023.124795
+figure,Meta-analysis pooled estimate
+tumor_type,Basal cell carcinoma (all subtypes)
+notes,Systematic review and meta-analysis of BCC linear growth rate. Pooled from 8 studies.
+month,growth_mm
+0,0
+1,0.71
+2,1.42
+3,2.13
+6,4.26
+12,8.52

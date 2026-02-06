@@ -1,0 +1,106 @@
+# Literature sources for tumor module
+tumor_growth_rate:
+  description: Linear growth rate of cutaneous BCC (diameter increase over months)
+  consensus: data/tumor_growth_rate.csv
+  raw_files:
+  - data/raw/tumor_growth/fijalkowska2023_bcc_growth_meta.csv
+  - data/raw/tumor_growth/sykes2020_superficial_bcc.csv
+  - data/raw/tumor_growth/kricker2014_community_bcc.csv
+  columns:
+  - month
+  - diameter_mm
+  units:
+    month: months
+    diameter_mm: millimeters
+  normalization: absolute (mm from initial ~4mm diameter)
+  notes: 'BCC mean linear growth rate 0.71 mm/month (Fijalkowska 2023 meta-analysis). Superficial BCC grows ~0.81 mm2/month
+    surface area (Sykes 2020). Starting diameter 4mm matches simulation tumor_diameter parameter.
+
+    '
+  sources:
+  - id: fijalkowska2023
+    authors: Fijalkowska M, Bonczar M, Jastrzebski I, Ostrowski P, Antoszewski B, Koziej M
+    year: 2023
+    title: 'Growth rate of basal cell carcinoma: a meta-analysis and systematic review'
+    journal: Postepy Dermatol Alergol 40(2):220-224
+    doi: 10.5114/ada.2023.124795
+  - id: sykes2020
+    authors: Sykes AJ, Weedon D, Raasch BA
+    year: 2020
+    title: Growth rate of clinically diagnosed superficial basal cell carcinoma and changes in dermoscopic features over time
+    journal: Australas J Dermatol 61(4):330-335
+    doi: 10.1111/ajd.13352
+  - id: kricker2014
+    authors: Kricker A, Armstrong BK, Hansen V, Watson A, Singh-Khaira G, Lecathelinais C, et al.
+    year: 2014
+    title: Basal cell carcinoma and squamous cell carcinoma growth rates and determinants of size in community patients
+    journal: J Am Acad Dermatol 70(5):880-887
+    doi: 10.1016/j.jaad.2013.11.009
+tumor_doubling_time:
+  description: Volume doubling time for cutaneous BCC and SCC
+  consensus: data/tumor_doubling_time.csv
+  raw_files:
+  - data/raw/tumor_doubling/al_qahtani2020_bcc_doubling.csv
+  - data/raw/tumor_doubling/tejera2023_skin_cancer_tdt.csv
+  columns:
+  - tumor_type
+  - doubling_time_days
+  units:
+    doubling_time_days: days
+  normalization: absolute (days per volume doubling)
+  notes: 'BCC volume doubling time ~148 days mean (Khoo 2019). SCC doubling times much shorter: 16-35 days for aggressive
+    cases (Tejera 2023). Simulation doubling time depends on tumor_cycle_factor and tumor_growth_rate.
+
+    '
+  sources:
+  - id: khoo2019
+    authors: Khoo ABS, Goon PKY, Sudhoff H, Goon PKC
+    year: 2019
+    title: Comparative analyses of tumour volume doubling times for periocular and non-periocular head and neck basal cell
+      carcinomas
+    journal: Acta Derm Venereol 99(13):1266-1269
+    doi: 10.2340/00015555-3325
+  - id: tejera2023
+    authors: Tejera-Vaquerizo A, Canueto J, Nagore E, et al.
+    year: 2023
+    title: 'Tumor doubling time in skin cancer: can it be estimated and is it useful?'
+    journal: Actas Dermosifiliogr 114(4):T313-T321
+    doi: 10.1016/j.ad.2022.10.034
+tumor_proliferation_index:
+  description: Ki-67 proliferation index for cutaneous BCC and SCC by subtype/grade
+  consensus: data/tumor_proliferation_index.csv
+  raw_files:
+  - data/raw/tumor_proliferation/toth2012_bcc_ki67.csv
+  - data/raw/tumor_proliferation/alferraly2019_scc_ki67.csv
+  - data/raw/tumor_proliferation/alsader1996_bcc_scc_indices.csv
+  columns:
+  - tumor_type
+  - ki67_pct
+  units:
+    ki67_pct: percent of cells Ki-67 positive
+  normalization: absolute (percentage)
+  notes: 'Ki-67 marks cells in S/G2/M phases. BCC mean 27.4% (Toth 2012), range 2-70%. SCC higher: 22-68% depending on grade
+    (Kurnia 2020). Simulation equivalent: fraction of tumor cells in S+G2+M phases.
+
+    '
+  sources:
+  - id: toth2012
+    authors: Toth DP, Bognar G, Gurbity-Palfi T, Vizkeleti L, Dobozy A, Kemeny L
+    year: 2012
+    title: Immunohistochemical evaluation of proliferative activity (Ki-67 index) in different histological types of cutaneous
+      basal cell carcinoma
+    journal: Biologia 67(3):610-616
+    doi: 10.2478/s11756-012-0035-8
+  - id: alferraly2019
+    authors: Alferraly IT, Munir D, Putra IB, Sembiring RJ
+    year: 2019
+    title: Correlation of Ki-67 expression as tumor cell proliferation activity marker with cutaneous squamous cell carcinoma
+      grading
+    journal: Open Access Maced J Med Sci 7(20):3384-3386
+    doi: 10.3889/oamjms.2019.428
+  - id: alsader1996
+    authors: al-Sader MH, Doyle E, Kay EW, Bennett M, Walsh CB, Curran B, Leader M
+    year: 1996
+    title: Proliferation indexes - a comparison between cutaneous basal and squamous cell carcinomas
+    journal: J Clin Pathol 49(7):549-551
+    doi: 10.1136/jcp.49.7.549

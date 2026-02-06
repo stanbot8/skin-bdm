@@ -1,0 +1,10 @@
+source,Tejera-Vaquerizo et al. 2023
+doi,10.1016/j.ad.2022.10.034
+figure,Table 1 tumor doubling times from clinical measurements
+tumor_type,Mixed skin cancers (BCC and SCC)
+notes,Retrospective calculation of tumor doubling time from patient-recalled initial size and measured size at diagnosis. SCC doubling times much shorter than BCC.
+case,type,initial_mm,final_mm,interval_days,doubling_time_days
+1,SCC,5,27,84,16.1
+2,SCC,3,20,133,34.9
+3,BCC,3,12,365,91.2
+4,BCC,5,15,730,182.5

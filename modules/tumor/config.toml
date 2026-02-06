@@ -1,0 +1,19 @@
+# Module: tumor -- basal cell carcinoma neoplastic growth
+[skin.tumor]
+enabled = false                # master switch
+seed_time_h = 0                # hours to seed tumor (0 = frame 0)
+seed_x = -15.0                 # cluster center X (outside wound radius=12)
+seed_y = -15.0                 # cluster center Y (outside wound radius=12)
+seed_z = 2.0                  # cluster center Z (basal layer)
+seed_count = 50                # initial cluster size (needs mass to survive stochastic early phase)
+diameter = 4.0                 # cell diameter
+cycle_factor = 3.85            # S/G2/M phase scaling (calibration: Td~148d with apoptosis)
+g1_factor = 3.85               # G1 extension (calibration: Ki-67 controlled by contact inhibition)
+max_neighbors = 12             # contact inhibition threshold (sphere packing max ~12-14)
+ci_steepness = 2.0             # soft CI exponent (0 = hard threshold; 2 = quadratic YAP/TAZ)
+growth_rate = 5                # volume growth rate (same as normal)
+max_cells = 5000               # carrying capacity safety net (0 = unlimited)
+handoff_delay_h = 500           # long dormancy before field conversion
+stratum_value = 10.0           # stratum field value for tumor tissue on handoff
+apoptosis_rate = 0.0003        # per-step; net growth calibrated for Td~148d with G0 drain
+o2_threshold = 0.05            # BCC hypoxia tolerance: HIF-1alpha upregulation (Gruber et al. 2004)
