@@ -1,0 +1,12 @@
+# Module: hemostasis -- fibrin clot (provisional wound matrix)
+# Sources: Clark 1996 (doi:10.1007/978-1-4615-1795-5),
+#          Laurens et al. 2006 (doi:10.1111/j.1538-7836.2006.01826.x)
+[skin.hemostasis]
+enabled = false                       # master switch (wound preset enables at runtime)
+diffusion = 0.0                       # immobile structural ECM
+decay = 0.0003                        # slow turnover (t1/2 ~230h ~ 10 days)
+wound_seed = 1.0                      # initial clot density in wound
+tgfb_coupling = 0.0005                # fibrin -> TGF-beta production rate
+fibronectin_coupling = 0.001          # fibrin -> fibronectin co-deposition
+mmp_degradation = 0.002               # MMP-mediated fibrinolysis rate
+migration_boost = 0.3                 # keratinocyte migration speed boost from fibrin

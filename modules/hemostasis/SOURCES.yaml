@@ -1,0 +1,24 @@
+# Literature sources for hemostasis module
+hemostasis_fibrin_clot:
+  description: Fibrin clot formation and provisional wound matrix parameters
+  sources:
+  - id: clark1996
+    authors: Clark RAF (ed.)
+    year: 1996
+    title: The Molecular and Cellular Biology of Wound Repair
+    journal: Plenum Press, New York (2nd ed.)
+    doi: 10.1007/978-1-4615-1795-5
+    notes: 'Comprehensive reference for wound hemostasis, fibrin clot formation, and provisional matrix composition. Supports
+      hemostasis module parameters including wound_seed, decay, and migration_boost.
+
+      '
+  - id: laurens2006
+    authors: Laurens N, Koolwijk P, de Maat MP
+    year: 2006
+    title: Fibrin structure and wound healing
+    journal: J Thromb Haemost 4(5):932-939
+    doi: 10.1111/j.1538-7836.2006.01826.x
+    notes: 'Fibrin matrix serves as scaffold for cell migration and reservoir for growth factors. Supports tgfb_coupling and
+      fibronectin_coupling parameters in hemostasis module.
+
+      '
