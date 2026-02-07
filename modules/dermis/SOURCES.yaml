@@ -1,0 +1,25 @@
+# Literature sources for dermis module
+dermis_parameters:
+  description: 'Literature sources for dermal tissue integrity, ECM structure, and wound bed remodeling kinetics.
+
+    '
+  sources:
+  - id: clark1996
+    authors: Clark RAF
+    year: 1996
+    title: The Molecular and Cellular Biology of Wound Repair
+    journal: Springer
+    doi: 10.1007/978-1-4899-0185-9
+    notes: 'Comprehensive reference for dermal wound healing phases. Papillary dermis (loose connective tissue) recovers faster
+      than reticular dermis (dense collagen). Supports per-layer rate factors.
+
+      '
+  - id: schultz2009
+    authors: Schultz GS, Wysocki A
+    year: 2009
+    title: Interactions between extracellular matrix and growth factors in wound healing
+    journal: Wound Repair Regen 17(2):153-162
+    doi: 10.1111/j.1524-475X.2009.00466.x
+    notes: 'MMP-mediated ECM degradation in chronic wounds. Supports dermis_mmp_degradation parameter.
+
+      '
