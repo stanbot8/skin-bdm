@@ -1,0 +1,23 @@
+# Module: glucose -- interstitial glucose and diabetic hyperglycemia
+# Sources: Brem et al. 2007 (doi:10.1172/JCI32169),
+#          Brownlee 2005 (doi:10.2337/diabetes.54.6.1615),
+#          Bierhaus et al. 2005 (doi:10.1007/s00109-005-0688-7)
+[skin.glucose]
+enabled = true
+diffusion = 0.005                     # interstitial glucose diffusion
+decay = 0.0002                        # baseline cellular uptake (reduced in wound)
+basal_conc = 1.0                      # normalized healthy fasting level
+perfusion_supply = 0.008              # perfusion-driven glucose delivery
+age_rate = 0.0001                     # AGE formation rate from glucose
+age_inflammation = 0.002              # AGE/RAGE-driven inflammation per step
+bacterial_consumption = 0.01          # biofilm glucose consumption rate
+prolif_threshold = 0.05              # min glucose for full proliferation
+
+# AGE (Advanced Glycation End-product) dynamics
+# Brownlee 2005 (doi:10.2337/diabetes.54.6.1615)
+# Chavakis et al. 2004 (doi:10.1016/j.micinf.2004.08.004)
+age_decay = 0.0001                    # AGE turnover (very slow; cross-linked proteins persist months)
+age_rage_inflammation = 0.001         # RAGE-mediated NF-kB inflammation per AGE unit per step
+age_collagen_crosslink = 0.15         # fraction of MMP collagen degradation blocked by local AGE (0 to 1)
+age_m1_prolongation = 0.05            # AGE-RAGE extends effective M1 duration (multiplier on AGE level)
+age_fibroblast_migration_impair = 0.1 # glycated ECM reduces fibroblast migration speed

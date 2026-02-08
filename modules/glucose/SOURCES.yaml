@@ -1,0 +1,60 @@
+# Literature sources for glucose module
+wound_glucose:
+  description: Interstitial glucose dynamics, AGE formation, and diabetic hyperglycemia effects
+  sources:
+  - id: brem2007
+    authors: Brem H, Tomic-Canic M
+    year: 2007
+    title: Cellular and molecular basis of wound healing in diabetes
+    journal: J Clin Invest 117(5):1219-1222
+    doi: 10.1172/JCI32169
+    notes: 'Diabetic wound glucose levels elevated 1.5 to 2x normal due to hyperglycemia. Supports glucose_basal_conc=1.8
+      in diabetic profile.
+
+      '
+  - id: brownlee2005
+    authors: Brownlee M
+    year: 2005
+    title: The pathobiology of diabetic complications
+    journal: Diabetes 54(6):1615-1625
+    doi: 10.2337/diabetes.54.6.1615
+    notes: 'Unifying mechanism of diabetic complications via mitochondrial superoxide overproduction driven by
+      hyperglycemia and AGE accumulation. Supports age_rate parameter.
+
+      '
+  - id: bierhaus2005
+    authors: Bierhaus A, Humpert PM, Morcos M, Wendt T, Chavakis T, Arnold B, Stern DM, Nawroth PP
+    year: 2005
+    title: Understanding RAGE, the receptor for advanced glycation end products
+    journal: J Mol Med 83(11):876-886
+    doi: 10.1007/s00109-005-0688-7
+    notes: >
+      AGE/RAGE axis activates NF-kB, sustaining pro-inflammatory cytokine production.
+      Supports age_rage_inflammation parameter for mechanistic diabetic inflammation.
+  - id: chavakis2004
+    authors: Chavakis T, Bierhaus A, Nawroth PP
+    year: 2004
+    title: RAGE (receptor for advanced glycation end products), a central player in the inflammatory response
+    journal: Microbes Infect 6(13):1219-1225
+    doi: 10.1016/j.micinf.2004.08.004
+    notes: >
+      RAGE signaling prolongs M1 macrophage polarization via sustained NF-kB
+      activation. Supports age_m1_prolongation parameter.
+  - id: mott1997
+    authors: Mott JD, Khalifah RG, Nagase H, Shield CF, Hudson JK, Hudson BG
+    year: 1997
+    title: Nonenzymatic glycation of type IV collagen and matrix metalloproteinase susceptibility
+    journal: Kidney Int 52(5):1302-1312
+    doi: 10.1038/ki.1997.455
+    notes: >
+      AGE cross-linking of collagen renders it resistant to MMP-mediated
+      degradation. Supports age_collagen_crosslink parameter.
+  - id: rana2007
+    authors: Rana NK, Bhargava MM, Li X
+    year: 2007
+    title: Early glycation of critical fibronectin domains inhibits human dermal fibroblast migration
+    journal: Proc IEEE NEBC 2007:221-222
+    doi: 10.1109/nebc.2007.4413357
+    notes: >
+      Glycated fibronectin impairs dermal fibroblast migration by disrupting
+      integrin binding sites. Supports age_fibroblast_migration_impair parameter.
