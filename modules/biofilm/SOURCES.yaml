@@ -1,0 +1,37 @@
+# Literature sources for biofilm module
+biofilm_parameters:
+  description: 'Literature sources validating biofilm module parameters. Citations support colonization prevalence, growth
+    dynamics, and inflammatory effects.
+
+    '
+  sources:
+  - id: james2008
+    authors: James GA, Swogger E, Wolcott R, Pulcini ED, Secor P, Sestrich J, et al.
+    year: 2008
+    title: Biofilms in chronic wounds
+    journal: Wound Repair Regen 16(1):37-44
+    doi: 10.1111/j.1524-475X.2007.00321.x
+    notes: '60% of chronic wounds contain biofilms vs 6% of acute wounds. Supports biofilm_enabled and biofilm_seed_delay
+      parameters.
+
+      '
+  - id: bjarnsholt2008
+    authors: Bjarnsholt T, Kirketerp-Moller K, Jensen PO, Madsen KG, Phipps R, Krogfelt K, et al.
+    year: 2008
+    title: 'Why chronic wounds will not heal: a novel hypothesis'
+    journal: Wound Repair Regen 16(1):2-10
+    doi: 10.1111/j.1524-475X.2007.00283.x
+    notes: 'Biofilm presence drives persistent inflammation via PAMPs; impairs neutrophil phagocytosis and macrophage function.
+      Supports biofilm_inflammation_rate and biofilm_m1_block_threshold.
+
+      '
+  - id: robson1997
+    authors: Robson MC
+    year: 1997
+    title: 'Wound infection: a failure of wound healing caused by an imbalance of bacteria'
+    journal: Surg Clin North Am 77(3):637-650
+    doi: 10.1016/S0039-6109(05)70572-7
+    notes: 'Foundational paper establishing 10^5 CFU/g as the critical bacterial load threshold for wound infection. Host-bacteria
+      equilibrium model. Supports carrying_capacity normalization.
+
+      '

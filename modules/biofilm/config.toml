@@ -1,0 +1,13 @@
+# Module: biofilm -- bacterial biofilm colonization dynamics
+# Sources: James et al. 2008 (doi:10.1111/j.1524-475X.2007.00321.x),
+#          Bjarnsholt et al. 2008 (doi:10.1111/j.1524-475X.2007.00283.x)
+[skin.biofilm]
+enabled = false                       # master switch
+growth_rate = 0.005                   # per-step logistic growth (~2h doubling; Gibson et al. 2018, doi:10.1098/rspb.2018.0789)
+carrying_capacity = 1.0               # normalized max density (>10^5 CFU/g critical; Robson 1997, doi:10.1016/S0039-6109(05)70572-7)
+seed_delay_h = 48                     # hours post-wound (Davis et al. 2008, doi:10.1111/j.1524-475X.2007.00303.x)
+seed_amount = 0.01                    # initial inoculum density
+neutrophil_clearance = 0.003          # clearance per neutrophil per step (Jesaitis et al. 2003, doi:10.4049/jimmunol.171.8.4329)
+macrophage_clearance = 0.001          # clearance per macrophage per step
+m1_block_threshold = 0.3              # biofilm level that blocks M1->M2 (Bjarnsholt et al. 2008)
+inflammation_rate = 0.001             # PAMP-driven inflammation per biofilm density per step
