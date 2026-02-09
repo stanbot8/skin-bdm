@@ -1,0 +1,13 @@
+# Module: lactate -- hypoxia-driven metabolite and angiogenesis signal
+# Sources: Hunt et al. 2007 (doi:10.1089/ars.2007.1674),
+#          Constant et al. 2000 (doi:10.1046/j.1524-475x.2000.00353.x),
+#          Trabold et al. 2003 (doi:10.1046/j.1524-475x.2003.11621.x)
+[skin.lactate]
+enabled = true
+diffusion = 0.01                      # tissue diffusion
+decay = 0.02                          # systemic clearance (keeps equilibrium ~0.15)
+production_rate = 0.003               # anaerobic glycolysis rate under hypoxia
+o2_threshold = 0.3                    # O2 below this triggers lactate production
+vegf_boost = 0.03                     # HIF-1a stabilization boost to VEGF
+collagen_boost = 0.03                 # collagen synthesis enhancement factor
+perfusion_clearance = 0.005           # perfusion-driven lactate washout

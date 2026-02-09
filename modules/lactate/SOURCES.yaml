@@ -1,0 +1,34 @@
+# Literature sources for lactate module
+wound_lactate:
+  description: Wound lactate as hypoxia metabolite, HIF-1a stabilizer, and collagen synthesis signal
+  sources:
+  - id: hunt2007
+    authors: Hunt TK, Avissar N, Herber F, Hopf HW
+    year: 2007
+    title: 'Aerobically derived lactate stimulates revascularization and tissue repair via redox mechanisms'
+    journal: Antioxid Redox Signal 9(8):1115-1124
+    doi: 10.1089/ars.2007.1674
+    notes: 'Lactate at wound concentrations (4 to 12 mM) stimulates collagen synthesis approximately 2x in fibroblasts,
+      independent of hypoxia. Supports collagen_boost=0.2.
+
+      '
+  - id: constant2000
+    authors: Constant JS, Feng JJ, Zabel DD, Yuan H, Suh DY, Scheuenstuhl H, Hunt TK, Hussain MZ
+    year: 2000
+    title: Lactate elicits vascular endothelial growth factor from macrophages
+    journal: Exp Dermatol 9(6):517-522
+    doi: 10.1046/j.1524-475x.2000.00353.x
+    notes: 'Lactate stabilizes HIF-1a under normoxia, boosting VEGF production in wound fibroblasts and macrophages.
+      Supports vegf_boost=0.3.
+
+      '
+  - id: trabold2003
+    authors: Trabold O, Wagner S, Wicke C, Scheuenstuhl H, Hussain MZ, Rosen N, Serber A, Hunt TK
+    year: 2003
+    title: Lactate and oxygen constitute a fundamental regulatory mechanism in wound healing
+    journal: Wound Repair Regen 11(6):504-509
+    doi: 10.1046/j.1524-475x.2003.11621.x
+    notes: 'Wound lactate levels reach 4 to 12 mM, 3 to 5x higher than arterial blood. Lactate accumulates where
+      O2 is low (anaerobic glycolysis). Supports o2_threshold=0.3.
+
+      '
