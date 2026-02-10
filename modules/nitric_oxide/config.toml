@@ -1,0 +1,13 @@
+# Module: nitric_oxide -- immune-derived vasodilator and antimicrobial
+# Sources: Schaffer et al. 1996 (doi:10.1006/jsre.1996.0254),
+#          Witte & Barbul 2002 (doi:10.1016/s0002-9610(02)00815-2),
+#          Luo & Chen 2005 (doi:10.1111/j.1745-7254.2005.00058.x)
+[skin.nitric_oxide]
+enabled = true
+diffusion = 0.02                      # fast diffusion (small gaseous molecule)
+decay = 0.05                          # rapid autoxidation (half-life ~seconds in tissue)
+m1_production = 0.01                  # iNOS-derived NO from M1 macrophages
+neutrophil_production = 0.005         # iNOS-derived NO from neutrophils
+vasodilation_factor = 0.05            # perfusion boost per unit NO
+antimicrobial_factor = 0.3            # biofilm growth suppression per unit NO
+collagen_suppression = 0.03           # anti-fibrotic collagen deposition reduction

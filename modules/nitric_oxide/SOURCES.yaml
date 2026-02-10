@@ -1,0 +1,44 @@
+# Literature sources for nitric_oxide module
+wound_nitric_oxide:
+  description: iNOS-derived nitric oxide as immune antimicrobial effector and vasodilator in wound healing
+  sources:
+  - id: schaffer1996
+    authors: Schaffer MR, Tantry U, Gross SS, Wasserkrug HL, Barbul A
+    year: 1996
+    title: Nitric oxide regulates wound healing
+    journal: J Surg Res 63(1):237-240
+    doi: 10.1006/jsre.1996.0254
+    notes: 'NO donors reduce collagen synthesis and scar formation in wound models. Supports
+      collagen_suppression=0.15 for anti-fibrotic effect.
+
+      '
+  - id: witte2002
+    authors: Witte MB, Barbul A
+    year: 2002
+    title: Role of nitric oxide in wound repair
+    journal: Am J Surg 183(4):406-412
+    doi: 10.1016/s0002-9610(02)00815-2
+    notes: 'iNOS produces sustained NO from M1 macrophages and neutrophils during inflammation phase.
+      Supports m1_production=0.01 and neutrophil_production=0.005.
+
+      '
+  - id: luo2005
+    authors: Luo JD, Chen AF
+    year: 2005
+    title: Nitric oxide, a newly discovered function on wound healing
+    journal: Acta Pharmacol Sin 26(3):259-264
+    doi: 10.1111/j.1745-7254.2005.00058.x
+    notes: 'NO activates soluble guanylyl cyclase in vascular smooth muscle, mediating vasodilation
+      and improved perfusion. Supports vasodilation_factor=0.3.
+
+      '
+  - id: witte2002b
+    authors: Witte MB, Kiyama T, Barbul A
+    year: 2002
+    title: Nitric oxide enhances experimental wound healing in diabetes
+    journal: Br J Surg 89(12):1594-1601
+    doi: 10.1046/j.1365-2168.2002.02263.x
+    notes: 'iNOS expression reduced approximately 40% in diabetic wounds, contributing to impaired healing.
+      Supports diabetic_no_factor=0.6.
+
+      '
