@@ -1,0 +1,34 @@
+# Literature sources for temperature module
+wound_temperature:
+  description: Wound bed thermal regulation and Q10 effects on cell and enzyme kinetics
+  sources:
+  - id: fierheller2010
+    authors: Fierheller M, Sibbald RG
+    year: 2010
+    title: A clinical investigation into the relationship between increased periwound skin temperature and local wound infection in patients with chronic leg ulcers
+    journal: Adv Skin Wound Care 23(8):369-379
+    doi: 10.1097/01.asw.0000383197.28192.98
+    notes: 'Infrared thermography of chronic wounds shows wound surface 2 to 4C below core body temperature.
+      Supports wound_surface=0.892 (33C/37C normalized).
+
+      '
+  - id: mcguiness2004
+    authors: McGuiness W, Vella E, Harrison D
+    year: 2004
+    title: Influence of dressing changes on wound temperature
+    journal: J Wound Care 13(9):383-385
+    doi: 10.12968/jowc.2004.13.9.26702
+    notes: 'Wound temperature recovery correlates with vascular supply restoration. Supports perfusion_warming_rate
+      parameter.
+
+      '
+  - id: mundim2020
+    authors: Mundim KC, Baraldi S, Machado HG, Vieira FMC
+    year: 2020
+    title: 'Temperature coefficient (Q10) and its applications in biological systems: Beyond the Arrhenius theory'
+    journal: Ecol Model 431:109127
+    doi: 10.1016/j.ecolmodel.2020.109127
+    notes: 'Q10 of approximately 2 is the standard temperature coefficient for enzyme kinetics and
+      cell biological processes. Supports q10_migration=2.0.
+
+      '

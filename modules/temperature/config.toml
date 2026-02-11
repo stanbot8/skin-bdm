@@ -1,0 +1,14 @@
+# Module: temperature -- wound bed thermal regulation
+# Sources: Fierheller & Sibbald 2010 (doi:10.1097/01.asw.0000383197.28192.98),
+#          McGuiness et al. 2004 (doi:10.12968/jowc.2004.13.9.26702),
+#          Mundim et al. 2020 (doi:10.1016/j.ecolmodel.2020.109127)
+[skin.temperature]
+enabled = true
+diffusion = 0.001                     # thermal conduction through tissue
+decay = 0.0                          # no intrinsic decay (energy conservation)
+wound_surface = 0.946                 # ~35C/37C normalized wound surface temp
+perfusion_warming_rate = 0.025        # perfusion-driven rewarming per step
+surface_cooling_rate = 0.002          # evaporative/radiative heat loss at exposed surface
+q10_migration = 1.0                   # disabled for normal wound (active in biofilm/diabetic)
+q10_mmp = 1.3                        # MMP enzymatic activity Q10
+q10_biofilm = 2.0                     # bacterial growth Q10 (Ratkowsky et al. 1982)
