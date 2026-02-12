@@ -1,0 +1,27 @@
+# Module: senescence -- cellular senescence and SASP in wound healing
+# Demaria et al. 2014 (doi:10.1016/j.devcel.2014.11.012): senescent cells
+# essential for optimal wound healing via PDGF-AA secretion, but excessive
+# accumulation in diabetic/aged wounds impairs healing.
+# Campisi 2007 (doi:10.1038/nrm2233): SASP drives chronic inflammation.
+[skin.senescence]
+enabled = true
+diffusion = 0.0                       # immobile; represents local senescent cell density
+decay = 0.00005                       # very slow clearance (immune-mediated; days to weeks)
+
+# Senescence accumulation
+wound_accumulation_rate = 0.00002     # basal rate from wound-induced DNA damage (gamma-H2AX)
+inflammation_accumulation = 0.00005   # inflammation-driven senescence (ROS/NF-kB; Campisi 2007)
+age_accumulation = 0.0002             # AGE-driven senescence in diabetic mode (glycative stress)
+
+# SASP (Senescence-Associated Secretory Phenotype)
+# Coppe et al. 2008 (doi:10.1371/journal.pbio.0060301): SASP includes
+# IL-6, IL-8, MMP-3, MMP-9, TGF-beta, VEGF
+sasp_inflammation_rate = 0.00002      # SASP-driven pro-inflammatory cytokine output (subtle)
+sasp_mmp_rate = 0.000005              # SASP MMP-3/MMP-9 production (deposited as pro-MMP)
+sasp_tgfb_rate = 0.000005             # SASP TGF-beta1 (fibrotic component)
+
+# Senolytic clearance (treatment parameter)
+senolytic_clearance_rate = 0.0         # ABT-263/dasatinib+quercetin clearance rate (0 = no treatment)
+
+# Diabetic acceleration
+diabetic_accumulation_factor = 2.5    # hyperglycemia accelerates senescence (Brownlee 2005)

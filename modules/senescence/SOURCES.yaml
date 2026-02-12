@@ -1,0 +1,64 @@
+senescence:
+  description: Cellular senescence, SASP, and senolytic clearance in wound healing
+  sources:
+  - id: demaria2014
+    authors: Demaria M, Ohtani N, Youssef SA, Rodier F, Toussaint W, Mitchell JR, Laberge RM, Vijg J, Van Steeg H, Dolle ME, Hoeijmakers JH, de Bruin A, Hara E, Campisi J
+    year: 2014
+    title: An Essential Role for Senescent Cells in Optimal Wound Healing through Secretion of PDGF-AA
+    journal: Dev Cell 31(6):722-733
+    doi: 10.1016/j.devcel.2014.11.012
+    notes: >
+      Senescent fibroblasts and endothelial cells accumulate transiently during
+      wound healing and secrete PDGF-AA promoting myofibroblast differentiation.
+      Elimination impairs wound closure in young mice. Supports wound_accumulation_rate
+      and establishes transient senescence as beneficial.
+  - id: campisi2007
+    authors: Campisi J, d'Adda di Fagagna F
+    year: 2007
+    title: "Cellular senescence: when bad things happen to good cells"
+    journal: Nat Rev Mol Cell Biol 8(9):729-740
+    doi: 10.1038/nrm2233
+    notes: >
+      Comprehensive review of senescence mechanisms including p53/p21 and p16/Rb
+      pathways. DNA damage, oncogene activation, and oxidative stress as triggers.
+      Supports inflammation_accumulation parameter.
+  - id: coppe2008
+    authors: Coppe JP, Patil CK, Rodier F, Sun Y, Munoz DP, Goldstein J, Nelson PS, Desprez PY, Campisi J
+    year: 2008
+    title: Senescence-Associated Secretory Phenotypes Reveal Cell-Nonautonomous Functions of Oncogenic RAS and the p53 Tumor Suppressor
+    journal: PLoS Biol 6(12):e301
+    doi: 10.1371/journal.pbio.0060301
+    notes: >
+      First comprehensive characterization of SASP components including IL-6,
+      IL-8, GRO-alpha, MMP-1, MMP-3, MMP-10, TIMP-2, IGFBP, PAI-1.
+      Supports sasp_inflammation_rate and sasp_mmp_rate parameters.
+  - id: he2017
+    authors: He S, Sharpless NE
+    year: 2017
+    title: Senescence in Health and Disease
+    journal: Cell 169(6):1000-1011
+    doi: 10.1016/j.cell.2017.05.015
+    notes: >
+      Review of senescence as a double-edged sword in tissue repair. Transient
+      senescence promotes healing; persistent accumulation drives pathology
+      in diabetes and aging. Supports diabetic_accumulation_factor.
+  - id: xu2018
+    authors: Xu M, Pirtskhalava T, Farr JN, Weigand BM, Palmer AK, Weivoda MM, Inman CL, Ogrodnik MB, Hachfeld CM, Fraser DG, Onken JL, Johnson KO, Verzosa GC, Langhi LGP, Weigl M, Giorgadze N, LeBrasseur NK, Miller JD, Jurk D, Singh RJ, Allison DB, Ejima K, Hubbard GB, Ikeno Y, Cubro H, Garovic VD, Hou X, Weroha SJ, Robbins PD, Niedernhofer LJ, Khosla S, Tchkonia T, Kirkland JL
+    year: 2018
+    title: Senolytics improve physical function and increase lifespan in old age
+    journal: Nat Med 24(8):1246-1256
+    doi: 10.1038/s41591-018-0092-9
+    notes: >
+      Senolytic drugs (dasatinib+quercetin) selectively clear senescent cells,
+      improving physical function. Supports senolytic_clearance_rate parameter
+      for treatment scenarios.
+  - id: krizhanovsky2008
+    authors: Krizhanovsky V, Yon M, Dickins RA, Hearn S, Simon J, Miething C, Yee H, Zender L, Lowe SW
+    year: 2008
+    title: Senescence of Activated Stellate Cells Limits Liver Fibrosis
+    journal: Cell 134(4):657-667
+    doi: 10.1016/j.cell.2008.06.049
+    notes: >
+      Senescence limits fibrosis by arresting activated stellate cells
+      (myofibroblast equivalents). Relevant to wound scar limitation via
+      myofibroblast senescence.
