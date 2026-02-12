@@ -1,0 +1,17 @@
+# Module: tumor -- basal cell carcinoma neoplastic growth
+[skin.tumor]
+enabled = false                # master switch
+seed_time_h = 0                # hours to seed tumor (0 = frame 0)
+seed_x = 15.0                 # cluster center X
+seed_y = 15.0                 # cluster center Y
+seed_z = 2.0                  # cluster center Z (basal layer)
+seed_count = 5                 # initial cluster size
+diameter = 4.0                 # cell diameter
+cycle_factor = 3.3             # BCC cycle ~56h; Td=148d (Khoo et al. 2019, doi:10.2340/00015555-3325), Ki67=27.4% (Toth et al. 2012)
+max_neighbors = 12             # contact inhibition threshold (sphere packing max ~12-14)
+ci_steepness = 2.0             # soft CI exponent (0 = hard threshold; 2 = quadratic YAP/TAZ)
+growth_rate = 5                # volume growth rate (same as normal)
+max_cells = 5000               # carrying capacity safety net (0 = unlimited)
+handoff_delay_h = 20           # G0 hours before converting to field (0 = disabled)
+stratum_value = 10.0           # stratum field value for tumor tissue on handoff
+apoptosis_rate = 0.00047       # per-step; cell loss 0.112/day (Khoo et al. 2019, doi:10.2340/00015555-3325)

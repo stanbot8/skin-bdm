@@ -1,0 +1,11 @@
+source,Sykes et al. 2020
+doi,10.1111/ajd.13352
+figure,Table 1 median surface area growth
+tumor_type,Superficial basal cell carcinoma
+notes,Prospective study of 42 sBCCs monitored with dermoscopy. Median initial area 41.9mm2. Growth rate 0.81mm2/month surface area.
+month,diameter_mm
+0,7.3
+3,8.0
+6,8.7
+9,9.4
+12,10.1

@@ -1,0 +1,8 @@
+source,al-Sader et al. 1996
+doi,10.1136/jcp.49.7.549
+figure,Table 1 proliferation indices BCC vs SCC
+tumor_type,BCC and SCC comparison
+notes,Proliferation indices (Ki-67 and PCNA) in cutaneous BCC (n=31) and SCC (n=26). Ki-67 higher in SCC.
+tumor,ki67_pct_mean,pcna_pct_mean
+bcc,19.4,42.8
+scc,34.2,56.3

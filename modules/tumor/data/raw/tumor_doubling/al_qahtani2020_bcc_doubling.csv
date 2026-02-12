@@ -1,0 +1,9 @@
+source,Khoo et al. 2019
+doi,10.2340/00015555-3325
+figure,Table II volume doubling time
+tumor_type,Basal cell carcinoma (head and neck)
+notes,Retrospective study of 54 BCCs. Volume doubling time from serial imaging. Mean 147.6 days (SD 37.8). Periocular BCCs faster (120.7 days) vs non-periocular (176.2 days).
+subtype,doubling_time_days
+all_bcc,147.6
+periocular,120.7
+non_periocular,176.2

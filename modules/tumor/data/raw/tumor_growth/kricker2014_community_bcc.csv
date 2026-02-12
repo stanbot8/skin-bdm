@@ -1,0 +1,12 @@
+source,Kricker et al. 2014
+doi,10.1016/j.jaad.2013.11.009
+figure,Table 2 size ratios relative to 0-2 month baseline
+tumor_type,Basal cell carcinoma (community patients)
+notes,Retrospective study of 1174 BCCs. Mean size at 0-2 months baseline. Size ratio increases with time since first noticed.
+month,size_ratio
+1,1.00
+5,1.10
+12,1.22
+24,1.37
+48,1.55
+96,1.81

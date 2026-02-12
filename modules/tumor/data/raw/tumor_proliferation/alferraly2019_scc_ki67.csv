@@ -1,0 +1,9 @@
+source,Alferraly et al. 2019
+doi,10.3889/oamjms.2019.428
+figure,Table 2 Ki-67 index by SCC grade
+tumor_type,Cutaneous squamous cell carcinoma
+notes,Ki-67 proliferation index in 40 cSCCs by histological grade. Higher grade = higher proliferation.
+grade,ki67_pct_mean
+well_differentiated,22.5
+moderately_differentiated,42.8
+poorly_differentiated,68.3
