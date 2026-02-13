@@ -1,0 +1,24 @@
+# Module: neuropathy -- cutaneous nerve density and neuropeptide signaling
+# Suvas 2017 (doi:10.4049/jimmunol.1601751): substance P promotes wound healing
+# Boulton et al. 2005 (doi:10.2337/diacare.28.4.956): diabetic neuropathy review
+[skin.neuropathy]
+enabled = true
+diffusion = 0.01                      # nerve fiber regrowth is slow diffusion (neurite extension)
+decay = 0.0                           # nerve density is structural (no spontaneous loss)
+
+# Baseline nerve density
+basal_nerve_density = 1.0             # normalized healthy dermal innervation
+# Nerve regeneration
+regeneration_rate = 0.0002            # nerve regrowth rate (Schwann cell-guided; slow, weeks to months)
+regeneration_vegf_boost = 0.5         # VEGF promotes nerve sprouting (neurovascular coupling)
+regeneration_tgfb_inhibit = 0.3       # TGF-beta inhibits neurite extension (scar barrier)
+
+# Neuropeptide effects on wound healing
+# Substance P (SP) and CGRP are released from sensory nerve terminals
+substance_p_inflammation = 0.0001     # SP promotes neurogenic inflammation (mast cell degranulation)
+substance_p_proliferation = 0.15      # SP boosts keratinocyte proliferation (Suvas 2017)
+cgrp_vasodilation = 0.01              # CGRP-mediated vasodilation boosts local perfusion
+
+# Diabetic neuropathy
+diabetic_nerve_factor = 0.3           # residual nerve density in diabetic tissue (70% loss)
+diabetic_regeneration_factor = 0.4    # impaired Schwann cell function and neurotrophic support
