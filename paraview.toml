@@ -1,0 +1,64 @@
+# ParaView state file settings -- applied by scripts/viz/patch_pvsm.py
+# after BioDynaMo generates the .pvsm file.
+
+# ---- Colormaps ----
+# First colormap section is the default; others match by name substring.
+# Each cN = [value, R, G, B] entry defines one color stop.
+
+[colormap.skin_strata]
+color_space = "Step"
+c0 = [0.0, 0.831, 0.400, 0.392]   # Basale
+c1 = [1.0, 0.910, 0.590, 0.478]   # Spinosum
+c2 = [2.0, 0.941, 0.788, 0.529]   # Granulosum
+c3 = [3.0, 0.961, 0.902, 0.827]   # Corneum
+c4 = [4.0, 0.710, 0.325, 0.294]   # Dermis
+c5 = [5.0, 0.750, 0.480, 0.470]   # Scar Basale
+c6 = [6.0, 0.820, 0.620, 0.550]   # Scar Spinosum
+c7 = [7.0, 0.870, 0.750, 0.620]   # Scar Granulosum
+c8 = [8.0, 0.900, 0.850, 0.780]   # Scar Corneum
+c9 = [10.0, 0.929, 0.780, 0.686]  # Papillary dermis (light peach)
+c10 = [11.0, 0.729, 0.506, 0.400] # Reticular dermis (warm brown)
+c11 = [12.0, 0.529, 0.353, 0.294] # Hypodermis (deep brown)
+
+[colormap.immune_types]
+color_space = "Step"
+c0 = [0.0, 1.000, 1.000, 1.000]   # Neutrophil (white)
+c1 = [1.0, 1.000, 0.850, 0.200]   # Macrophage (yellow)
+
+[colormap.tumor_types]
+color_space = "Step"
+c0 = [0.0, 0.200, 0.800, 0.200]   # Tumor
+
+# ---- Agent solid colors ----
+# Applied when agents have no data array (uniform color).
+# RGB values 0.0-1.0. Name matches agent type substring.
+
+[agent_color.Keratinocyte]
+color = [0.925, 0.706, 0.545]   # warm peach (Fitzpatrick II)
+
+# ---- Glyph resolution ----
+# Lower = faster rendering, higher = smoother spheres
+# Range: 4 (fast) to 20 (smooth)
+
+[glyph]
+theta_resolution = 8
+phi_resolution = 8
+
+# ---- Diffusion grid rendering ----
+# Representation: Volume, Surface, Outline, Slice
+
+[rendering]
+diffusion_representation = "Volume"
+
+# ---- Opacity ----
+
+[opacity]
+points = [[0.0, 0.04], [1.0, 0.35], [2.0, 0.4], [3.0, 0.45], [4.0, 0.55], [5.0, 0.65], [7.0, 0.75], [8.0, 0.8], [10.0, 0.85], [12.0, 0.9]]
+
+# ---- Camera ----
+
+[camera]
+position = [-40.0, -80.0, 40.0]
+focal_point = [15.0, 15.0, 15.0]
+view_up = [0, 0, 1]
+view_angle = 40
