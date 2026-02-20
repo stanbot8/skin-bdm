@@ -1,0 +1,9 @@
+# Treatment: advanced moisture dressings (hydrogel/foam) -- optimal wound hydration
+# Literature: Winter 1962, Junker et al. 2013
+# Mechanism: maintain moist wound environment, reduce TEWL, absorb excess exudate
+[skin]
+water_recovery_rate = 0.06         # 0.02 -> 0.06: hydrogel donates moisture
+water_surface_loss_rate = 0.005    # 0.03 -> 0.005: dressing barrier reduces TEWL 83%
+
+[skin.inflammation]
+decay = 0.004                      # exudate absorption removes inflammatory mediators

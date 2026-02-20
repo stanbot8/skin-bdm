@@ -1,0 +1,9 @@
+# Treatment: becaplermin (PDGF-BB) -- recombinant growth factor
+# Literature: FDA-approved for DFU; Steed 2006, Smiell 1998
+# Mechanism: potent fibroblast mitogen and chemoattractant, macrophage recruitment
+[skin.diabetic]
+fibroblast_activation_factor = 1.0 # 2.0 -> 1.0: PDGF-BB chemotaxis activates fibroblasts rapidly
+migration_factor = 0.75            # 0.45 -> 0.75: modest boost via growth factor signaling
+
+[skin.fibroblast]
+density_factor = 1.8               # 1.0 -> 1.8: 1.9x mitogenic effect on fibroblasts

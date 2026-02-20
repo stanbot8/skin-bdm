@@ -1,0 +1,15 @@
+# Preset: tumor_wound -- tumor at t=0, wound at step 2000 (~8 days)
+
+[skin]
+duration_days = 75
+
+[skin.wound]
+enabled = true
+trigger_h = 200
+
+[skin.tumor]
+enabled = true
+seed_time_h = 0
+
+[skin.fibroblast]
+enabled = true

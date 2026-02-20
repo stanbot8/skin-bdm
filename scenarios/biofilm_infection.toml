@@ -1,0 +1,45 @@
+# Scenario: Biofilm-Infected Diabetic Wound
+#
+# Enable the biofilm module (disabled by default) in diabetic wounds.
+# Tests early vs late infection and whether doxycycline helps.
+
+[scenario]
+name = "Biofilm Infection"
+description = "Impact of biofilm colonization on diabetic wound healing"
+profile = "diabetic"
+preset = "diabetic_wound"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Control: diabetic wound, no biofilm
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "No Biofilm (control)"
+
+# ---------------------------------------------------------------------------
+# Early biofilm: default 48h seeding
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Early Biofilm (48h)"
+[scenario.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 48
+
+# ---------------------------------------------------------------------------
+# Late biofilm: nosocomial infection at 7 days
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Late Biofilm (168h)"
+[scenario.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 168
+
+# ---------------------------------------------------------------------------
+# Biofilm + doxycycline: can MMP inhibition help despite infection?
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Biofilm + Doxycycline"
+treatments = ["doxycycline"]
+[scenario.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 48

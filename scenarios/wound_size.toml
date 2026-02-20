@@ -1,0 +1,44 @@
+# Scenario: Wound Size Scaling
+#
+# Vary wound radius to test size-dependent healing dynamics.
+# Tests whether healing scales linearly with wound area
+# or if there is a critical size threshold.
+
+[scenario]
+name = "Wound Size"
+description = "Effect of wound radius on diabetic healing kinetics"
+profile = "diabetic"
+preset = "diabetic_wound"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Small ulcer: 1.5mm radius
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Small (1.5mm)"
+[scenario.configs.overrides]
+"skin.wound.radius" = 15.0
+
+# ---------------------------------------------------------------------------
+# Medium: default 3mm radius
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Medium (3.0mm)"
+[scenario.configs.overrides]
+"skin.wound.radius" = 30.0
+
+# ---------------------------------------------------------------------------
+# Large: 5mm radius
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Large (5.0mm)"
+[scenario.configs.overrides]
+"skin.wound.radius" = 50.0
+
+# ---------------------------------------------------------------------------
+# Very large: 8mm radius (extensive tissue loss)
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Very Large (8.0mm)"
+[scenario.configs.overrides]
+"skin.wound.radius" = 80.0

@@ -1,0 +1,122 @@
+# Scenario: Diabetic Severity Spectrum
+#
+# Scale all diabetic impairment factors proportionally from mild (0.5x)
+# through moderate (1.0x, default) to severe (1.5x).
+# Tests whether a tipping point exists between healable and chronic.
+
+[scenario]
+name = "Diabetic Severity Spectrum"
+description = "Sweep diabetic impairment intensity from mild to severe"
+profile = "diabetic"
+preset = "diabetic_wound"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# 0.5x: all diabetic factors halved toward normal
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Mild (0.5x)"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 2.0          # 1.0 + 0.5*(3.0-1.0)
+"skin.diabetic.resolution_factor" = 0.65           # 1.0 - 0.5*(1.0-0.3)
+"skin.diabetic.efferocytosis_factor" = 0.75        # 1.0 - 0.5*(1.0-0.5)
+"skin.diabetic.neutrophil_factor" = 1.4            # 1.0 + 0.5*(1.8-1.0)
+"skin.diabetic.neutrophil_lifespan_factor" = 2.0   # 1.0 + 0.5*(3.0-1.0)
+"skin.diabetic.neutrophil_apoptosis_factor" = 0.65 # 1.0 - 0.5*(1.0-0.3)
+"skin.diabetic.neutrophil_waves_factor" = 1.5      # 1.0 + 0.5*(2.0-1.0)
+"skin.diabetic.neutrophil_window_factor" = 2.0     # 1.0 + 0.5*(3.0-1.0)
+"skin.diabetic.macrophage_taper_factor" = 0.65     # 1.0 - 0.5*(1.0-0.3)
+"skin.diabetic.prolif_factor" = 0.75               # 1.0 - 0.5*(1.0-0.5)
+"skin.diabetic.migration_factor" = 0.725           # 1.0 - 0.5*(1.0-0.45)
+"skin.diabetic.fibroblast_activation_factor" = 1.5 # 1.0 + 0.5*(2.0-1.0)
+"skin.diabetic.collagen_factor" = 0.7              # 1.0 - 0.5*(1.0-0.4)
+"skin.diabetic.fibroblast_lifespan_factor" = 0.8   # 1.0 - 0.5*(1.0-0.6)
+"skin.diabetic.baseline_inflammation" = 0.0005
+"skin.diabetic.inflammation_sensitivity" = 1.5     # 1.0 + 0.5*(2.0-1.0)
+"skin.diabetic.mmp_factor" = 2.0                   # 1.0 + 0.5*(3.0-1.0)
+"skin.diabetic.timp_factor" = 0.75                  # 1.0 - 0.5*(1.0-0.5)
+"skin.diabetic.vegf_factor" = 0.7                  # 1.0 - 0.5*(1.0-0.4)
+
+# ---------------------------------------------------------------------------
+# 0.75x: three quarters diabetic
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Moderate-Mild (0.75x)"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 2.5
+"skin.diabetic.resolution_factor" = 0.475
+"skin.diabetic.efferocytosis_factor" = 0.625
+"skin.diabetic.neutrophil_factor" = 1.6
+"skin.diabetic.neutrophil_lifespan_factor" = 2.5
+"skin.diabetic.neutrophil_apoptosis_factor" = 0.475
+"skin.diabetic.neutrophil_waves_factor" = 1.75
+"skin.diabetic.neutrophil_window_factor" = 2.5
+"skin.diabetic.macrophage_taper_factor" = 0.475
+"skin.diabetic.prolif_factor" = 0.625
+"skin.diabetic.migration_factor" = 0.5875
+"skin.diabetic.fibroblast_activation_factor" = 1.75
+"skin.diabetic.collagen_factor" = 0.55
+"skin.diabetic.fibroblast_lifespan_factor" = 0.7
+"skin.diabetic.baseline_inflammation" = 0.00075
+"skin.diabetic.inflammation_sensitivity" = 1.75
+"skin.diabetic.mmp_factor" = 2.5
+"skin.diabetic.timp_factor" = 0.625
+"skin.diabetic.vegf_factor" = 0.55
+
+# ---------------------------------------------------------------------------
+# 1.0x: default diabetic (no overrides needed)
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Default (1.0x)"
+
+# ---------------------------------------------------------------------------
+# 1.25x: more severe
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Severe (1.25x)"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 3.5
+"skin.diabetic.resolution_factor" = 0.125
+"skin.diabetic.efferocytosis_factor" = 0.375
+"skin.diabetic.neutrophil_factor" = 2.0
+"skin.diabetic.neutrophil_lifespan_factor" = 3.5
+"skin.diabetic.neutrophil_apoptosis_factor" = 0.125
+"skin.diabetic.neutrophil_waves_factor" = 2.25
+"skin.diabetic.neutrophil_window_factor" = 3.5
+"skin.diabetic.macrophage_taper_factor" = 0.125
+"skin.diabetic.prolif_factor" = 0.375
+"skin.diabetic.migration_factor" = 0.3125
+"skin.diabetic.fibroblast_activation_factor" = 2.25
+"skin.diabetic.collagen_factor" = 0.25
+"skin.diabetic.fibroblast_lifespan_factor" = 0.5
+"skin.diabetic.baseline_inflammation" = 0.00125
+"skin.diabetic.inflammation_sensitivity" = 2.25
+"skin.diabetic.mmp_factor" = 3.5
+"skin.diabetic.timp_factor" = 0.375
+"skin.diabetic.vegf_factor" = 0.25
+
+# ---------------------------------------------------------------------------
+# 1.5x: very severe
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Very Severe (1.5x)"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 4.0
+"skin.diabetic.resolution_factor" = 0.0
+"skin.diabetic.efferocytosis_factor" = 0.25
+"skin.diabetic.neutrophil_factor" = 2.2
+"skin.diabetic.neutrophil_lifespan_factor" = 4.0
+"skin.diabetic.neutrophil_apoptosis_factor" = 0.0
+"skin.diabetic.neutrophil_waves_factor" = 2.5
+"skin.diabetic.neutrophil_window_factor" = 4.0
+"skin.diabetic.macrophage_taper_factor" = 0.0
+"skin.diabetic.prolif_factor" = 0.25
+"skin.diabetic.migration_factor" = 0.175
+"skin.diabetic.fibroblast_activation_factor" = 2.5
+"skin.diabetic.collagen_factor" = 0.1
+"skin.diabetic.fibroblast_lifespan_factor" = 0.4
+"skin.diabetic.baseline_inflammation" = 0.0015
+"skin.diabetic.inflammation_sensitivity" = 2.5
+"skin.diabetic.mmp_factor" = 4.0
+"skin.diabetic.timp_factor" = 0.25
+"skin.diabetic.vegf_factor" = 0.1

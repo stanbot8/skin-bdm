@@ -1,0 +1,156 @@
+# Custom skin profile template
+#
+# Copy this file, rename it (e.g. profiles/neonatal.toml), and uncomment
+# the keys you want to override. Only include keys that differ from the
+# defaults in bdm.core.toml and modules/*/config.toml.
+#
+# Usage:
+#   ./run.sh --skin=neonatal --preset=wound
+#
+# Profiles define tissue phenotype (what kind of skin). They are sparse
+# overlays: any key you omit keeps its default value. Use the appropriate
+# section headers so apply_preset.py matches the right section.
+#
+# See profiles/aged.toml and profiles/diabetic.toml for real examples.
+# See docs/guide.md for the full profile/preset system.
+
+# ===========================================================================
+# Core tissue biology ([skin] section in bdm.core.toml)
+# ===========================================================================
+[skin]
+
+# --- Cell cycle (Dover & Potten 1988) ---
+# g1_duration = 7.0              # hours in G1
+# s_duration = 6.0               # hours in S
+# g2_duration = 3.0              # hours in G2
+# m_duration = 1.0               # hours in M (total cycle ~17h)
+
+# --- Stem cell pool ---
+# stem_fraction = 0.50           # fraction of basal cells that are stem
+# p_asymmetric = 0.7             # asymmetric division probability
+# max_ta_divisions = 4           # TA divisions before differentiation
+
+# --- Cell mechanics ---
+# growth_rate = 5                # volume growth rate
+# max_neighbors = 14             # contact inhibition threshold
+# division_diameter = 5.0        # diameter at division
+# lateral_scatter = 0.3          # lateral offset at division
+# repulsion_coeff = 5.0          # Hertz repulsion strength
+# attraction_coeff = 0.0         # adhesion strength
+
+# --- Stratum geometry ---
+# volume_z_spinous = 3.0         # z threshold for spinosum
+# volume_z_granular = 18.0       # z threshold for granulosum
+# volume_z_cornified = 25.0      # z threshold for corneum (epidermis thickness)
+
+# --- Calcium gradient (Bikle et al. 2012) ---
+# calcium_basal = 0.05           # low Ca2+ in basale
+# calcium_peak = 1.5             # peak Ca2+ in granulosum
+# calcium_midpoint_z = 18.0      # sigmoid midpoint
+# calcium_steepness = 2.0        # sigmoid steepness
+
+# --- Oxygen ---
+# oxygen_basal_conc = 1.0        # dermal O2 level
+# oxygen_decay_length = 8.0      # O2 gradient decay length
+
+# --- KGF growth factor ---
+# kgf_basal_conc = 2.0           # paracrine KGF from fibroblasts
+# kgf_half_maximal = 0.5         # Michaelis-Menten half-max
+# kgf_max_boost = 1.0            # max proliferation boost from KGF
+
+# --- Water / tissue moisture ---
+# water_recovery_rate = 0.05     # serum hydration rate
+# water_surface_loss_rate = 0.03 # transepidermal water loss
+# water_migration_threshold = 0.3
+# water_prolif_threshold = 0.4
+
+# --- Cell migration ---
+# migration_speed = 2.0          # keratinocyte migration force magnitude
+
+# ===========================================================================
+# Perfusion ([skin.perfusion] in modules/perfusion/config.toml)
+# ===========================================================================
+[skin.perfusion]
+# basal = 1.0                    # baseline vascular density (1.0 = healthy)
+# angio_rate = 0.005             # angiogenesis recovery speed
+# angio_delay_h = 24             # hours before sprouting begins
+
+# ===========================================================================
+# Dermis integrity ([skin.dermis] in modules/dermis/config.toml)
+# ===========================================================================
+[skin.dermis]
+# papillary_density = 1.0        # healthy papillary dermis
+# reticular_density = 0.8        # healthy reticular dermis
+# hypodermis_density = 0.5       # healthy hypodermis
+
+# ===========================================================================
+# Immune kinetics ([skin.immune] in modules/immune/config.toml)
+# ===========================================================================
+[skin.immune]
+# neutrophil_lifespan_h = 48     # hours hard ceiling
+# neutrophil_apoptosis_rate = 0.0029
+# macrophage_m1_duration_h = 48  # hours in M1 pro-inflammatory phase
+# m1_transition_threshold = 0.003
+# cytokine_rate = 0.004          # inflammation per immune cell per step
+# resolution_rate = 0.020        # inflammation consumed by M2 per step
+# migration_speed = 1.5          # immune cell migration force
+
+# ===========================================================================
+# Inflammation ([skin.inflammation] in modules/inflammation/config.toml)
+# ===========================================================================
+[skin.inflammation]
+# diffusion = 0.30               # cytokine lateral spread
+# decay = 0.010                  # background clearance rate
+# migration_threshold = 0.1      # Hill K for migration suppression
+# prolif_threshold = 0.15        # Hill K for proliferation suppression
+
+# ===========================================================================
+# Fibroblast / ECM ([skin.fibroblast] in modules/fibroblast/config.toml)
+# ===========================================================================
+[skin.fibroblast]
+# activation_threshold = 0.005   # TGF-beta for quiescent to activated
+# myofibroblast_threshold = 0.015
+# collagen_deposition_rate = 0.0005
+# tgfb_diffusion = 0.03
+# tgfb_decay = 0.008
+# migration_speed = 1.0          # fibroblast migration force
+
+# ===========================================================================
+# Hemostasis / fibrin clot ([skin.hemostasis] in modules/hemostasis/config.toml)
+# ===========================================================================
+[skin.hemostasis]
+# enabled = false                 # activate fibrin provisional matrix
+# decay = 0.0003                  # fibrin degradation rate (t1/2 ~10 days)
+# wound_seed = 1.0                # initial fibrin concentration in wound
+# tgfb_coupling = 0.0005          # fibrin -> TGF-beta release
+# fibronectin_coupling = 0.001    # fibrin -> fibronectin scaffolding
+# mmp_degradation = 0.002         # MMP-mediated fibrinolysis
+# migration_boost = 0.3           # keratinocyte migration boost on fibrin
+
+# ===========================================================================
+# Diabetic modifiers ([skin.diabetic] in modules/diabetic/config.toml)
+# Uncomment the mode line plus any factors you want to customize.
+# All factors default to 1.0 (no impairment) when mode = false.
+# ===========================================================================
+# [skin.diabetic]
+# mode = true
+# m1_duration_factor = 3.0       # M1 phase duration multiplier
+# resolution_factor = 0.3        # M2 resolution rate multiplier
+# efferocytosis_factor = 0.5     # efferocytosis efficiency multiplier
+# neutrophil_factor = 1.8        # neutrophil recruitment multiplier
+# neutrophil_lifespan_factor = 3.0
+# neutrophil_apoptosis_factor = 0.3
+# neutrophil_waves_factor = 2.0
+# neutrophil_window_factor = 3.0
+# macrophage_taper_factor = 0.3
+# prolif_factor = 0.5            # keratinocyte proliferation multiplier
+# migration_factor = 0.6         # keratinocyte migration multiplier
+# fibroblast_activation_factor = 2.0
+# collagen_factor = 0.4          # collagen deposition multiplier
+# fibroblast_lifespan_factor = 0.6
+# baseline_inflammation = 0.001  # chronic AGE/RAGE inflammation
+# inflammation_sensitivity = 2.0
+# mmp_factor = 3.0               # MMP overexpression
+# timp_factor = 0.5              # TIMP downregulation
+# biofilm_clearance_factor = 0.5
+# vegf_factor = 0.4              # HIF-1alpha impairment

@@ -1,0 +1,14 @@
+# Profile: aged -- elderly skin (slower turnover, thinner corneum, reduced perfusion)
+# Sources: Gilchrest 1983 (doi:10.1111/1523-1747.ep12541084),
+#          Farage et al. 2013 (doi:10.1089/wound.2011.0356),
+#          Sgonc & Gruber 2013 (doi:10.1159/000342344)
+
+[skin]
+g1_duration = 9.0              # slower cell cycle (~20h total vs ~17h; Gilchrest 1983)
+s_duration = 8.0               # slower S phase (Gilchrest 1983)
+stem_fraction = 0.30           # fewer active stem cells (Sgonc & Gruber 2013)
+volume_z_cornified = 20.0      # thinner stratum corneum (Farage et al. 2013)
+water_recovery_rate = 0.03     # slower serum hydration (Farage et al. 2013)
+
+[skin.perfusion]
+basal = 0.8                    # reduced dermal vasculature (Farage et al. 2013)

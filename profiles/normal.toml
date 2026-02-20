@@ -1,0 +1,63 @@
+# Profile: normal -- healthy adult skin (default biology)
+# Sources: Dover & Potten 1988 (doi:10.1242/jcs.89.3.359),
+#          Potten & Morris 1988 (doi:10.1242/jcs.1988.supplement_10.4),
+#          Bikle et al. 2012 (doi:10.1586/eem.12.34),
+#          Finch & Rubin 2004 (doi:10.1016/S0065-230X(04)91003-2)
+
+[skin]
+# Dermis
+oxygen_diffusion = 0.1
+oxygen_decay = 0.01
+oxygen_basal_conc = 1.0
+oxygen_decay_length = 8.0
+kgf_diffusion = 0
+kgf_decay = 0
+kgf_basal_conc = 2.0                # paracrine KGF from fibroblasts (Finch & Rubin 2004)
+kgf_half_maximal = 0.5
+kgf_max_boost = 1.0
+kgf_decay_length = 5.0
+water_diffusion = 1e-4
+water_decay = 0.002
+water_basal_conc = 1.0
+water_decay_length = 12.0
+water_recovery_rate = 0.05
+water_surface_loss_rate = 0.03
+water_migration_threshold = 0.3
+water_prolif_threshold = 0.4
+
+# Basale (cell cycle and mechanics; Dover & Potten 1988)
+g1_duration = 7.0                    # ~17h total cycle (Dover & Potten 1988)
+s_duration = 6.0
+g2_duration = 3.0
+m_duration = 1.0
+growth_rate = 5
+max_neighbors = 14
+lateral_scatter = 0.3
+max_ta_divisions = 4                 # 3-5 TA divisions before differentiation (Potten & Morris 1988)
+division_diameter = 5.0
+p_asymmetric = 0.7                   # stem cell asymmetric division bias (Potten & Morris 1988)
+stem_fraction = 0.50
+repulsion_coeff = 5.0
+attraction_coeff = 0.0
+
+# Epidermis (calcium gradient drives differentiation; Bikle et al. 2012)
+calcium_diffusion = 0
+calcium_decay = 0
+calcium_basal = 0.05                 # low Ca2+ in basal/spinous layers (Bikle et al. 2012)
+calcium_peak = 1.5                   # peak at stratum granulosum (Bikle et al. 2012)
+calcium_midpoint_z = 18.0
+calcium_steepness = 2.0
+ca_spinous_threshold = 0.1
+ca_granular_threshold = 0.5
+ca_cornified_threshold = 1.0
+spinous_threshold = 6.0
+volume_z_spinous = 3.0
+volume_z_granular = 18.0
+volume_z_cornified = 25.0
+
+[skin.perfusion]
+diffusion = 0.03
+decay = 0.0
+basal = 1.0
+angio_rate = 0.005
+angio_delay_h = 24

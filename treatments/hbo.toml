@@ -1,0 +1,11 @@
+# Treatment: hyperbaric oxygen therapy (HBO) -- restores tissue oxygenation
+# Literature: Catrina et al. 2004, Thangarajah et al. 2009
+# Mechanism: HBO corrects wound hypoxia, restores VEGF/HIF-1alpha cycling, supports collagen synthesis
+[skin.diabetic]
+vegf_factor = 1.0                  # 0.4 -> 1.0: HIF-1alpha cycling fully restored
+prolif_factor = 0.7                # 0.5 -> 0.7: O2 partially rescues keratinocyte proliferation
+collagen_factor = 0.7              # 0.4 -> 0.7: prolyl hydroxylase O2 substrate restored
+
+[skin.perfusion]
+basal = 0.85                       # 0.7 -> 0.85: improved microcirculation
+angio_rate = 0.008                 # 0.002 -> 0.008: HBO stimulates angiogenesis

@@ -1,0 +1,42 @@
+# Profile: aged_diabetic -- elderly patient with diabetes
+# Composite of aged.toml + diabetic.toml, taking the worse value where both
+# profiles modify the same parameter.
+#
+# Sources: Gilchrest 1983, Farage et al. 2013, Sgonc & Gruber 2013 (aged)
+#          plus all diabetic sources (see profiles/diabetic.toml)
+
+[skin]
+g1_duration = 9.0              # slower cell cycle (Gilchrest 1983, aged)
+s_duration = 8.0               # slower S phase (Gilchrest 1983, aged)
+stem_fraction = 0.30           # fewer active stem cells (Sgonc & Gruber 2013, aged)
+volume_z_cornified = 20.0      # thinner stratum corneum (Farage et al. 2013, aged)
+water_recovery_rate = 0.02     # worse of aged 0.03 vs diabetic 0.02 (Sakai et al. 2005)
+
+[skin.diabetic]
+mode = true
+m1_duration_factor = 3.0
+resolution_factor = 0.3
+efferocytosis_factor = 0.5
+neutrophil_factor = 1.8
+neutrophil_lifespan_factor = 3.0
+neutrophil_apoptosis_factor = 0.3
+neutrophil_waves_factor = 2.0
+neutrophil_window_factor = 3.0
+macrophage_taper_factor = 0.3
+prolif_factor = 0.5
+migration_factor = 0.45
+fibroblast_activation_factor = 2.0
+collagen_factor = 0.4
+fibroblast_lifespan_factor = 0.6
+baseline_inflammation = 0.001
+inflammation_sensitivity = 2.0
+migration_infl_K = 0.15
+prolif_infl_K = 0.20
+mmp_factor = 3.0
+timp_factor = 0.5
+biofilm_clearance_factor = 0.5
+vegf_factor = 0.4
+
+[skin.perfusion]
+basal = 0.7                    # worse of aged 0.8 vs diabetic 0.7 (Dinh & Veves 2005)
+angio_rate = 0.002             # diabetic impaired VEGF (Brem et al. 2006)

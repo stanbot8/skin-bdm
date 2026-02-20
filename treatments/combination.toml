@@ -1,0 +1,33 @@
+# Treatment: combination therapy -- anti-inflammatory + HBO + doxycycline + moisture
+# Rationale: targets all four key diabetic dysfunctions simultaneously:
+#   1. Immune (anti-TNF -> M1/M2 transition), 2. Vascular (HBO -> O2/VEGF),
+#   3. ECM (doxycycline -> MMP), 4. Moisture (dressing -> hydration)
+[skin.diabetic]
+m1_duration_factor = 1.5           # anti-inflammatory
+resolution_factor = 0.7            # anti-inflammatory
+baseline_inflammation = 0.0002     # anti-inflammatory
+inflammation_sensitivity = 1.2     # anti-inflammatory
+prolif_factor = 0.75               # HBO + anti-inflammatory average
+migration_factor = 0.8             # anti-inflammatory
+collagen_factor = 0.7              # HBO
+vegf_factor = 1.0                  # HBO
+mmp_factor = 1.5                   # doxycycline
+timp_factor = 0.8                  # doxycycline
+
+[skin.perfusion]
+basal = 0.85                       # HBO
+angio_rate = 0.008                 # HBO
+
+[skin]
+water_recovery_rate = 0.06         # moisture dressing
+water_surface_loss_rate = 0.005    # moisture dressing
+
+[skin.immune]
+cytokine_rate = 0.001              # anti-inflammatory
+
+[skin.mmp]
+collagen_degradation = 0.0025      # doxycycline
+fibronectin_degradation = 0.001    # doxycycline
+
+[skin.inflammation]
+decay = 0.005                      # moisture + anti-inflammatory

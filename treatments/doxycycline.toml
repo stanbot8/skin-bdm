@@ -1,0 +1,14 @@
+# Treatment: doxycycline (sub-antimicrobial MMP inhibitor)
+# Literature: Lobmann et al. 2002, Smith et al. 1999
+# Mechanism: Zn2+/Ca2+ chelation inhibits MMP activity, preserves collagen/fibronectin
+[skin.diabetic]
+mmp_factor = 1.5                   # 3.0 -> 1.5: 50% reduction of excess MMP
+timp_factor = 0.8                  # 0.5 -> 0.8: TIMP balance partially restored
+
+[skin.mmp]
+collagen_degradation = 0.0025      # halved: direct consequence of MMP activity reduction
+fibronectin_degradation = 0.001    # halved: preserved provisional matrix scaffold
+decay = 0.02                       # increased: chelation-based MMP inactivation
+
+[skin.immune]
+cytokine_rate = 0.00115            # 0.0015 -> 0.00115: TACE inhibition reduces TNF-alpha ~25%

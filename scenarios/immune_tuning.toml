@@ -1,0 +1,48 @@
+# Scenario: Immune Axis Sensitivity Analysis
+#
+# Keep all diabetic params at default, then restore ONE immune axis
+# to normal values. Identifies which immune dysfunction is the
+# dominant barrier to diabetic wound healing.
+
+[scenario]
+name = "Immune Tuning"
+description = "Which immune axis matters most for diabetic non-healing?"
+profile = "diabetic"
+preset = "diabetic_wound"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Control: full diabetic (no overrides)
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "All Diabetic (control)"
+
+# ---------------------------------------------------------------------------
+# Fix M1 duration only: restore M1 phase to normal
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Normal M1 Duration"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 1.0
+
+# ---------------------------------------------------------------------------
+# Fix neutrophil axis: restore all neutrophil params to normal
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Normal Neutrophils"
+[scenario.configs.overrides]
+"skin.diabetic.neutrophil_factor" = 1.0
+"skin.diabetic.neutrophil_lifespan_factor" = 1.0
+"skin.diabetic.neutrophil_apoptosis_factor" = 1.0
+"skin.diabetic.neutrophil_waves_factor" = 1.0
+"skin.diabetic.neutrophil_window_factor" = 1.0
+
+# ---------------------------------------------------------------------------
+# Fix macrophage resolution: restore M2 transition and efferocytosis
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Normal Macrophage Resolution"
+[scenario.configs.overrides]
+"skin.diabetic.resolution_factor" = 1.0
+"skin.diabetic.efferocytosis_factor" = 1.0
+"skin.diabetic.macrophage_taper_factor" = 1.0

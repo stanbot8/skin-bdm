@@ -1,0 +1,43 @@
+# Scenario: Aged + Diabetic Comorbidity
+#
+# Compare wound healing across four phenotypes:
+# normal, aged, diabetic, and aged+diabetic.
+# Tests whether impairments compound additively or synergistically.
+
+[scenario]
+name = "Aged Diabetic Comorbidity"
+description = "Interaction between aging and diabetes in wound healing"
+preset = "diabetic_wound"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Normal wound (healthy adult)
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Normal"
+profile = "normal"
+preset = "wound"
+
+# ---------------------------------------------------------------------------
+# Aged wound
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Aged"
+profile = "aged"
+preset = "wound"
+
+# ---------------------------------------------------------------------------
+# Diabetic wound
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Diabetic"
+profile = "diabetic"
+preset = "diabetic_wound"
+
+# ---------------------------------------------------------------------------
+# Aged + diabetic (composite profile)
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Aged + Diabetic"
+profile = "aged_diabetic"
+preset = "diabetic_wound"

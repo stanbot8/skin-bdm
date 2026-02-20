@@ -1,0 +1,85 @@
+# Scenario: Chronic Non-Healing Wound (90 days)
+#
+# Extend simulation to 90 days with severe diabetic parameters and biofilm
+# to model truly chronic wounds. Tests whether combination therapy can
+# rescue wounds that have been non-healing for weeks.
+
+[scenario]
+name = "Chronic Wound"
+description = "90-day chronic diabetic wound with biofilm and rescue therapy"
+profile = "diabetic"
+preset = "diabetic_wound"
+runs_per_config = 3
+
+# ---------------------------------------------------------------------------
+# Severe diabetic, 90 days, no biofilm
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Severe 90d"
+[scenario.configs.overrides]
+"skin.duration_days" = 90
+"skin.diabetic.m1_duration_factor" = 4.0
+"skin.diabetic.resolution_factor" = 0.1
+"skin.diabetic.prolif_factor" = 0.3
+"skin.diabetic.migration_factor" = 0.2
+"skin.diabetic.collagen_factor" = 0.2
+"skin.diabetic.mmp_factor" = 4.0
+"skin.diabetic.vegf_factor" = 0.2
+
+# ---------------------------------------------------------------------------
+# Severe + biofilm, 90 days
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Severe + Biofilm 90d"
+[scenario.configs.overrides]
+"skin.duration_days" = 90
+"skin.diabetic.m1_duration_factor" = 4.0
+"skin.diabetic.resolution_factor" = 0.1
+"skin.diabetic.prolif_factor" = 0.3
+"skin.diabetic.migration_factor" = 0.2
+"skin.diabetic.collagen_factor" = 0.2
+"skin.diabetic.mmp_factor" = 4.0
+"skin.diabetic.vegf_factor" = 0.2
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 48
+
+# ---------------------------------------------------------------------------
+# Severe + biofilm + combination therapy from day 0 (100% effect)
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Severe + Biofilm + Combo"
+treatments = ["combination"]
+[scenario.configs.overrides]
+"skin.duration_days" = 90
+"skin.diabetic.m1_duration_factor" = 4.0
+"skin.diabetic.resolution_factor" = 0.1
+"skin.diabetic.prolif_factor" = 0.3
+"skin.diabetic.migration_factor" = 0.2
+"skin.diabetic.collagen_factor" = 0.2
+"skin.diabetic.mmp_factor" = 4.0
+"skin.diabetic.vegf_factor" = 0.2
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 48
+
+# ---------------------------------------------------------------------------
+# Severe + biofilm + late combo (50% effect, approximating day-28 start)
+# ---------------------------------------------------------------------------
+[[scenario.configs]]
+label = "Severe + Biofilm + Late Combo"
+[scenario.configs.overrides]
+"skin.duration_days" = 90
+# Severe diabetic base
+"skin.diabetic.m1_duration_factor" = 3.25       # 4.0 toward 1.5 at 50%
+"skin.diabetic.resolution_factor" = 0.4         # 0.1 toward 0.7 at 50%
+"skin.diabetic.prolif_factor" = 0.525           # 0.3 toward 0.75 at 50%
+"skin.diabetic.migration_factor" = 0.5          # 0.2 toward 0.8 at 50%
+"skin.diabetic.collagen_factor" = 0.45          # 0.2 toward 0.7 at 50%
+"skin.diabetic.mmp_factor" = 2.75              # 4.0 toward 1.5 at 50%
+"skin.diabetic.vegf_factor" = 0.6              # 0.2 toward 1.0 at 50%
+"skin.diabetic.baseline_inflammation" = 0.0006
+"skin.diabetic.inflammation_sensitivity" = 1.6
+"skin.diabetic.timp_factor" = 0.65
+"skin.perfusion.basal" = 0.775
+"skin.perfusion.angio_rate" = 0.005
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 48

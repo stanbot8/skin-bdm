@@ -1,0 +1,20 @@
+# Treatment: negative pressure wound therapy (NPWT/VAC) -- multi-modal mechanical
+# Literature: Morykwas et al. 1997, Armstrong & Lavery 2005
+# Mechanism: sub-atmospheric pressure (125 mmHg) increases blood flow 4x, granulation +60%
+[skin.diabetic]
+prolif_factor = 0.65               # 0.5 -> 0.65: microdeformation stimulates mitosis
+migration_factor = 0.8             # 0.45 -> 0.8: macrodeformation assists wound edge
+collagen_factor = 0.6              # 0.4 -> 0.6: granulation tissue +60%
+
+[skin.perfusion]
+angio_rate = 0.006                 # 0.002 -> 0.006: mechanical strain stimulates angiogenesis
+
+[skin]
+water_recovery_rate = 0.05         # 0.02 -> 0.05: sealed dressing improves fluid balance
+water_surface_loss_rate = 0.01     # reduces TEWL via sealed dressing
+
+[skin.wound]
+inward_bias = 0.5                  # 0.3 -> 0.5: macrodeformation pulls edges inward
+
+[skin.inflammation]
+decay = 0.005                      # exudate removal clears inflammatory mediators faster

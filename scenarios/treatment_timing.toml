@@ -1,0 +1,147 @@
+# Scenario: Treatment Timing Windows
+#
+# For the top 3 treatments (combination, msc, hbo), approximate delayed
+# onset by linearly interpolating parameters between untreated diabetic
+# and full treatment values.
+#
+# Day 0  = 100% treatment effect (full healing window: 42/42 days)
+# Day 7  = 83% effect (35/42 remaining)
+# Day 14 = 67% effect (28/42 remaining)
+# Day 21 = 50% effect (21/42 remaining)
+
+[scenario]
+name = "Treatment Timing"
+description = "How delaying treatment affects diabetic wound outcomes"
+profile = "diabetic"
+preset = "diabetic_wound"
+runs_per_config = 5
+
+# ===== COMBINATION THERAPY =====
+
+[[scenario.configs]]
+label = "Combo Day 0 (100%)"
+treatments = ["combination"]
+
+[[scenario.configs]]
+label = "Combo Day 7 (83%)"
+# 83% of full combo effect: interpolate each param 83% toward treatment
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 1.75       # 3.0 - 0.83*(3.0-1.5)
+"skin.diabetic.resolution_factor" = 0.632       # 0.3 + 0.83*(0.7-0.3)
+"skin.diabetic.baseline_inflammation" = 0.000336 # 0.001 - 0.83*(0.001-0.0002)
+"skin.diabetic.inflammation_sensitivity" = 1.336 # 2.0 - 0.83*(2.0-1.2)
+"skin.diabetic.prolif_factor" = 0.7075          # 0.5 + 0.83*(0.75-0.5)
+"skin.diabetic.migration_factor" = 0.7405       # 0.45 + 0.83*(0.8-0.45)
+"skin.diabetic.collagen_factor" = 0.649         # 0.4 + 0.83*(0.7-0.4)
+"skin.diabetic.vegf_factor" = 0.898             # 0.4 + 0.83*(1.0-0.4)
+"skin.diabetic.mmp_factor" = 1.755              # 3.0 - 0.83*(3.0-1.5)
+"skin.diabetic.timp_factor" = 0.749             # 0.5 + 0.83*(0.8-0.5)
+"skin.perfusion.basal" = 0.8245                 # 0.7 + 0.83*(0.85-0.7)
+"skin.perfusion.angio_rate" = 0.006980          # 0.002 + 0.83*(0.008-0.002)
+
+[[scenario.configs]]
+label = "Combo Day 14 (67%)"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 1.995
+"skin.diabetic.resolution_factor" = 0.568
+"skin.diabetic.baseline_inflammation" = 0.000464
+"skin.diabetic.inflammation_sensitivity" = 1.464
+"skin.diabetic.prolif_factor" = 0.6675
+"skin.diabetic.migration_factor" = 0.6845
+"skin.diabetic.collagen_factor" = 0.601
+"skin.diabetic.vegf_factor" = 0.802
+"skin.diabetic.mmp_factor" = 1.995
+"skin.diabetic.timp_factor" = 0.701
+"skin.perfusion.basal" = 0.8005
+"skin.perfusion.angio_rate" = 0.006020
+
+[[scenario.configs]]
+label = "Combo Day 21 (50%)"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 2.25
+"skin.diabetic.resolution_factor" = 0.5
+"skin.diabetic.baseline_inflammation" = 0.0006
+"skin.diabetic.inflammation_sensitivity" = 1.6
+"skin.diabetic.prolif_factor" = 0.625
+"skin.diabetic.migration_factor" = 0.625
+"skin.diabetic.collagen_factor" = 0.55
+"skin.diabetic.vegf_factor" = 0.7
+"skin.diabetic.mmp_factor" = 2.25
+"skin.diabetic.timp_factor" = 0.65
+"skin.perfusion.basal" = 0.775
+"skin.perfusion.angio_rate" = 0.005
+
+# ===== MSC THERAPY =====
+
+[[scenario.configs]]
+label = "MSC Day 0 (100%)"
+treatments = ["msc"]
+
+[[scenario.configs]]
+label = "MSC Day 7 (83%)"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 1.755
+"skin.diabetic.resolution_factor" = 0.632
+"skin.diabetic.efferocytosis_factor" = 0.7905
+"skin.diabetic.prolif_factor" = 0.749
+"skin.diabetic.migration_factor" = 0.782
+"skin.diabetic.fibroblast_activation_factor" = 1.336
+"skin.diabetic.collagen_factor" = 0.649
+"skin.diabetic.vegf_factor" = 0.898
+
+[[scenario.configs]]
+label = "MSC Day 14 (67%)"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 1.995
+"skin.diabetic.resolution_factor" = 0.568
+"skin.diabetic.efferocytosis_factor" = 0.735
+"skin.diabetic.prolif_factor" = 0.701
+"skin.diabetic.migration_factor" = 0.718
+"skin.diabetic.fibroblast_activation_factor" = 1.464
+"skin.diabetic.collagen_factor" = 0.601
+"skin.diabetic.vegf_factor" = 0.802
+
+[[scenario.configs]]
+label = "MSC Day 21 (50%)"
+[scenario.configs.overrides]
+"skin.diabetic.m1_duration_factor" = 2.25
+"skin.diabetic.resolution_factor" = 0.5
+"skin.diabetic.efferocytosis_factor" = 0.675
+"skin.diabetic.prolif_factor" = 0.65
+"skin.diabetic.migration_factor" = 0.65
+"skin.diabetic.fibroblast_activation_factor" = 1.6
+"skin.diabetic.collagen_factor" = 0.55
+"skin.diabetic.vegf_factor" = 0.7
+
+# ===== HBO THERAPY =====
+
+[[scenario.configs]]
+label = "HBO Day 0 (100%)"
+treatments = ["hbo"]
+
+[[scenario.configs]]
+label = "HBO Day 7 (83%)"
+[scenario.configs.overrides]
+"skin.diabetic.vegf_factor" = 0.898
+"skin.diabetic.prolif_factor" = 0.666
+"skin.diabetic.collagen_factor" = 0.649
+"skin.perfusion.basal" = 0.8245
+"skin.perfusion.angio_rate" = 0.006980
+
+[[scenario.configs]]
+label = "HBO Day 14 (67%)"
+[scenario.configs.overrides]
+"skin.diabetic.vegf_factor" = 0.802
+"skin.diabetic.prolif_factor" = 0.634
+"skin.diabetic.collagen_factor" = 0.601
+"skin.perfusion.basal" = 0.8005
+"skin.perfusion.angio_rate" = 0.006020
+
+[[scenario.configs]]
+label = "HBO Day 21 (50%)"
+[scenario.configs.overrides]
+"skin.diabetic.vegf_factor" = 0.7
+"skin.diabetic.prolif_factor" = 0.6
+"skin.diabetic.collagen_factor" = 0.55
+"skin.perfusion.basal" = 0.775
+"skin.perfusion.angio_rate" = 0.005
