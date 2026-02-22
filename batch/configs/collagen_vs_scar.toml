@@ -1,0 +1,18 @@
+# Sweep: collagen deposition rate vs scar threshold (2D heatmap)
+[sweep]
+name = "collagen_vs_scar"
+runs_per_value = 3
+preset = "wound"
+
+[[sweep.params]]
+param = "skin.fibroblast.collagen_deposition_rate"
+values = [0.004, 0.008, 0.012, 0.016]
+
+[[sweep.params]]
+param = "skin.scar.collagen_threshold"
+values = [0.05, 0.1, 0.2, 0.5]
+
+[outcomes]
+primary = "scar_magnitude"
+secondary = ["wound_closure_pct", "mean_collagen_wound"]
+measure = "final"

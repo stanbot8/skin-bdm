@@ -1,0 +1,12 @@
+# Sweep: how does cytokine production rate affect inflammation and healing?
+[sweep]
+name = "cytokine_rate"
+param = "skin.immune.cytokine_rate"
+values = [0.0005, 0.001, 0.0015, 0.002, 0.003]
+runs_per_value = 5
+preset = "wound"
+
+[outcomes]
+primary = "wound_closure_pct"
+secondary = ["mean_infl_wound", "n_macrophages", "mean_collagen_wound"]
+measure = "final"

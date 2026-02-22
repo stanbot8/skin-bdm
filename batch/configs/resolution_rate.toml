@@ -1,0 +1,12 @@
+# Sweep: M2 anti-inflammatory resolution rate vs inflammation duration
+[sweep]
+name = "resolution_rate"
+param = "skin.immune.resolution_rate"
+values = [0.004, 0.006, 0.008, 0.010, 0.014]
+runs_per_value = 5
+preset = "wound"
+
+[outcomes]
+primary = "mean_infl_wound"
+secondary = ["wound_closure_pct", "n_macrophages", "mean_collagen_wound"]
+measure = "final"

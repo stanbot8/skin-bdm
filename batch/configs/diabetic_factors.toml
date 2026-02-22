@@ -1,0 +1,14 @@
+# Sweep: diabetic M1 duration factor -- which level of impairment
+# produces the clinically observed 40-60% closure delay?
+[sweep]
+name = "diabetic_m1_factor"
+param = "skin.diabetic.m1_duration_factor"
+values = [1.0, 1.5, 2.0, 3.0, 5.0]
+runs_per_value = 5
+preset = "diabetic_wound"
+skin = "diabetic"
+
+[outcomes]
+primary = "wound_closure_pct"
+secondary = ["mean_infl_wound", "n_macrophages"]
+measure = "final"
