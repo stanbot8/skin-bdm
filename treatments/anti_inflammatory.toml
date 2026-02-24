@@ -1,0 +1,13 @@
+# Treatment: anti-TNF-alpha -- targets core M1/M2 transition failure
+# Literature: Mirza & Koh 2011, Louiselle et al. 2021
+# Mechanism: TNF-alpha neutralization releases M1-to-M2 brake, reduces chronic inflammation
+[skin.diabetic]
+m1_duration_factor = 1.5           # 3.0 -> 1.5: TNF-alpha blockade enables M1-to-M2
+resolution_factor = 0.7            # 0.3 -> 0.7: M2 resolution partially restored
+baseline_inflammation = 0.0002     # 0.001 -> 0.0002: TNF-alpha is dominant baseline driver
+inflammation_sensitivity = 1.2     # 2.0 -> 1.2: keratinocytes less inhibited
+prolif_factor = 0.7                # 0.5 -> 0.7: reduced inflammation-mediated suppression
+migration_factor = 0.8             # 0.45 -> 0.8: TNF-alpha/TIMP1 axis blockade
+
+[skin.immune]
+cytokine_rate = 0.001              # 0.0015 -> 0.001: direct TNF-alpha neutralization

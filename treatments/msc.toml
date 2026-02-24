@@ -1,0 +1,13 @@
+# Treatment: mesenchymal stem cell (MSC) therapy -- broad paracrine action
+# Literature: Cao et al. 2017, Li et al. 2024
+# Mechanism: MSC secretome (VEGF, EGF, bFGF, HGF, PDGF, TGF-beta, IL-6, PGE2)
+#   reprograms M1->M2, enhances fibroblast/keratinocyte function, promotes angiogenesis
+[skin.diabetic]
+m1_duration_factor = 1.5           # 3.0 -> 1.5: IL-6/PGE2 M1-to-M2 reprogramming
+resolution_factor = 0.7            # 0.3 -> 0.7: enhanced M2 anti-inflammatory function
+efferocytosis_factor = 0.85        # 0.5 -> 0.85: MSC-enhanced phagocytic capacity
+prolif_factor = 0.8                # 0.5 -> 0.8: EGF/bFGF stimulation
+migration_factor = 0.85            # 0.45 -> 0.85: HGF-driven migration
+fibroblast_activation_factor = 1.2 # 2.0 -> 1.2: PDGF/TGF-beta accelerates activation
+collagen_factor = 0.7              # 0.4 -> 0.7: TGF-beta-driven collagen restoration
+vegf_factor = 1.0                  # 0.4 -> 1.0: VEGF is dominant MSC paracrine factor
