@@ -1,0 +1,52 @@
+# Auto-generated: hbo at different start times
+# Baseline: diabetic untreated
+
+[scenario]
+name = "HBO Timing"
+description = "Effect of delaying hbo treatment"
+profile = "diabetic"
+study = "diabetic-wound"
+runs_per_config = 3
+
+[[scenario.configs]]
+label = "Untreated"
+
+[[scenario.configs]]
+label = "HBO Day 0 (100%)"
+treatments = ["hbo"]
+
+[[scenario.configs]]
+label = "HBO Day 3 (93%)"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.prolif_factor" = 0.685714
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+
+[[scenario.configs]]
+label = "HBO Day 7 (83%)"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.prolif_factor" = 0.666667
+"skin.diabetic.vegf_factor" = 0.9
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+
+[[scenario.configs]]
+label = "HBO Day 14 (67%)"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.prolif_factor" = 0.633333
+"skin.diabetic.vegf_factor" = 0.8
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+
+[[scenario.configs]]
+label = "HBO Day 21 (50%)"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.55
+"skin.diabetic.prolif_factor" = 0.6
+"skin.diabetic.vegf_factor" = 0.7
+"skin.perfusion.angio_rate" = 0.005
+"skin.perfusion.basal" = 0.775

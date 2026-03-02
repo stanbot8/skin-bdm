@@ -1,0 +1,351 @@
+# Auto-generated: combinatorial schedule (hbo+msc)
+
+[scenario]
+name = "Schedule: hbo+msc"
+description = "Combinatorial treatment scheduling"
+profile = "diabetic"
+study = "diabetic-wound"
+runs_per_config = 3
+
+[[scenario.configs]]
+label = "Untreated"
+
+[[scenario.configs]]
+label = "HBO D0 + MSC D0"
+treatments = ["hbo", "msc"]
+
+[[scenario.configs]]
+label = "HBO D0 + MSC D3"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.efferocytosis_factor" = 0.825
+"skin.diabetic.fibroblast_activation_factor" = 1.257143
+"skin.diabetic.m1_duration_factor" = 1.607143
+"skin.diabetic.migration_factor" = 0.821429
+"skin.diabetic.prolif_factor" = 0.778571
+"skin.diabetic.resolution_factor" = 0.671429
+"skin.diabetic.vegf_factor" = 1.0
+"skin.perfusion.angio_rate" = 0.008
+"skin.perfusion.basal" = 0.85
+
+[[scenario.configs]]
+label = "HBO D0 + MSC D7"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.efferocytosis_factor" = 0.791667
+"skin.diabetic.fibroblast_activation_factor" = 1.333333
+"skin.diabetic.m1_duration_factor" = 1.75
+"skin.diabetic.migration_factor" = 0.783333
+"skin.diabetic.prolif_factor" = 0.75
+"skin.diabetic.resolution_factor" = 0.633333
+"skin.diabetic.vegf_factor" = 1.0
+"skin.perfusion.angio_rate" = 0.008
+"skin.perfusion.basal" = 0.85
+
+[[scenario.configs]]
+label = "HBO D0 + MSC D14"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.efferocytosis_factor" = 0.733333
+"skin.diabetic.fibroblast_activation_factor" = 1.466667
+"skin.diabetic.m1_duration_factor" = 2.0
+"skin.diabetic.migration_factor" = 0.716667
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.resolution_factor" = 0.566667
+"skin.diabetic.vegf_factor" = 1.0
+"skin.perfusion.angio_rate" = 0.008
+"skin.perfusion.basal" = 0.85
+
+[[scenario.configs]]
+label = "HBO D0 + MSC D21"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.efferocytosis_factor" = 0.675
+"skin.diabetic.fibroblast_activation_factor" = 1.6
+"skin.diabetic.m1_duration_factor" = 2.25
+"skin.diabetic.migration_factor" = 0.65
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.resolution_factor" = 0.5
+"skin.diabetic.vegf_factor" = 1.0
+"skin.perfusion.angio_rate" = 0.008
+"skin.perfusion.basal" = 0.85
+
+[[scenario.configs]]
+label = "HBO D3 + MSC D0"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.efferocytosis_factor" = 0.85
+"skin.diabetic.fibroblast_activation_factor" = 1.2
+"skin.diabetic.m1_duration_factor" = 1.5
+"skin.diabetic.migration_factor" = 0.85
+"skin.diabetic.prolif_factor" = 0.8
+"skin.diabetic.resolution_factor" = 0.7
+"skin.diabetic.vegf_factor" = 1.0
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+
+[[scenario.configs]]
+label = "HBO D3 + MSC D3"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.efferocytosis_factor" = 0.825
+"skin.diabetic.fibroblast_activation_factor" = 1.257143
+"skin.diabetic.m1_duration_factor" = 1.607143
+"skin.diabetic.migration_factor" = 0.821429
+"skin.diabetic.prolif_factor" = 0.778571
+"skin.diabetic.resolution_factor" = 0.671429
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+
+[[scenario.configs]]
+label = "HBO D3 + MSC D7"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.efferocytosis_factor" = 0.791667
+"skin.diabetic.fibroblast_activation_factor" = 1.333333
+"skin.diabetic.m1_duration_factor" = 1.75
+"skin.diabetic.migration_factor" = 0.783333
+"skin.diabetic.prolif_factor" = 0.75
+"skin.diabetic.resolution_factor" = 0.633333
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+
+[[scenario.configs]]
+label = "HBO D3 + MSC D14"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.efferocytosis_factor" = 0.733333
+"skin.diabetic.fibroblast_activation_factor" = 1.466667
+"skin.diabetic.m1_duration_factor" = 2.0
+"skin.diabetic.migration_factor" = 0.716667
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.resolution_factor" = 0.566667
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+
+[[scenario.configs]]
+label = "HBO D3 + MSC D21"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.efferocytosis_factor" = 0.675
+"skin.diabetic.fibroblast_activation_factor" = 1.6
+"skin.diabetic.m1_duration_factor" = 2.25
+"skin.diabetic.migration_factor" = 0.65
+"skin.diabetic.prolif_factor" = 0.685714
+"skin.diabetic.resolution_factor" = 0.5
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+
+[[scenario.configs]]
+label = "HBO D7 + MSC D0"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.efferocytosis_factor" = 0.85
+"skin.diabetic.fibroblast_activation_factor" = 1.2
+"skin.diabetic.m1_duration_factor" = 1.5
+"skin.diabetic.migration_factor" = 0.85
+"skin.diabetic.prolif_factor" = 0.8
+"skin.diabetic.resolution_factor" = 0.7
+"skin.diabetic.vegf_factor" = 1.0
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+
+[[scenario.configs]]
+label = "HBO D7 + MSC D3"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.efferocytosis_factor" = 0.825
+"skin.diabetic.fibroblast_activation_factor" = 1.257143
+"skin.diabetic.m1_duration_factor" = 1.607143
+"skin.diabetic.migration_factor" = 0.821429
+"skin.diabetic.prolif_factor" = 0.778571
+"skin.diabetic.resolution_factor" = 0.671429
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+
+[[scenario.configs]]
+label = "HBO D7 + MSC D7"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.efferocytosis_factor" = 0.791667
+"skin.diabetic.fibroblast_activation_factor" = 1.333333
+"skin.diabetic.m1_duration_factor" = 1.75
+"skin.diabetic.migration_factor" = 0.783333
+"skin.diabetic.prolif_factor" = 0.75
+"skin.diabetic.resolution_factor" = 0.633333
+"skin.diabetic.vegf_factor" = 0.9
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+
+[[scenario.configs]]
+label = "HBO D7 + MSC D14"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.efferocytosis_factor" = 0.733333
+"skin.diabetic.fibroblast_activation_factor" = 1.466667
+"skin.diabetic.m1_duration_factor" = 2.0
+"skin.diabetic.migration_factor" = 0.716667
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.resolution_factor" = 0.566667
+"skin.diabetic.vegf_factor" = 0.9
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+
+[[scenario.configs]]
+label = "HBO D7 + MSC D21"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.efferocytosis_factor" = 0.675
+"skin.diabetic.fibroblast_activation_factor" = 1.6
+"skin.diabetic.m1_duration_factor" = 2.25
+"skin.diabetic.migration_factor" = 0.65
+"skin.diabetic.prolif_factor" = 0.666667
+"skin.diabetic.resolution_factor" = 0.5
+"skin.diabetic.vegf_factor" = 0.9
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+
+[[scenario.configs]]
+label = "HBO D14 + MSC D0"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.efferocytosis_factor" = 0.85
+"skin.diabetic.fibroblast_activation_factor" = 1.2
+"skin.diabetic.m1_duration_factor" = 1.5
+"skin.diabetic.migration_factor" = 0.85
+"skin.diabetic.prolif_factor" = 0.8
+"skin.diabetic.resolution_factor" = 0.7
+"skin.diabetic.vegf_factor" = 1.0
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+
+[[scenario.configs]]
+label = "HBO D14 + MSC D3"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.efferocytosis_factor" = 0.825
+"skin.diabetic.fibroblast_activation_factor" = 1.257143
+"skin.diabetic.m1_duration_factor" = 1.607143
+"skin.diabetic.migration_factor" = 0.821429
+"skin.diabetic.prolif_factor" = 0.778571
+"skin.diabetic.resolution_factor" = 0.671429
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+
+[[scenario.configs]]
+label = "HBO D14 + MSC D7"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.efferocytosis_factor" = 0.791667
+"skin.diabetic.fibroblast_activation_factor" = 1.333333
+"skin.diabetic.m1_duration_factor" = 1.75
+"skin.diabetic.migration_factor" = 0.783333
+"skin.diabetic.prolif_factor" = 0.75
+"skin.diabetic.resolution_factor" = 0.633333
+"skin.diabetic.vegf_factor" = 0.9
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+
+[[scenario.configs]]
+label = "HBO D14 + MSC D14"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.efferocytosis_factor" = 0.733333
+"skin.diabetic.fibroblast_activation_factor" = 1.466667
+"skin.diabetic.m1_duration_factor" = 2.0
+"skin.diabetic.migration_factor" = 0.716667
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.resolution_factor" = 0.566667
+"skin.diabetic.vegf_factor" = 0.8
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+
+[[scenario.configs]]
+label = "HBO D14 + MSC D21"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.efferocytosis_factor" = 0.675
+"skin.diabetic.fibroblast_activation_factor" = 1.6
+"skin.diabetic.m1_duration_factor" = 2.25
+"skin.diabetic.migration_factor" = 0.65
+"skin.diabetic.prolif_factor" = 0.65
+"skin.diabetic.resolution_factor" = 0.5
+"skin.diabetic.vegf_factor" = 0.8
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+
+[[scenario.configs]]
+label = "HBO D21 + MSC D0"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.efferocytosis_factor" = 0.85
+"skin.diabetic.fibroblast_activation_factor" = 1.2
+"skin.diabetic.m1_duration_factor" = 1.5
+"skin.diabetic.migration_factor" = 0.85
+"skin.diabetic.prolif_factor" = 0.8
+"skin.diabetic.resolution_factor" = 0.7
+"skin.diabetic.vegf_factor" = 1.0
+"skin.perfusion.angio_rate" = 0.005
+"skin.perfusion.basal" = 0.775
+
+[[scenario.configs]]
+label = "HBO D21 + MSC D3"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.efferocytosis_factor" = 0.825
+"skin.diabetic.fibroblast_activation_factor" = 1.257143
+"skin.diabetic.m1_duration_factor" = 1.607143
+"skin.diabetic.migration_factor" = 0.821429
+"skin.diabetic.prolif_factor" = 0.778571
+"skin.diabetic.resolution_factor" = 0.671429
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.perfusion.angio_rate" = 0.005
+"skin.perfusion.basal" = 0.775
+
+[[scenario.configs]]
+label = "HBO D21 + MSC D7"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.efferocytosis_factor" = 0.791667
+"skin.diabetic.fibroblast_activation_factor" = 1.333333
+"skin.diabetic.m1_duration_factor" = 1.75
+"skin.diabetic.migration_factor" = 0.783333
+"skin.diabetic.prolif_factor" = 0.75
+"skin.diabetic.resolution_factor" = 0.633333
+"skin.diabetic.vegf_factor" = 0.9
+"skin.perfusion.angio_rate" = 0.005
+"skin.perfusion.basal" = 0.775
+
+[[scenario.configs]]
+label = "HBO D21 + MSC D14"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.efferocytosis_factor" = 0.733333
+"skin.diabetic.fibroblast_activation_factor" = 1.466667
+"skin.diabetic.m1_duration_factor" = 2.0
+"skin.diabetic.migration_factor" = 0.716667
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.resolution_factor" = 0.566667
+"skin.diabetic.vegf_factor" = 0.8
+"skin.perfusion.angio_rate" = 0.005
+"skin.perfusion.basal" = 0.775
+
+[[scenario.configs]]
+label = "HBO D21 + MSC D21"
+[scenario.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.55
+"skin.diabetic.efferocytosis_factor" = 0.675
+"skin.diabetic.fibroblast_activation_factor" = 1.6
+"skin.diabetic.m1_duration_factor" = 2.25
+"skin.diabetic.migration_factor" = 0.65
+"skin.diabetic.prolif_factor" = 0.65
+"skin.diabetic.resolution_factor" = 0.5
+"skin.diabetic.vegf_factor" = 0.7
+"skin.perfusion.angio_rate" = 0.005
+"skin.perfusion.basal" = 0.775

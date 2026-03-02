@@ -1,0 +1,10 @@
+# Preset: nothing -- homeostatic epidermis, no events
+
+[skin]
+duration_days = 12.5
+
+[skin.wound]
+enabled = false
+
+[skin.fibroblast]
+enabled = false

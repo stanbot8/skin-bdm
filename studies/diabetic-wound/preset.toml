@@ -1,0 +1,21 @@
+# Preset: diabetic wound -- chronic diabetic ulcer simulation
+
+[skin]
+duration_days = 35
+metrics_interval_h = 20
+
+[skin.wound]
+enabled = true
+trigger_h = 0
+
+[skin.ph]
+enabled = true
+
+[skin.fibroblast]
+enabled = true
+
+[skin.hemostasis]
+enabled = true
+
+[skin.diabetic]
+mode = true

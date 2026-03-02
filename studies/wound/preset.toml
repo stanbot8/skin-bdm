@@ -1,0 +1,17 @@
+# Preset: wound -- punch biopsy wound healing (default scenario)
+
+[skin]
+duration_days = 30
+
+[skin.wound]
+enabled = true
+trigger_h = 0
+
+[skin.ph]
+enabled = true
+
+[skin.fibroblast]
+enabled = true
+
+[skin.hemostasis]
+enabled = true
