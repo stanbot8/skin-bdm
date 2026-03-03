@@ -1,0 +1,63 @@
+# Literature sources for lymphatic module
+lymphatic_parameters:
+  description: 'Literature sources for lymphangiogenesis, lymphatic vessel regeneration,
+    interstitial edema dynamics, and TGF-beta lymphatic drainage.
+
+    '
+  sources:
+  - id: kataru2009
+    authors: Kataru RP, Jung K, Jang C, Yang H, Schwendener RA, Baik JE, Han SH,
+      Alitalo K, Koh GY
+    year: 2009
+    title: Critical role of CD11b+ macrophages and VEGF in inflammatory lymphangiogenesis,
+      antigen clearance, and inflammation resolution
+    journal: Blood 113(22):5650-5659
+    doi: 10.1182/blood-2008-09-176776
+    notes: Macrophage-derived VEGF-C/D drives inflammatory lymphangiogenesis during
+      wound resolution. Lymphatic vessels are critical for antigen clearance and
+      inflammation resolution. Supports regen_rate and VEGF coupling.
+  - id: paavonen2000
+    authors: Paavonen K, Puolakkainen P, Jussila L, Jahkola T, Alitalo K
+    year: 2000
+    title: Vascular Endothelial Growth Factor Receptor-3 in Lymphangiogenesis in
+      Wound Healing
+    journal: Am J Pathol 156(5):1499-1504
+    doi: 10.1016/s0002-9440(10)65021-3
+    notes: VEGFR-3 expression in wound lymphatics. Lymphangiogenesis lags
+      angiogenesis by several days. Supports lymphatic_diffusion (slow sprouting).
+  - id: makinen2001
+    authors: Makinen T, Veikkola T, Mustjoki S, Karpanen T, Catimel B, Nice EC,
+      Wise L, Mercer A, Kowalski H, Kerjaschki D, Stacker SA, Achen MG, Alitalo K
+    year: 2001
+    title: Isolated lymphatic endothelial cells transduce growth, survival and
+      migratory signals via the VEGF-C/D receptor VEGFR-3
+    journal: EMBO J 20(17):4762-4773
+    doi: 10.1093/emboj/20.17.4762
+    notes: VEGF-C promotes lymphatic endothelial cell migration and survival via
+      VEGFR-3. Supports vegf_boost parameter for lymphangiogenesis.
+  - id: michel1999
+    authors: Michel CC, Curry FE
+    year: 1999
+    title: Microvascular Permeability
+    journal: Physiol Rev 79(3):703-761
+    doi: 10.1152/physrev.1999.79.3.703
+    notes: Starling forces govern vascular fluid leak into interstitium. Inflammation
+      increases permeability. Supports edema_leak_rate parameter.
+  - id: rutkowski2007
+    authors: Rutkowski JM, Swartz MA
+    year: 2007
+    title: A driving force for change, interstitial flow as a morphoregulator
+    journal: Trends Cell Biol 17(1):44-50
+    doi: 10.1016/j.tcb.2006.11.007
+    notes: Interstitial fluid accumulation (edema) creates hydrostatic resistance
+      that impairs cell migration. Supports edema_migration_impairment parameter.
+  - id: asai2012
+    authors: Asai J, Takenaka H, Hirakawa S, Sakabe J, Hagura A, Kishimoto S,
+      Maruyama K, Kajiya K, Kinoshita S, Tokura Y, Katoh N
+    year: 2012
+    title: Topical Simvastatin Accelerates Wound Healing in Diabetes by Enhancing
+      Angiogenesis and Lymphangiogenesis
+    journal: Am J Pathol 181(6):2217-2224
+    doi: 10.1016/j.ajpath.2012.08.023
+    notes: Diabetes impairs lymphangiogenesis during wound healing. VEGF-C/D
+      signaling is reduced in diabetic tissue. Supports diabetic_lymphatic_factor.

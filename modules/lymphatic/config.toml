@@ -1,0 +1,13 @@
+# Module: lymphatic -- lymphangiogenesis and interstitial fluid dynamics
+# Kataru et al. 2009 (doi:10.1182/blood-2008-09-176776)
+[skin.lymphatic]
+enabled = true                            # master switch
+diffusion = 0.005                         # slow lymphatic sprouting (Paavonen et al. 2000, doi:10.1016/s0002-9440(10)65021-3)
+basal_density = 0.8                       # healthy dermis lymphatic density (normalized)
+regen_rate = 0.0003                       # regeneration rate (slower than vascular; Kataru et al. 2009)
+vegf_boost = 0.3                          # VEGF-C promotes lymphangiogenesis (Makinen et al. 2001, doi:10.1093/emboj/20.17.4762)
+edema_leak_rate = 0.003                   # vascular leak from inflammation (Starling forces; Michel & Curry 1999, doi:10.1152/physrev.1999.79.3.703)
+edema_drainage_rate = 0.01                # lymphatic drainage of interstitial fluid
+edema_o2_impairment = 0.3                 # edema reduces O2 delivery (diffusion barrier)
+edema_migration_impairment = 0.2          # edema slows cell crawling (hydrostatic resistance)
+diabetic_lymphatic_factor = 0.4           # impaired lymphangiogenesis in diabetes (Asai et al. 2012, doi:10.1016/j.ajpath.2012.08.023)
