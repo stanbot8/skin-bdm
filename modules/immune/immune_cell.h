@@ -50,11 +50,16 @@ class ImmuneCell : public Cell {
   int GetStateAge() const { return state_age_; }
   void IncrementStateAge() { state_age_++; }
 
+  // Engulfment count (for mechanistic efferocytosis-driven M1->M2)
+  int GetEngulfCount() const { return engulf_count_; }
+  void IncrementEngulfCount() { engulf_count_++; }
+
  private:
   int immune_type_ = kNeutrophil;
   int age_ = 0;
   int state_ = kM1Active;
   int state_age_ = 0;
+  int engulf_count_ = 0;
 };
 
 }  // namespace skibidy

@@ -8,6 +8,7 @@
 #include "immune/neutrophil_behavior.h"
 #include "infra/sim_param.h"
 #include "infra/util.h"
+#include "core/pde.h"
 #include "core/operation/operation.h"
 
 namespace bdm {
@@ -30,34 +31,35 @@ struct ImmuneResponse : public StandaloneOperationImpl {
     auto* scheduler = sim->GetScheduler();
     auto* sp = sim->GetParam()->Get<SimParam>();
 
-    if (!sp->wound_enabled) return;
+    if (!sp->wound.enabled) return;
+    PerfTimer timer(sp->debug_perf);
 
     uint64_t step = GetGlobalStep(sim);
-    uint64_t wound_step = static_cast<uint64_t>(sp->wound_trigger_step);
+    uint64_t wound_step = static_cast<uint64_t>(sp->wound.trigger_step);
     if (step <= wound_step) return;
 
     uint64_t wound_age = step - wound_step;
 
     // Neutrophil waves (discrete, fast arrival)
-    int eff_waves = sp->neutrophil_spawn_waves;
-    int eff_window = sp->neutrophil_spawn_window;
-    if (sp->diabetic_mode) {
+    int eff_waves = sp->immune.neutrophil_spawn_waves;
+    int eff_window = sp->immune.neutrophil_spawn_window;
+    if (sp->diabetic.mode) {
       eff_waves = static_cast<int>(
-          std::ceil(eff_waves * sp->diabetic_neutrophil_waves_factor));
+          std::ceil(eff_waves * sp->diabetic.neutrophil_waves_factor));
       eff_window = static_cast<int>(
-          std::ceil(eff_window * sp->diabetic_neutrophil_window_factor));
+          std::ceil(eff_window * sp->diabetic.neutrophil_window_factor));
     }
     if (neut_waves_spawned_ < eff_waves) {
-      uint64_t wave_step = sp->neutrophil_spawn_delay;
+      uint64_t wave_step = sp->immune.neutrophil_spawn_delay;
       if (eff_waves > 1) {
         wave_step += neut_waves_spawned_ *
                      (eff_window / (eff_waves - 1));
       }
       if (wound_age >= wave_step) {
         int total = ComputePerimeterSlots(sp);
-        if (sp->diabetic_mode) {
+        if (sp->diabetic.mode) {
           total = static_cast<int>(
-              std::ceil(total * sp->diabetic_neutrophil_factor));
+              std::ceil(total * sp->diabetic.neutrophil_factor));
         }
         int this_wave = total / eff_waves;
         if (neut_waves_spawned_ == eff_waves - 1)
@@ -73,13 +75,10 @@ struct ImmuneResponse : public StandaloneOperationImpl {
     }
 
     // Macrophage continuous recruitment (inflammation-driven)
-    if (wound_age >= static_cast<uint64_t>(sp->macrophage_spawn_delay)) {
+    if (wound_age >= static_cast<uint64_t>(sp->immune.macrophage_spawn_delay)) {
       real_t query_z = sp->immune_cell_diameter / 2.0;
-      Real3 center = {sp->wound_center_x, sp->wound_center_y, query_z};
+      Real3 center = {sp->wound.center_x, sp->wound.center_y, query_z};
       Real3 qpos = ClampToBounds(center, sim->GetParam());
-      real_t infl = GetNetInflammation(sim, qpos);
-      real_t excess = std::max(static_cast<real_t>(0),
-                               infl - sp->macrophage_spawn_threshold);
 
       // Carrying capacity: limited adhesion sites at wound margin
       int n_mac = CountMacrophages(sim);
@@ -87,27 +86,56 @@ struct ImmuneResponse : public StandaloneOperationImpl {
       real_t saturation = std::max(static_cast<real_t>(0),
                                    1.0 - static_cast<real_t>(n_mac) / capacity);
 
-      // Chemokine gradient decay: monocyte recruitment diminishes as wound matures
+      // Endothelial adhesion taper: ICAM-1/VCAM-1 upregulation peaks early
+      // then declines as wound matures (shared by both recruitment modes)
       real_t recruit_taper = 1.0;
-      if (sp->macrophage_spawn_taper > 0) {
+      if (sp->immune.macrophage_spawn_taper > 0) {
         real_t wound_age_h = wound_age * sim->GetParam()->simulation_time_step;
-        real_t eff_taper = sp->macrophage_spawn_taper;
-        if (sp->diabetic_mode) {
-          eff_taper *= sp->diabetic_macrophage_taper_factor;
+        real_t eff_taper = sp->immune.macrophage_spawn_taper;
+        if (sp->diabetic.mode) {
+          eff_taper *= sp->diabetic.macrophage_taper_factor;
         }
         recruit_taper = std::exp(-eff_taper * wound_age_h);
       }
 
-      real_t prob = sp->macrophage_spawn_rate * excess * saturation * recruit_taper;
+      real_t prob = 0;
+      if (sp->mech_immune_recruitment) {
+        // Mechanistic: chemokine gradient magnitude drives recruitment
+        // probability via Michaelis-Menten saturation. Replaces threshold
+        // and spawn_rate with a gradient-responsive mechanism.
+        auto* rm = sim->GetResourceManager();
+        DiffusionGrid* grad_grid = sp->inflammation.split_inflammation_enabled
+            ? rm->GetDiffusionGrid(fields::kProInflammatoryId)
+            : rm->GetDiffusionGrid(fields::kInflammationId);
+        Real3 gradient = {0, 0, 0};
+        grad_grid->GetGradient(qpos, &gradient, false);
+        real_t grad_mag = std::sqrt(gradient[0] * gradient[0] +
+                                    gradient[1] * gradient[1] +
+                                    gradient[2] * gradient[2]);
+        // Michaelis-Menten: prob = scale * G / (K + G) * saturation * taper
+        prob = sp->mech_recruit_gradient_scale *
+               grad_mag / (sp->mech_recruit_saturation_k + grad_mag) *
+               saturation * recruit_taper;
+      } else {
+        // Parametric: threshold + rate + taper
+        real_t infl = GetNetInflammation(sim, qpos);
+        real_t excess = std::max(static_cast<real_t>(0),
+                                 infl - sp->immune.macrophage_spawn_threshold);
+        prob = sp->immune.macrophage_spawn_rate * excess * saturation * recruit_taper;
+      }
+
       if (prob > 0 && sim->GetRandom()->Uniform(0, 1) < prob) {
         SpawnCells(sim, sp, kMacrophage, 1);
         mac_total_spawned_++;
         if (sp->debug_immune) {
           std::cout << "[immune] macrophage #" << mac_total_spawned_
-                    << " infl=" << infl << " sat=" << saturation << std::endl;
+                    << " sat=" << saturation
+                    << (sp->mech_immune_recruitment ? " [mech]" : " [param]")
+                    << std::endl;
         }
       }
     }
+    timer.Print("immune_response");
   }
 
  private:
@@ -116,7 +144,7 @@ struct ImmuneResponse : public StandaloneOperationImpl {
 
   // Perimeter slots: wound margin positions available for immune cell arrival
   int ComputePerimeterSlots(const SimParam* sp) {
-    real_t r = sp->wound_radius;
+    real_t r = sp->wound.radius;
     real_t diameter = sp->immune_cell_diameter;
     int n = static_cast<int>(std::round(2.0 * M_PI * r / diameter));
     if (n < 6) n = 6;
@@ -137,9 +165,9 @@ struct ImmuneResponse : public StandaloneOperationImpl {
     auto* ctxt = sim->GetExecutionContext();
     auto* random = sim->GetRandom();
 
-    real_t cx = sp->wound_center_x;
-    real_t cy = sp->wound_center_y;
-    real_t r = sp->wound_radius;
+    real_t cx = sp->wound.center_x;
+    real_t cy = sp->wound.center_y;
+    real_t r = sp->wound.radius;
     real_t diameter = sp->immune_cell_diameter;
     real_t spawn_z = diameter / 2.0;
 
