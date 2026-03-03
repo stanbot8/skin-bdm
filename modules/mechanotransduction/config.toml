@@ -1,0 +1,7 @@
+# Module: mechanotransduction -- tissue stiffness and wound contraction
+# Tomasek et al. 2002 (doi:10.1038/nrm809)
+[skin.mechanotransduction]
+enabled = true                            # master switch
+stiffness_yap_threshold = 0.3             # stiffness above this promotes myofibroblast via YAP/TAZ (Dupont et al. 2011, doi:10.1038/nature10137)
+stiffness_contraction_rate = 0.0003       # wound contraction from myofibroblast traction force (Hinz 2007, doi:10.1038/sj.jid.5700613)
+stiffness_scar_factor = 0.5              # scar amplification from mechanical tension (Aarabi et al. 2007, doi:10.1096/fj.07-8218com)

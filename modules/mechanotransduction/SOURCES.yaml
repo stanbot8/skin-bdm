@@ -1,0 +1,44 @@
+# Literature sources for mechanotransduction module
+mechanotransduction_parameters:
+  description: 'Literature sources for tissue stiffness sensing, YAP/TAZ mechanotransduction,
+    and wound contraction via myofibroblast traction.
+
+    '
+  sources:
+  - id: tomasek2002
+    authors: Tomasek JJ, Gabbiani G, Hinz B, Chaponnier C, Brown RA
+    year: 2002
+    title: Myofibroblasts and mechano-regulation of connective tissue remodelling
+    journal: Nat Rev Mol Cell Biol 3(5):349-363
+    doi: 10.1038/nrm809
+    notes: Foundational review of myofibroblast differentiation, mechanical tension
+      requirements, and ECM remodeling. Supports stiffness-dependent differentiation
+      and contraction parameters.
+  - id: dupont2011
+    authors: Dupont S, Morsut L, Aragona M, Enzo E, Giulitti S, Cordenonsi M, Zanconato F,
+      Le Digabel J, Forcato M, Bicciato S, Elvassore N, Piccolo S
+    year: 2011
+    title: Role of YAP/TAZ in mechanotransduction
+    journal: Nature 474(7350):179-183
+    doi: 10.1038/nature10137
+    notes: YAP/TAZ act as sensors of mechanical cues from the cellular microenvironment.
+      Nuclear translocation on stiff substrates drives gene expression including
+      alpha-SMA. Supports stiffness_yap_threshold parameter.
+  - id: hinz2007
+    authors: Hinz B
+    year: 2007
+    title: Formation and Function of the Myofibroblast during Tissue Repair
+    journal: J Invest Dermatol 127(3):526-537
+    doi: 10.1038/sj.jid.5700613
+    notes: Myofibroblast traction force generates wound contraction. Substrate
+      stiffness modulates force transmission. Supports stiffness_contraction_rate.
+  - id: aarabi2007
+    authors: Aarabi S, Bhatt KA, Shi Y, Paterno J, Chang EI, Loh SA, Holmes JW,
+      Longaker MT, Yee H, Gurtner GC
+    year: 2007
+    title: Mechanical load initiates hypertrophic scar formation through decreased
+      cellular apoptosis
+    journal: FASEB J 21(12):3250-3261
+    doi: 10.1096/fj.07-8218com
+    notes: Mechanical tension on healing wounds amplifies scar formation by reducing
+      myofibroblast apoptosis. Supports stiffness_scar_factor parameter.
