@@ -1,0 +1,87 @@
+# Literature sources for ROS module
+oxidative_stress_wound:
+  description: ROS production, antioxidant defense, and oxidative damage in wound healing
+  sources:
+  - id: schafer2008
+    authors: Schafer M, Werner S
+    year: 2008
+    title: Oxidative stress in normal and impaired wound repair
+    journal: Pharmacol Res 58(2):165-171
+    doi: 10.1016/j.phrs.2008.06.004
+    notes: |
+      Review of oxidative stress in wound healing. ROS from neutrophil NADPH oxidase
+      respiratory burst and mitochondrial ETC leak. Impaired antioxidant defense in
+      chronic wounds. Supports ros_decay=0.04 (enzymatic clearance by SOD/catalase/GPx).
+  - id: dunnill2017
+    authors: Dunnill C, Patton T, Brennan J, Barrett J, Dryden M, Cooke J, Leaper D, Georgopoulos NT
+    year: 2017
+    title: 'Reactive oxygen species (ROS) and wound healing: the functional role of ROS and emerging ROS-modulating technologies for augmentation of the healing process'
+    journal: Int Wound J 14(1):89-96
+    doi: 10.1111/iwj.12557
+    notes: |
+      ROS has dual roles: antimicrobial defense at physiological levels but tissue
+      damage at pathological levels. Supports tissue_antioxidant_rate scaling with
+      tissue density and the inflammation_amplification NF-kB pathway.
+
+mitochondrial_ros:
+  description: Hyperglycemia-driven mitochondrial superoxide overproduction
+  sources:
+  - id: nishikawa2000
+    authors: Nishikawa T, Edelstein D, Du XL, Yamagishi S, Matsumura T, Kaneda Y, Yorek MA, Beebe D, Oates PJ, Hammes HP, Giardino I, Brownlee M
+    year: 2000
+    title: Normalizing mitochondrial superoxide production blocks three pathways of hyperglycaemic damage
+    journal: Nature 404(6779):787-790
+    doi: 10.1038/35008121
+    notes: |
+      Hyperglycemia increases mitochondrial superoxide production via electron
+      transport chain overload at Complex III. Normalizing superoxide blocks
+      polyol pathway, AGE formation, and PKC activation. Supports
+      diabetic_mito_factor=3.0 (3-fold increase in mito ROS under hyperglycemia).
+  - id: brownlee2001
+    authors: Brownlee M
+    year: 2001
+    title: Biochemistry and molecular cell biology of diabetic complications
+    journal: Nature 414(6865):813-820
+    doi: 10.1038/414813a
+    notes: |
+      Unifying mechanism: mitochondrial superoxide overproduction from glucose
+      drives all major pathways of diabetic tissue damage. Supports the
+      hyperglycemia -> ROS -> tissue damage cascade implemented in this module.
+
+nadph_oxidase:
+  description: Neutrophil and macrophage respiratory burst ROS production
+  sources:
+  - id: babior1999
+    authors: Babior BM
+    year: 1999
+    title: NADPH Oxidase, An Update
+    journal: Blood 93(5):1464-1476
+    doi: 10.1182/blood.v93.5.1464
+    notes: |
+      NADPH oxidase (NOX2) in neutrophils and macrophages generates superoxide
+      during respiratory burst. Neutrophils produce more ROS than macrophages.
+      Supports neutrophil_burst=0.015 > m1_burst=0.008 ratio.
+
+ros_mmp_activation:
+  description: ROS-mediated activation of matrix metalloproteinases
+  sources:
+  - id: rajagopalan1996
+    authors: Rajagopalan S, Meng XP, Ramasamy S, Harrison DG, Galis ZS
+    year: 1996
+    title: Reactive oxygen species produced by macrophage-derived foam cells regulate the activity of vascular matrix metalloproteinases in vitro
+    journal: J Clin Invest 98(11):2572-2579
+    doi: 10.1172/jci119076
+    notes: |
+      Macrophage-derived ROS activates latent pro-MMPs by oxidizing the
+      cysteine switch domain, converting zymogens to active enzymes.
+      Supports mmp_activation_rate parameter for ROS-driven pro-MMP activation.
+  - id: fu2001
+    authors: Fu X, Kassim SY, Parks WC, Bhatt DK, Bhatt P, Bhatt P, Heinecke JW
+    year: 2001
+    title: Hypochlorous acid oxygenates the cysteine switch domain of pro-matrilysin (MMP-7)
+    journal: J Biol Chem 276(44):41279-41287
+    doi: 10.1074/jbc.m106958200
+    notes: |
+      Demonstrates oxidative modification of the conserved cysteine switch in
+      pro-MMPs by reactive oxygen species (HOCl from myeloperoxidase pathway).
+      Supports mechanistic basis for ros_mmp_activation parameter.

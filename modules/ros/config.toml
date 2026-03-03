@@ -1,0 +1,30 @@
+# Module: ROS -- reactive oxygen species and oxidative stress
+# Schafer & Werner 2008 (doi:10.1016/j.phrs.2008.06.004)
+# Dunnill et al. 2017 (doi:10.1111/iwj.12557)
+# Nishikawa et al. 2000 (doi:10.1038/35008121)
+[skin.ros]
+enabled = true
+diffusion = 0.03                     # fast diffusion (small reactive molecule)
+decay = 0.04                         # rapid enzymatic scavenging (SOD, catalase, GPx)
+
+# Production
+neutrophil_burst = 0.015             # NADPH oxidase respiratory burst (per neutrophil)
+m1_burst = 0.008                     # M1 macrophage oxidative burst (per M1)
+mitochondrial_rate = 0.001           # basal mitochondrial ETC leak (tissue-wide)
+hypoxia_threshold = 0.4              # O2 below this increases mitochondrial ROS
+hypoxia_amplification = 2.0          # fold increase in mito ROS under hypoxia
+
+# Diabetic amplification
+diabetic_mito_factor = 3.0           # hyperglycemia-driven mitochondrial superoxide
+diabetic_antioxidant_factor = 0.5    # impaired SOD/catalase/GPx capacity
+
+# Effects on other modules
+senescence_ros_rate = 0.0002         # DNA damage driving senescence accumulation
+mmp_activation_rate = 0.005          # oxidative activation of pro-MMP cysteine switch
+angiogenesis_impairment = 0.1        # endothelial dysfunction (VEGF response reduction)
+inflammation_amplification = 0.0005  # NF-kB activation amplifies inflammation
+collagen_damage_rate = 0.001         # oxidative collagen cross-link damage
+
+# Antioxidant clearance (scales with tissue density)
+tissue_antioxidant_rate = 0.02       # enzymatic clearance by resident cells (SOD, GPx)
+perfusion_clearance = 0.005          # vascular washout of ROS byproducts
