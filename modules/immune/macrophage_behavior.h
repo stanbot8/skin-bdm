@@ -35,17 +35,17 @@ struct MacrophageBehavior : public Behavior {
     cell->IncrementStateAge();
 
     // Hard ceiling lifespan
-    if (cell->GetAge() > sp->macrophage_lifespan) {
+    if (cell->GetAge() > sp->immune.macrophage_lifespan) {
       ContinuumHandoff(cell);
       cell->RemoveFromSimulation();
       return;
     }
 
     // Stochastic apoptosis after minimum survival period
-    if (cell->GetAge() > sp->macrophage_min_survival) {
-      real_t apop_rate = sp->macrophage_apoptosis_rate;
-      if (sp->diabetic_mode) {
-        apop_rate *= sp->diabetic_macrophage_apoptosis_factor;
+    if (cell->GetAge() > sp->immune.macrophage_min_survival) {
+      real_t apop_rate = sp->immune.macrophage_apoptosis_rate;
+      if (sp->diabetic.mode) {
+        apop_rate *= sp->diabetic.macrophage_apoptosis_factor;
       }
       if (sim->GetRandom()->Uniform(0, 1) < apop_rate) {
         ContinuumHandoff(cell);
@@ -62,9 +62,9 @@ struct MacrophageBehavior : public Behavior {
       if (sg) {
         Real3 pos = ClampToBounds(cell->GetPosition(), sim->GetParam());
         real_t sv = sg->GetValue(pos);
-        real_t emig_rate = sp->macrophage_emigration_rate;
-        if (sp->diabetic_mode) {
-          emig_rate *= sp->diabetic_macrophage_emigration_factor;
+        real_t emig_rate = sp->immune.macrophage_emigration_rate;
+        if (sp->diabetic.mode) {
+          emig_rate *= sp->diabetic.macrophage_emigration_factor;
         }
         if (sv >= 1.0 &&
             sim->GetRandom()->Uniform(0, 1) < emig_rate) {
@@ -77,26 +77,31 @@ struct MacrophageBehavior : public Behavior {
 
     // M1 -> M2 state transition
     if (cell->GetState() == kM1Active) {
-      // Efferocytosis: engulf dying neutrophils for early M2 transition
+      // Efferocytosis: engulf dying neutrophils
       if (sp->efferocytosis_enabled) {
         TryEfferocytosis(cell, sim, sp);
       }
 
       if (cell->GetState() == kM1Active) {
-        int eff_m1_duration = sp->macrophage_m1_duration;
-        if (sp->diabetic_mode) {
-          eff_m1_duration = static_cast<int>(
-              sp->macrophage_m1_duration * sp->diabetic_m1_duration_factor);
+        // Biofilm gate: persistent biofilm blocks M1->M2
+        Real3 qpos = ClampToBounds(cell->GetPosition(), sim->GetParam());
+        bool biofilm_blocked = false;
+        if (sp->biofilm.enabled) {
+          auto* bg = sim->GetResourceManager()->GetDiffusionGrid(
+              fields::kBiofilmId);
+          if (bg->GetValue(qpos) > sp->biofilm.m1_block_threshold) {
+            biofilm_blocked = true;
+          }
         }
 
-        // Cytokine-driven: transition when local inflammation drops
-        Real3 qpos = ClampToBounds(cell->GetPosition(), sim->GetParam());
-
-        // AGE-RAGE prolongation: accumulated AGEs bind RAGE on macrophages,
-        // sustaining NF-kB and M1 polarization. Raises the effective M1
-        // duration and inflammation threshold for transition.
-        // Chavakis et al. 2004 (doi:10.1016/j.micinf.2004.08.004)
-        if (sp->diabetic_mode && sp->glucose_enabled &&
+        // Effective M1 duration (shared by both modes as ceiling)
+        int eff_m1_duration = sp->immune.macrophage_m1_duration;
+        if (sp->diabetic.mode) {
+          eff_m1_duration = static_cast<int>(
+              sp->immune.macrophage_m1_duration * sp->diabetic.m1_duration_factor);
+        }
+        // AGE-RAGE prolongation
+        if (sp->diabetic.mode && sp->glucose_mod.enabled &&
             sp->age_m1_prolongation > 0) {
           auto* age_grid = sim->GetResourceManager()->GetDiffusionGrid(
               fields::kAGEId);
@@ -106,26 +111,39 @@ struct MacrophageBehavior : public Behavior {
                 eff_m1_duration * (1.0 + sp->age_m1_prolongation * age_val));
           }
         }
-
-        real_t infl = GetNetInflammation(sim, qpos);
-        bool cytokine_trigger =
-            (cell->GetStateAge() > sp->m1_transition_min_age &&
-             infl < sp->m1_transition_threshold);
-
-        // Timer ceiling fallback
-        bool timer_trigger = (cell->GetStateAge() > eff_m1_duration);
-
-        // Biofilm gate: persistent biofilm blocks M1->M2
-        bool biofilm_blocked = false;
-        if (sp->biofilm_enabled) {
-          auto* bg = sim->GetResourceManager()->GetDiffusionGrid(
-              fields::kBiofilmId);
-          if (bg->GetValue(qpos) > sp->biofilm_m1_block_threshold) {
-            biofilm_blocked = true;
-          }
+        // RA: sustained Th1 polarization extends M1 duration
+        // Firestein 2003 (doi:10.1038/nature01661)
+        if (sp->ra.enabled && sp->ra.m1_prolongation > 1.0) {
+          eff_m1_duration = static_cast<int>(
+              eff_m1_duration * sp->ra.m1_prolongation);
         }
 
-        if ((cytokine_trigger || timer_trigger) && !biofilm_blocked) {
+        bool should_transition = false;
+        if (sp->mech_m1_m2_transition) {
+          // Mechanistic: efferocytosis-count driven with timer ceiling.
+          // Engulfing apoptotic neutrophils is the primary M2 signal
+          // (PS receptor -> NR4A1 -> anti-inflammatory program). Once
+          // quota is met, transition fires stochastically. Timer ceiling
+          // models alternative M2 signals (IL-4, IL-10, glucocorticoids).
+          if (cell->GetEngulfCount() >= sp->mech_efferocytosis_quota) {
+            should_transition =
+                (sim->GetRandom()->Uniform(0, 1) < sp->mech_m2_transition_rate);
+          }
+          // Timer ceiling fallback (alternative M2 polarization signals)
+          if (cell->GetStateAge() > eff_m1_duration) {
+            should_transition = true;
+          }
+        } else {
+          // Parametric: cytokine threshold + timer ceiling
+          real_t infl = GetNetInflammation(sim, qpos);
+          bool cytokine_trigger =
+              (cell->GetStateAge() > sp->m1_transition_min_age &&
+               infl < sp->m1_transition_threshold);
+          bool timer_trigger = (cell->GetStateAge() > eff_m1_duration);
+          should_transition = (cytokine_trigger || timer_trigger);
+        }
+
+        if (should_transition && !biofilm_blocked) {
           cell->SetState(kM2Resolving);
         }
       }
@@ -140,13 +158,22 @@ struct MacrophageBehavior : public Behavior {
       immune::ProduceProInflammatory(qpos, sim, sp, m1_taper);
       immune::ProduceMMP(qpos, sim, sp);
       // M1 macrophages produce NO via iNOS (Witte & Barbul 2002)
-      if (sp->nitric_oxide_enabled) {
+      if (sp->nitric_oxide.enabled) {
         auto* no_grid = rm->GetDiffusionGrid(fields::kNitricOxideId);
         if (no_grid) {
           real_t no_rate = sp->no_m1_production * m1_taper;
-          if (sp->diabetic_mode) no_rate *= sp->diabetic_no_factor;
+          if (sp->diabetic.mode) no_rate *= sp->diabetic.no_factor;
           ScaledGrid no_sg(no_grid, sp);
           no_sg.AgentDeposit(no_sg.grid->GetBoxIndex(qpos), no_rate);
+        }
+      }
+      // M1 macrophages produce ROS via NADPH oxidase (Babior 2000)
+      if (sp->ros.enabled) {
+        auto* ros_grid = rm->GetDiffusionGrid(fields::kROSId);
+        if (ros_grid) {
+          real_t ros_rate = sp->ros.m1_burst * m1_taper;
+          ScaledGrid ros_sg(ros_grid, sp);
+          ros_sg.AgentDeposit(ros_sg.grid->GetBoxIndex(qpos), ros_rate);
         }
       }
     } else {
@@ -156,11 +183,11 @@ struct MacrophageBehavior : public Behavior {
       immune::ProduceVEGF(qpos, sim, sp);
       // M2 macrophages produce TIMP-1 as part of pro-resolution program.
       // Mantovani et al. 2004 (doi:10.1016/j.it.2004.09.015)
-      immune::ProduceTIMP(qpos, sim, sp, sp->timp_macrophage_rate * m2_taper);
+      immune::ProduceTIMP(qpos, sim, sp, sp->mmp.timp_macrophage_rate * m2_taper);
     }
 
     // Receptor-mediated TGF-beta endocytosis (both M1 and M2 have TbRII/TbRI)
-    if (sp->fibroblast_enabled && sp->tgfb_receptor_consumption > 0) {
+    if (sp->fibroblast.enabled && sp->fibroblast.tgfb_receptor_consumption > 0) {
       real_t local_tgfb = rm->GetDiffusionGrid(fields::kTGFBetaId)->GetValue(qpos);
       immune::ConsumeTGFBeta(qpos, sim, sp, local_tgfb);
     }
@@ -177,7 +204,7 @@ struct MacrophageBehavior : public Behavior {
                          const SimParam* sp) {
     auto* ctxt = sim->GetExecutionContext();
     int age_threshold = static_cast<int>(
-        sp->neutrophil_lifespan * sp->efferocytosis_age_fraction);
+        sp->immune.neutrophil_lifespan * sp->efferocytosis_age_fraction);
     bool engulfed = false;
     real_t r2 = sp->efferocytosis_radius * sp->efferocytosis_radius;
 
@@ -189,9 +216,9 @@ struct MacrophageBehavior : public Behavior {
       if (neutrophil->GetAge() < age_threshold) return;
 
       // Diabetic mode reduces efferocytosis probability
-      if (sp->diabetic_mode) {
+      if (sp->diabetic.mode) {
         auto* random = sim->GetRandom();
-        if (random->Uniform(0, 1) > sp->diabetic_efferocytosis_factor) {
+        if (random->Uniform(0, 1) > sp->diabetic.efferocytosis_factor) {
           return;
         }
       }
@@ -207,7 +234,12 @@ struct MacrophageBehavior : public Behavior {
     ctxt->ForEachNeighbor(detect, *cell, r2);
 
     if (engulfed) {
-      cell->SetState(kM2Resolving);
+      cell->IncrementEngulfCount();
+      if (!sp->mech_m1_m2_transition) {
+        // Parametric mode: immediate M2 transition on first engulfment
+        cell->SetState(kM2Resolving);
+      }
+      // Mechanistic mode: count accumulates, transition handled above
     }
   }
 };

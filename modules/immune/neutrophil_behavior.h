@@ -33,10 +33,10 @@ struct NeutrophilBehavior : public Behavior {
     cell->IncrementStateAge();
 
     // Hard ceiling lifespan
-    int lifespan = sp->neutrophil_lifespan;
-    if (sp->diabetic_mode) {
+    int lifespan = sp->immune.neutrophil_lifespan;
+    if (sp->diabetic.mode) {
       lifespan = static_cast<int>(
-          lifespan * sp->diabetic_neutrophil_lifespan_factor);
+          lifespan * sp->diabetic.neutrophil_lifespan_factor);
     }
     if (cell->GetAge() > lifespan) {
       ContinuumHandoff(cell);
@@ -45,10 +45,10 @@ struct NeutrophilBehavior : public Behavior {
     }
 
     // Stochastic apoptosis after minimum survival period
-    if (cell->GetAge() > sp->neutrophil_min_survival) {
-      real_t apop_rate = sp->neutrophil_apoptosis_rate;
-      if (sp->diabetic_mode) {
-        apop_rate *= sp->diabetic_neutrophil_apoptosis_factor;
+    if (cell->GetAge() > sp->immune.neutrophil_min_survival) {
+      real_t apop_rate = sp->immune.neutrophil_apoptosis_rate;
+      if (sp->diabetic.mode) {
+        apop_rate *= sp->diabetic.neutrophil_apoptosis_factor;
       }
       if (sim->GetRandom()->Uniform(0, 1) < apop_rate) {
         ContinuumHandoff(cell);
@@ -61,24 +61,35 @@ struct NeutrophilBehavior : public Behavior {
     // neutrophils at the wound site are the most active producers;
     // NF-kB signaling declines as they age toward apoptosis).
     Real3 qpos = ClampToBounds(cell->GetPosition(), sim->GetParam());
-    real_t cytokine_taper = std::exp(-sp->neutrophil_cytokine_taper * cell->GetAge());
+    real_t cytokine_taper = std::exp(-sp->immune.neutrophil_cytokine_taper * cell->GetAge());
     immune::ProduceProInflammatory(qpos, sim, sp, cytokine_taper);
 
     // MMP-8 production (dominant MMP source in acute wounds;
     // Nwomeh 1998: 100-200x more abundant than MMP-1).
     // Tapered with age like cytokine output.
     immune::ProduceMMP(qpos, sim, sp,
-                       sp->mmp_neutrophil_rate * cytokine_taper);
+                       sp->mmp.neutrophil_rate * cytokine_taper);
 
     // NO production via iNOS (Witte & Barbul 2002)
-    if (sp->nitric_oxide_enabled) {
+    if (sp->nitric_oxide.enabled) {
       auto* rm = sim->GetResourceManager();
       auto* no_grid = rm->GetDiffusionGrid(fields::kNitricOxideId);
       if (no_grid) {
         real_t no_rate = sp->no_neutrophil_production * cytokine_taper;
-        if (sp->diabetic_mode) no_rate *= sp->diabetic_no_factor;
+        if (sp->diabetic.mode) no_rate *= sp->diabetic.no_factor;
         ScaledGrid no_sg(no_grid, sp);
         no_sg.AgentDeposit(no_sg.grid->GetBoxIndex(qpos), no_rate);
+      }
+    }
+
+    // ROS production via NADPH oxidase respiratory burst (Babior 2000)
+    if (sp->ros.enabled) {
+      auto* rm2 = sim->GetResourceManager();
+      auto* ros_grid = rm2->GetDiffusionGrid(fields::kROSId);
+      if (ros_grid) {
+        real_t ros_rate = sp->ros.neutrophil_burst * cytokine_taper;
+        ScaledGrid ros_sg(ros_grid, sp);
+        ros_sg.AgentDeposit(ros_sg.grid->GetBoxIndex(qpos), ros_rate);
       }
     }
 
