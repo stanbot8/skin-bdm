@@ -1,0 +1,44 @@
+# Literature sources for bioelectric module
+bioelectric_parameters:
+  description: 'Literature sources for transepithelial potential, endogenous wound
+    currents, and galvanotaxis in wound healing.
+
+    '
+  sources:
+  - id: zhao2006
+    authors: Zhao M, Song B, Pu J, Wada T, Reid B, Tai G, Wang F, Guo A, Walczysko P,
+      Gu Y, Sasaki T, Suzuki A, Forrester JV, Ber HR, Rebe JA, McCaig CD, Penninger JM
+    year: 2006
+    title: Electrical signals control wound healing through phosphatidylinositol-3-OH
+      kinase-gamma and PTEN
+    journal: Nature 442(7101):457-460
+    doi: 10.1038/nature04925
+    notes: Endogenous lateral voltage gradient at wound edge drives galvanotaxis of
+      epithelial cells via PI3K-gamma/PTEN. Genetic disruption delays healing.
+      Supports galvanotaxis_strength and voltage source model.
+  - id: mccaig2005
+    authors: McCaig CD, Rajnicek AM, Song B, Zhao M
+    year: 2005
+    title: Controlling Cell Behavior Electrically, Current Views and Future Potential
+    journal: Physiol Rev 85(3):943-978
+    doi: 10.1152/physrev.00020.2004
+    notes: Comprehensive review of endogenous electric fields in tissues. Ionic
+      current spreads rapidly through extracellular fluid. Supports
+      voltage_diffusion parameter (fast ionic spread).
+  - id: barker1982
+    authors: Barker AT, Jaffe LF, Vanable JW
+    year: 1982
+    title: The glabrous epidermis of cavies contains a powerful battery
+    journal: Am J Physiol 242(3):R358-R366
+    doi: 10.1152/ajpregu.1982.242.3.R358
+    notes: Na+/K+ ATPase in intact epithelium maintains transepithelial potential.
+      Wound disrupts epithelial barrier, collapsing TEP locally. Supports
+      voltage_epithelial_source parameter.
+  - id: reid2014
+    authors: Reid B, Zhao M
+    year: 2014
+    title: The Electrical Response to Injury, Molecular Mechanisms and Wound Healing
+    journal: Adv Wound Care 3(2):184-201
+    doi: 10.1089/wound.2013.0442
+    notes: Diabetes impairs endogenous wound currents through reduced Na+/K+ ATPase
+      activity and ion channel dysfunction. Supports diabetic_voltage_factor.
