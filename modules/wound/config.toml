@@ -6,6 +6,5 @@ center_y = 0.0                 # y-center of punch biopsy (origin)
 radius = 12.0                  # radius of circular wound
 trigger_h = 0                  # hours at which wound fires (0 = start wounded)
 inward_bias = 0.3              # 0=pure random, 1=pure center-directed division
-vascular_damage = 0.5          # (superseded by Vascular field; kept for compat)
 homeostatic_fold_h = 0         # hours in same stratum before agent folds to continuum (0=disabled)
 dissolution_closure_pct = 90   # dissolve all agents once wound closure >= this % (0=disabled, safety net only)
