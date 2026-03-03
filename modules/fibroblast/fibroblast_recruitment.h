@@ -7,6 +7,7 @@
 #include "fibroblast/fibroblast.h"
 #include "fibroblast/fibroblast_behavior.h"
 #include "infra/sim_param.h"
+#include "core/pde.h"
 #include "core/operation/operation.h"
 
 namespace bdm {
@@ -26,30 +27,37 @@ struct FibroblastRecruitment : public StandaloneOperationImpl {
     auto* scheduler = sim->GetScheduler();
     auto* sp = sim->GetParam()->Get<SimParam>();
 
-    if (!sp->wound_enabled || !sp->fibroblast_enabled) return;
+    if (!sp->wound.enabled || !sp->fibroblast.enabled) return;
+    PerfTimer timer(sp->debug_perf);
 
     uint64_t step = GetGlobalStep(sim);
-    uint64_t wound_step = static_cast<uint64_t>(sp->wound_trigger_step);
+    uint64_t wound_step = static_cast<uint64_t>(sp->wound.trigger_step);
     if (step <= wound_step) return;
 
     uint64_t wound_age = step - wound_step;
-    int waves = std::max(1, sp->fibroblast_spawn_waves);
+    int waves = std::max(1, sp->fibroblast.spawn_waves);
 
     if (waves_spawned_ >= waves) return;  // all waves done
 
     // Compute wave trigger time
-    uint64_t base_delay = static_cast<uint64_t>(sp->fibroblast_spawn_delay);
-    uint64_t window = static_cast<uint64_t>(sp->fibroblast_spawn_window);
+    uint64_t base_delay = static_cast<uint64_t>(sp->fibroblast.spawn_delay);
+    uint64_t window = static_cast<uint64_t>(sp->fibroblast.spawn_window);
     uint64_t wave_interval = (waves > 1) ? window / (waves - 1) : 0;
     uint64_t wave_trigger = base_delay + waves_spawned_ * wave_interval;
 
     if (wound_age >= wave_trigger) {
       // Compute total cell count (same formula as before)
       if (total_cells_ < 0) {
-        real_t outer_r = sp->wound_radius + sp->dermal_fibroblast_margin;
+        real_t outer_r = sp->wound.radius + sp->dermal_fibroblast_margin;
         total_cells_ = static_cast<int>(
-            std::ceil(2.0 * M_PI * outer_r / sp->fibroblast_diameter *
-                      sp->fibroblast_density_factor));
+            std::ceil(2.0 * M_PI * outer_r / sp->fibroblast.diameter *
+                      sp->fibroblast.density_factor));
+        // RA pannus: FLS hyperplasia boosts fibroblast recruitment
+        // Firestein 2003 (doi:10.1038/nature01661)
+        if (sp->ra.enabled && sp->ra.pannus_fibroblast_boost > 1.0) {
+          total_cells_ = static_cast<int>(
+              total_cells_ * sp->ra.pannus_fibroblast_boost);
+        }
         if (total_cells_ < 6) total_cells_ = 6;
       }
 
@@ -63,6 +71,7 @@ struct FibroblastRecruitment : public StandaloneOperationImpl {
       SpawnFibroblasts(sim, sp, this_wave, waves_spawned_);
       waves_spawned_++;
     }
+    timer.Print("fibroblast_recruitment");
   }
 
  private:
@@ -74,10 +83,10 @@ struct FibroblastRecruitment : public StandaloneOperationImpl {
     auto* ctxt = sim->GetExecutionContext();
     auto* random = sim->GetRandom();
 
-    real_t cx = sp->wound_center_x;
-    real_t cy = sp->wound_center_y;
-    real_t r = sp->wound_radius;
-    real_t d = sp->fibroblast_diameter;
+    real_t cx = sp->wound.center_x;
+    real_t cy = sp->wound.center_y;
+    real_t r = sp->wound.radius;
+    real_t d = sp->fibroblast.diameter;
     real_t z = sp->dermal_fibroblast_depth;  // in dermis (z < 0)
     real_t outer_r = r + sp->dermal_fibroblast_margin;
 

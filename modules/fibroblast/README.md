@@ -32,7 +32,7 @@ TGF-beta production uses an exponential taper: `tgfb_rate * exp(-taper_rate * st
 2. **Tissue density clearance**: resident tissue cells (keratinocytes, endothelial cells) clear TGF-beta at a rate proportional to local tissue density (max of stratum, vascular). Open wound = low density = low clearance; healed tissue = high clearance.
 3. **Decorin sequestration**: collagen bound decorin neutralizes active TGF-beta1 with second order kinetics (rate * collagen * tgfb). As collagen accumulates in the remodeling phase, this provides accelerating late phase clearance (Yamaguchi et al. 1990, [DOI](https://doi.org/10.1038/346281a0))
 
-**Collagen PDE:** no diffusion (structural deposit), optional MMP decay. Deposited by myofibroblasts proportional to local TGF-beta concentration.
+**Collagen PDE:** no diffusion (structural deposit), optional MMP decay. Deposited by myofibroblasts at a constant rate (parametric mode) or via a constitutive + TGF-beta-responsive model (mechanistic mode).
 
 **Feedback loop with mechanistic clearance:**
 ```
@@ -91,11 +91,30 @@ From modules/fibroblast/config.toml:
 | `tgfb_rate` | 0.001 | per step | TGF-beta per myofibroblast (secondary to M2 source) | Calibrated |
 | `tgfb_taper_rate` | 0.002 | - | Exponential taper for TGF-beta production | Tomasek 2002 |
 | `m2_tgfb_rate` | 0.005 | per step | TGF-beta per M2 macrophage | Koh & DiPietro 2011 ([DOI](https://doi.org/10.1017/S1462399411001943)) |
-| `collagen_deposition_rate` | 0.0005 | per step | Collagen per myofibroblast | Murphy et al. 2012 |
+| `collagen_deposition_rate` | 0.0005 | per step | Collagen per myofibroblast (parametric) | Murphy et al. 2012 |
 | `collagen_decay` | 0.0 | per step | MMP remodeling (0 = permanent) | Convention |
+| `mech_collagen_deposition` | false | bool | Constitutive + TGF-b-responsive collagen (test mode) | Convention |
+| `mech_collagen_tgfb_km` | 0.035 | a.u. | TGF-beta half-max for Michaelis-Menten component | Calibrated |
+| `mech_collagen_vmax` | 0.00025 | per step | TGF-b-responsive component Vmax | Calibrated |
+| `mech_collagen_basal` | 0.00035 | per step | Constitutive myofibroblast collagen rate | Calibrated |
 | `decorin_sequestration_rate` | 0.08 | - | Collagen bound decorin neutralizes active TGF-beta | Yamaguchi et al. 1990 ([DOI](https://doi.org/10.1038/346281a0)) |
 | `tgfb_receptor_consumption` | 0.001 | per cell | Per-cell TbRII/TbRI endocytosis rate | Vilar et al. 2006 ([DOI](https://doi.org/10.1016/j.jtbi.2006.03.024)) |
 | `tgfb_tissue_clearance` | 0.01 | - | Receptor clearance by resident tissue cells scaled by local density | Wakefield et al. 1990 |
+
+### Mechanistic toggle
+
+When `mech_collagen_deposition = true`, the flat collagen deposition rate is replaced by a constitutive + TGF-beta-responsive model:
+
+```
+deposit = basal + Vmax * [TGF-b] / (Km + [TGF-b])
+```
+
+The basal component represents the epigenetically locked collagen program that myofibroblasts maintain after differentiation (constitutive synthesis independent of ongoing TGF-beta signaling). The Michaelis-Menten component models TGF-beta receptor occupancy modulation of synthesis rate. This produces a more linear collagen accumulation curve compared to pure Michaelis-Menten, which tracks TGF-beta too tightly and creates an S-shaped curve.
+
+At default parameters (basal=0.00035, Vmax=0.00025, Km=0.035):
+- Zero TGF-beta: deposit = 0.00035 (constitutive only)
+- Moderate TGF-beta (Km): deposit = 0.000475
+- Saturating TGF-beta: deposit = 0.0006
 
 ## Coupling
 
@@ -159,7 +178,7 @@ Reference curves for validation (full citations in [SOURCES.yaml](SOURCES.yaml))
 | File | Purpose |
 |------|---------|
 | `fibroblast.h` | Fibroblast agent with activation states |
-| `fibroblast_behavior.h` | State machine, TGF-beta production, collagen deposition |
+| `fibroblast_behavior.h` | State machine, TGF-beta production, collagen deposition (parametric or mechanistic) |
 | `fibroblast_recruitment.h` | Staggered wave recruitment logic |
 | `tgfbeta_pde.h` | TGF-beta diffusion field |
 | `collagen_pde.h` | Collagen structural deposit field |
