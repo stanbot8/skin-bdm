@@ -1,0 +1,13 @@
+source,Galiano RD et al. (2004)
+doi,10.1111/j.1067-1927.2004.12404.x
+figure,Fig 2 - db/db wound closure vs wild-type
+wound_type,excisional punch biopsy (db/db mouse)
+notes,"Wound closure in db/db mice vs controls; complete healing at 27.75d vs 11.86d (2.3x delay)"
+day,closure_pct_diabetic,closure_pct_control
+0,0,0
+3,5,25
+7,18,65
+10,35,85
+14,55,95
+21,80,100
+28,92,100

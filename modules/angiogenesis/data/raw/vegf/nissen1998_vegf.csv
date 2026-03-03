@@ -1,0 +1,13 @@
+source,Nissen NN et al. (1998)
+pmc,PMC1858442
+figure,Fig 3 - VEGF protein levels in wound fluid
+wound_type,excisional punch biopsy (murine)
+notes,"VEGF protein quantified by ELISA in wound fluid; peak day 3-5 during proliferative phase"
+day,vegf_normalized
+0,0.05
+1,0.20
+3,0.80
+5,1.00
+7,0.85
+10,0.50
+14,0.20

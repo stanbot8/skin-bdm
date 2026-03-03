@@ -1,0 +1,13 @@
+source,Clark RAF et al. (1982)
+doi,10.1111/1523-1747.ep12500075
+figure,Fig 3 - Fibronectin and fibrin in wound provisional matrix
+wound_type,excisional wound (human)
+notes,"Immunohistochemistry of fibronectin in wound bed; fibronectin co-deposits with fibrin then builds provisional matrix"
+day,fibronectin_normalized
+0,0.10
+1,0.30
+3,0.60
+7,1.00
+10,0.95
+14,0.65
+21,0.30

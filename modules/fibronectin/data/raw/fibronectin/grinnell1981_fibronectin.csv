@@ -1,0 +1,14 @@
+source,Grinnell F et al. (1981)
+doi,10.1111/1523-1747.ep12525694
+figure,Fig 5 - Fibronectin deposition in excisional wounds
+wound_type,excisional wound (porcine)
+notes,"Immunofluorescence staining intensity normalized; plasma FN early, cellular FN builds matrix"
+day,fibronectin_normalized
+0,0.10
+1,0.20
+3,0.45
+7,0.90
+10,1.00
+14,0.75
+21,0.40
+28,0.15
