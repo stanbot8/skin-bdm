@@ -34,3 +34,32 @@ wound_ph:
     notes: 'Clinical evidence that acidification of wound bed accelerates healing; alkaline pH promotes bacterial colonization.
 
       '
+ph_kinetics:
+  description: Wound pH (alkalinity) recovery timecourse, normalized
+  consensus: data/ph_kinetics.csv
+  columns:
+  - day
+  - ph_alkalinity_normalized
+  units:
+    day: days
+    ph_alkalinity_normalized: fraction (1.0 = alkaline wound, 0.0 = acidic healed)
+  normalization: direct (1.0 = fresh wound pH 7.4, 0.0 = normal skin pH 5.5)
+  notes: 'Wound alkalinity starts at 1.0 (pH 7.4) from serum exposure and decays
+    toward 0.0 (pH 5.5) as tissue metabolism produces lactic acid and
+    re-epithelialization restores the acid mantle. Recovery largely complete
+    by day 14 in normal wounds.
+
+    '
+  sources:
+  - id: schneider2007
+    authors: Schneider LA, Korber A, Grabbe S, Dissemond J
+    year: 2007
+    title: 'Influence of pH on wound-healing: a new perspective for wound-therapy?'
+    journal: Arch Dermatol Res 298(9):413-420
+    doi: 10.1007/s00403-006-0713-x
+  - id: gethin2007
+    authors: Gethin G
+    year: 2007
+    title: The significance of surface pH in chronic wounds
+    journal: Wounds UK 3(3):52-56
+    url: https://www.wounds-uk.com/journals/issue/15/article-details/the-significance-of-surface-ph-in-chronic-wounds
