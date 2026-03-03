@@ -38,6 +38,20 @@ constexpr const char* kProMMP = "ProMMP";
 constexpr const char* kAGE = "AGE";
 constexpr const char* kSenescence = "Senescence";
 constexpr const char* kNerve = "Nerve";
+constexpr const char* kROS = "ROS";
+constexpr const char* kStiffness = "Stiffness";
+constexpr const char* kLymphatic = "Lymphatic";
+constexpr const char* kEdema = "Edema";
+constexpr const char* kVoltage = "Voltage";
+constexpr const char* kTNFAlpha = "TNFAlpha";
+constexpr const char* kCartilage = "Cartilage";
+constexpr const char* kIL6 = "IL6";
+constexpr const char* kSynovialFluid = "SynovialFluid";
+constexpr const char* kTCellDensity = "TCellDensity";
+constexpr const char* kBone = "Bone";
+constexpr const char* kScab = "Scab";
+constexpr const char* kFluence = "Fluence";
+constexpr const char* kOpsin = "Opsin";
 
 // Derived composite field names (not DiffusionGrid IDs).
 constexpr const char* kECMQuality = "ECMQuality";
@@ -79,6 +93,20 @@ enum : int {
   kAGEId = 30,
   kSenescenceId = 31,
   kNerveId = 32,
+  kROSId = 33,
+  kStiffnessId = 34,
+  kLymphaticId = 35,
+  kEdemaId = 36,
+  kVoltageId = 37,
+  kTNFAlphaId = 38,
+  kCartilageId = 39,
+  kIL6Id = 40,
+  kSynovialFluidId = 41,
+  kTCellDensityId = 42,
+  kBoneId = 43,
+  kScabId = 44,
+  kFluenceId = 45,
+  kOpsinId = 46,
 };
 
 }  // namespace fields

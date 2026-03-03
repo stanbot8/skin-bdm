@@ -2,18 +2,11 @@
 export = true
 interval = 200
 
-# Keratinocyte agent viz registered dynamically (wound_enabled only)
-
 [[visualize_diffusion]]
   name = "Stratum"
 
 [[visualize_diffusion]]
   name = "Vascular"
-
-# ---- Visualization coloring ----
-# Named colormaps applied to ParaView state file by scripts/viz/patch_pvsm.py.
-# First colormap section is the default; others match by name substring.
-# Each cN = [value, R, G, B] entry defines one color stop.
 
 [visualization.colormap.skin_strata]
 color_space = "Step"
@@ -26,14 +19,14 @@ c5 = [5.0, 0.750, 0.480, 0.470]   # Scar Basale
 c6 = [6.0, 0.820, 0.620, 0.550]   # Scar Spinosum
 c7 = [7.0, 0.870, 0.750, 0.620]   # Scar Granulosum
 c8 = [8.0, 0.900, 0.850, 0.780]   # Scar Corneum
-c9 = [10.0, 0.929, 0.780, 0.686]  # Papillary dermis (light peach)
-c10 = [11.0, 0.729, 0.506, 0.400] # Reticular dermis (warm brown)
-c11 = [12.0, 0.529, 0.353, 0.294] # Hypodermis (deep brown)
+c9 = [10.0, 0.929, 0.780, 0.686]  # Papillary dermis
+c10 = [11.0, 0.729, 0.506, 0.400] # Reticular dermis
+c11 = [12.0, 0.529, 0.353, 0.294] # Hypodermis
 
 [visualization.colormap.immune_types]
 color_space = "Step"
-c0 = [0.0, 1.000, 1.000, 1.000]   # Neutrophil (white)
-c1 = [1.0, 1.000, 0.850, 0.200]   # Macrophage (yellow)
+c0 = [0.0, 1.000, 1.000, 1.000]   # Neutrophil
+c1 = [1.0, 1.000, 0.850, 0.200]   # Macrophage
 
 [visualization.colormap.tumor_types]
 color_space = "Step"
@@ -44,7 +37,6 @@ theta_resolution = 8
 phi_resolution = 8
 
 [visualization.rendering]
-# Representation for diffusion grids: Volume, Surface, Outline, Slice
 diffusion_representation = "Volume"
 
 [visualization.opacity]
@@ -56,20 +48,22 @@ focal_point = [0.0, 0.0, 15.0]
 view_up = [0, 0, 1]
 view_angle = 40
 
-# ==================================================================
-# Core tissue biology
-# Module-specific params live in modules/*/config.toml and are merged
-# at runtime by scripts/config/merge_config.py -> bdm.toml (gitignored).
-# ==================================================================
+# Module configs merged at runtime by scripts/config/merge_config.py -> bdm.toml
+
+[geometry]
+patch_um = 2000.0
+depth_um = 1500.0
+height_um = 1500.0
+margin_um = 500.0
+um_per_unit = 50.0
+voxel_um = 250.0
 
 [skin]
-# ---- Dermis (continuum) ----
 oxygen_diffusion = 0.1
 oxygen_decay = 0.01
 oxygen_basal_conc = 1.0
 oxygen_decay_length = 8.0
 
-# KGF growth factor
 kgf_diffusion = 0
 kgf_decay = 0
 kgf_basal_conc = 2.0
@@ -77,17 +71,16 @@ kgf_half_maximal = 0.5
 kgf_max_boost = 1.0
 kgf_decay_length = 5.0
 
-# Water / tissue moisture
 water_diffusion = 1e-4
 water_decay = 0.002
 water_basal_conc = 1.0
 water_decay_length = 12.0
-water_recovery_rate = 0.02         # serum hydration rate per step (Sakai et al. 2005)
+water_recovery_rate = 0.02
 water_surface_loss_rate = 0.03
 water_migration_threshold = 0.3
 water_prolif_threshold = 0.4
 
-# ---- Basale (agents on event) ----
+# Cell cycle durations (hours)
 g1_duration = 7.0
 s_duration = 6.0
 g2_duration = 3.0
@@ -104,10 +97,9 @@ stem_fraction = 0.50
 repulsion_coeff = 5.0
 attraction_coeff = 0.0
 
-shedding_delay_h = 9999.9       # hours (disabled)
-apoptosis_delay_h = 9999.9     # hours (disabled)
+shedding_delay_h = 9999.9
+apoptosis_delay_h = 9999.9
 
-# ---- Epidermis (continuum) ----
 calcium_diffusion = 0
 calcium_decay = 0
 calcium_basal = 0.05
@@ -120,77 +112,47 @@ ca_granular_threshold = 0.5
 ca_cornified_threshold = 1.0
 spinous_threshold = 6.0
 
-# Layer thicknesses (relative to basement membrane at z=0)
-basal_thickness = 3.0               # basale layer (z = 0 to 3)
-spinous_thickness = 15.0            # spinosum layer (z = 3 to 18)
-granular_thickness = 7.0            # granulosum layer (z = 18 to 25)
-papillary_thickness = 2.0           # papillary dermis (z = 0 to -2)
-reticular_thickness = 6.0           # reticular dermis (z = -2 to -8)
+# Layer thicknesses relative to basement membrane (z=0)
+basal_thickness = 3.0
+spinous_thickness = 15.0
+granular_thickness = 7.0
+papillary_thickness = 2.0
+reticular_thickness = 6.0
 
-# ---- Simulation ----
-tissue_min = -20
-tissue_max = 20
 duration_days = 30
 
-# ---- Dynamic field coupling ----
 calcium_recovery_rate = 0.002
 oxygen_prolif_threshold = 0.3
 oxygen_recovery_enabled = true
 
-# ---- Cell migration (multi-cue: O2 chemotaxis + VEGF + fibronectin + CIL) ----
 migration_enabled = true
-migration_speed = 3.0               # intrinsic crawl force (~30 um/h: Larsen et al. 2006)
-migration_gradient_scale = 15.0     # calibrates O2 gradient magnitude to speed [0.3,1]
-vegf_migration_weight = 0.5         # relative weight of VEGF chemotaxis vs O2 (Bauer 2005)
-fibronectin_haptotaxis_weight = 0.3 # relative weight of FN haptotaxis vs O2 (Grinnell 1984)
-cil_suppression = 1.0               # CIL speed factor; 1.0=disabled (requires sheet-migration for correct topology)
+migration_speed = 3.0
+migration_gradient_scale = 15.0
+vegf_migration_weight = 0.5
+fibronectin_haptotaxis_weight = 0.3
+cil_suppression = 1.0
 
-# ---- Per-cell UWYN handoff ----
-handoff_delay_h = 50            # hours before cell dissolves
-
-# ---- Metrics export ----
-metrics_interval_h = 10         # hours between CSV rows
+handoff_delay_h = 50
+metrics_interval_h = 10
 metrics_autoopen = true
-headless = false                # set true to suppress xdg-open (batch/AI runs override this)
+headless = false
 
-# ---- Performance: PDE sub-cycling ----
-# Solve slow-diffusing fields every N steps instead of every step.
-# Reduces FTCS solver invocations. 1 = every step (default), 5 = every 5.
-# subcycle_slow: water (D=1e-4), hyaluronan (D=0.01), vascular (D=0.03)
-# subcycle_medium: inflammation (D=0.05), TGF-beta (D=0.03), MMP, VEGF
+# PDE sub-cycling (N = solve every N steps)
 subcycle_slow = 10
 subcycle_medium = 5
+derived_fields_subcycle = 5
+migration_subcycle = 3
+homeostasis_subcycle = 3
 
-# Agent behavior sub-cycling (set at runtime, not via BDM's FTCS SetTimeStep)
-derived_fields_subcycle = 5    # ECM/viability composites (slow-changing)
-migration_subcycle = 3         # O2/VEGF/FN gradient cache (PDE timescale)
-homeostasis_subcycle = 3       # basal division lookups outside wound zone
-
-# ---- Basal density continuum ----
-# Homeostatic basal keratinocyte population outside the wound front.
-# Logistic PDE: rho grows toward rho_max at full O2/KGF/water, decays via
-# differentiation outflux. Agents that drift beyond demotion_radius_factor*r
-# dissolve back into this field, keeping explicit agents at the wound edge only.
 basal_density_enabled = true
 basal_density_max = 1.0
 basal_density_div_rate = 0.01
 basal_density_diff_rate = 0.005
 basal_density_subcycle = 5
-# Demotion fires at dist > factor*wound_radius. With wound_radius=12 and
-# max_ta_divisions=4 (each ~5 units outward), max proliferative spread ≈ 32.
-# Factor of 2.8 -> 33.6: just beyond the reachable spread; safely beyond
-# the tissue corners (r_max ≈ 28 from origin). Scales automatically
-# when tissue grows -- no wound-zone cells are ever prematurely demoted.
 demotion_radius_factor = 2.8
 
-# ---- Hot-reload ----
-# Watch bdm.toml for changes and re-apply parameters at runtime.
-# Edit bdm.toml while the sim runs to tune rates/thresholds interactively.
 hot_reload = false
 
-# ---- Derived composite fields ----
-# Precomputed once per step from source grids. ECM quality, tissue viability,
-# and wound microenvironment index for analysis and agent decisions.
 [skin.derived]
 ecm_weight_collagen = 0.4
 ecm_weight_fibronectin = 0.3
@@ -198,18 +160,11 @@ ecm_weight_elastin = 0.2
 ecm_weight_fibrin = 0.1
 ecm_migration_boost = 1.5
 
-# ---- Multi-resolution ----
-# Structural fields (collagen, fibronectin, elastin, fibrin, scar, dermis,
-# biofilm, hyaluronan, pH, tumor) at coarser grid for performance.
-# 0 = same as grid_resolution. Nonzero = coarse resolution for structural fields.
 grid_resolution_structural = 6
 
-# ---- Debug profile ----
-# Enable per-module diagnostic output (all default to false).
-# Toggle in bdm.toml or pass --config to override.
 [skin.debug]
-immune = false         # immune cell writes, spawning, migration
-fibroblast = false     # collagen, TGF-beta, state transitions
-wound = false          # wound creation, resolution, coverage
-scaled_grid = false    # ScaledGrid init (agent_factor)
-perf = false           # wall-clock timing of major operations
+immune = false
+fibroblast = false
+wound = false
+scaled_grid = false
+perf = false
