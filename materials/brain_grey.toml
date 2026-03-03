@@ -1,0 +1,24 @@
+# Material: brain grey matter (neuronal cell bodies, synapses)
+# Jacques 2013 (doi:10.1088/0031-9155/58/11/R37)
+[material]
+id = 10
+name = "brain_grey"
+category = "neural"
+
+[material.optical]
+absorption = 0.1        # mu_a (mm^-1) at 920 nm, low for two-photon window
+scattering = 1.0        # mu_s' (mm^-1), moderate scattering
+anisotropy = 0.9        # g factor, forward-peaked
+
+[material.mechanical]
+stiffness = 0.5         # kPa, very soft
+density = 1.04          # g/cm^3
+
+[material.thermal]
+conductivity = 0.51     # W/(m*K), Elwassif et al. 2006
+specific_heat = 3630    # J/(kg*K)
+
+[material.biological]
+cell_types = ["neuron", "astrocyte", "microglia", "oligodendrocyte"]
+vascularized = true
+innervated = false       # it IS the neural tissue

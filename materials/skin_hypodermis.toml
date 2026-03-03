@@ -1,0 +1,23 @@
+# Material: skin hypodermis (subcutaneous adipose tissue)
+[material]
+id = 3
+name = "skin_hypodermis"
+category = "adipose"
+
+[material.optical]
+absorption = 0.15       # mu_a (mm^-1) at 920 nm, lipid absorption
+scattering = 1.0        # mu_s' (mm^-1)
+anisotropy = 0.9        # g factor
+
+[material.mechanical]
+stiffness = 0.5         # kPa, soft adipose tissue
+density = 0.95          # g/cm^3
+
+[material.thermal]
+conductivity = 0.20     # W/(m*K), fat is insulating
+specific_heat = 2500    # J/(kg*K)
+
+[material.biological]
+cell_types = ["adipocyte", "fibroblast", "macrophage"]
+vascularized = true
+innervated = true

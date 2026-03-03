@@ -1,0 +1,24 @@
+# Material: articular cartilage (avascular connective tissue)
+# Mow & Huiskes 2005, Buckwalter et al. 2005
+[material]
+id = 21
+name = "cartilage"
+category = "connective"
+
+[material.optical]
+absorption = 0.05       # mu_a (mm^-1) at 920 nm
+scattering = 1.2        # mu_s' (mm^-1)
+anisotropy = 0.85       # g factor
+
+[material.mechanical]
+stiffness = 800.0       # kPa, articular cartilage (compressive)
+density = 1.1           # g/cm^3
+
+[material.thermal]
+conductivity = 0.21     # W/(m*K)
+specific_heat = 3400    # J/(kg*K)
+
+[material.biological]
+cell_types = ["chondrocyte"]
+vascularized = false    # avascular, nutrient diffusion from synovial fluid
+innervated = false      # aneural
