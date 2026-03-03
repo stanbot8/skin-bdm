@@ -62,6 +62,21 @@ view_angle = 40
 # at runtime by scripts/config/merge_config.py -> bdm.toml (gitignored).
 # ==================================================================
 
+# ---- Geometry: spatial domain and physical scale ----
+# All simulation bounds, tissue extent, and grid resolution derive from
+# these values. Change here to resize the patch, zoom in/out, or adjust
+# voxel density. Physical units (um) provide intuitive reasoning about
+# scale; um_per_unit converts to the internal coordinate system.
+#
+# Default: 3 mm x 3 mm patch, 3 mm deep, 250 um voxels.
+[geometry]
+patch_um = 2000.0       # tissue lateral extent (um); centered at origin
+depth_um = 1500.0       # domain depth below basement membrane (um)
+height_um = 1500.0      # domain height above basement membrane (um)
+margin_um = 500.0       # empty margin beyond tissue on each side (um)
+um_per_unit = 50.0      # physical scale: 1 simulation unit = 50 um
+voxel_um = 250.0        # target voxel edge length (um)
+
 [skin]
 # ---- Dermis (continuum) ----
 oxygen_diffusion = 0.1
@@ -128,8 +143,7 @@ papillary_thickness = 2.0           # papillary dermis (z = 0 to -2)
 reticular_thickness = 6.0           # reticular dermis (z = -2 to -8)
 
 # ---- Simulation ----
-tissue_min = -20
-tissue_max = 20
+# tissue_min/tissue_max and grid_resolution are now derived from [geometry].
 duration_days = 30
 
 # ---- Dynamic field coupling ----

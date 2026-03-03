@@ -29,19 +29,14 @@ inline int Simulate(int argc, const char** argv) {
 
   auto set_param = [](Param* param) {
     param->bound_space = Param::BoundSpaceMode::kClosed;
-    // Fixed domain locks DiffusionGrid size independent of agent presence.
-    // Origin-centered: [-30,30]^3 = 60 units, wound at (0,0).
-    // Tissue [-20,20] in x/y; z covers dermis (-10) to cornified (25) + headroom.
+    // Temporary defaults; overwritten after LoadConfig derives bounds from
+    // [geometry]. BioDynaMo requires these set before Simulation construction.
     param->min_bound = -30;
     param->max_bound = 30;
     param->simulation_time_step = 0.1;  // 1 step = 0.1 hours (6 minutes)
     // Gradients are computed on-the-fly where needed (chemotaxis only uses
     // 2 of ~16 fields). Precomputing all gradients every step is pure waste.
     param->calculate_gradients = false;
-    // Per-axis bounds for position clamping (match tissue range)
-    auto* sp = const_cast<SimParam*>(param->Get<SimParam>());
-    sp->bounds_min = {-20, -20, -30};  // x/y: tissue range, z: domain
-    sp->bounds_max = {20, 20, 30};     // x/y: tissue range, z: domain
   };
 
   Simulation simulation(argc, argv, set_param);
@@ -54,6 +49,15 @@ inline int Simulate(int argc, const char** argv) {
         simulation.GetParam()->Get<SimParam>());
     sp_load->LoadConfig(toml_config);
     sp_load->ValidateConfig();
+
+    // Apply geometry-derived domain bounds to BDM's Param.
+    // Uses the larger of x/y domain extent and z domain extent as the
+    // scalar bound (BDM only supports a single min_bound/max_bound).
+    auto* param = const_cast<Param*>(simulation.GetParam());
+    real_t domain_half = std::max(sp_load->domain_max,
+                                  sp_load->domain_z_max);
+    param->min_bound = -domain_half;
+    param->max_bound = domain_half;
   }
 
   // Lock grid dimensions to param bounds (min_bound/max_bound).
@@ -75,11 +79,11 @@ inline int Simulate(int argc, const char** argv) {
     // agent-specific LUT created by patch_pvsm.py)
     param->visualize_agents["Keratinocyte"] = {"stratum_"};
     // ImmuneCell only exists in wound scenarios
-    if (sp->wound_enabled) {
+    if (sp->wound.enabled) {
       param->visualize_agents["ImmuneCell"] = {"immune_type_"};
     }
     // TumorCell + Tumor field only when tumor module is enabled
-    if (sp->tumor_enabled) {
+    if (sp->tumor.enabled) {
       param->visualize_agents["TumorCell"] = {"tumor_type_"};
       Param::VisualizeDiffusion vd;
       vd.name = "Tumor";
@@ -160,7 +164,7 @@ inline int Simulate(int argc, const char** argv) {
   }
 
   // --- Final tumor cleanup: convert remaining agents to field ---
-  if (sp->tumor_enabled) {
+  if (sp->tumor.enabled) {
     auto* rm_cleanup = simulation.GetResourceManager();
     int converted = 0;
 
