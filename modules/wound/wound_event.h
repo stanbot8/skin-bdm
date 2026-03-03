@@ -34,17 +34,17 @@ struct WoundEvent : public StandaloneOperationImpl {
     auto* scheduler = sim->GetScheduler();
     auto* sp = sim->GetParam()->Get<SimParam>();
 
-    if (!sp->wound_enabled) return;
+    if (!sp->wound.enabled) return;
 
     uint64_t step = GetGlobalStep(sim);
-    if (fired_ || step != static_cast<uint64_t>(sp->wound_trigger_step)) {
+    if (fired_ || step != static_cast<uint64_t>(sp->wound.trigger_step)) {
       return;
     }
     fired_ = true;
 
-    real_t cx = sp->wound_center_x;
-    real_t cy = sp->wound_center_y;
-    real_t r = sp->wound_radius;
+    real_t cx = sp->wound.center_x;
+    real_t cy = sp->wound.center_y;
+    real_t r = sp->wound.radius;
 
     // Delegate field disruption to each PDE channel
     fields_->ApplyWoundAll(sim, cx, cy, r);
@@ -120,10 +120,11 @@ struct WoundResolution : public StandaloneOperationImpl {
     auto* scheduler = sim->GetScheduler();
     auto* sp = sim->GetParam()->Get<SimParam>();
 
-    if (!sp->wound_enabled || resolved_) return;
+    if (!sp->wound.enabled || resolved_) return;
+    PerfTimer timer(sp->debug_perf);
 
     uint64_t step = GetGlobalStep(sim);
-    uint64_t wound_step = static_cast<uint64_t>(sp->wound_trigger_step);
+    uint64_t wound_step = static_cast<uint64_t>(sp->wound.trigger_step);
     if (step <= wound_step) return;
 
     bool is_last = (sp->num_steps > 1 &&
@@ -148,13 +149,13 @@ struct WoundResolution : public StandaloneOperationImpl {
       auto* stratum_grid = rm->GetDiffusionGrid(fields::kStratumId);
       if (stratum_grid) {
         GridContext ctx(stratum_grid, sp);
-        real_t r2 = sp->wound_radius * sp->wound_radius;
+        real_t r2 = sp->wound.radius * sp->wound.radius;
         real_t z_max = sp->volume_z_cornified + ctx.box_len;
         for (size_t idx = 0; idx < ctx.n; idx++) {
           real_t z = ctx.Z(idx);
           if (z < 0 || z > z_max) continue;
           real_t x = ctx.X(idx), y = ctx.Y(idx);
-          real_t dx = x - sp->wound_center_x, dy = y - sp->wound_center_y;
+          real_t dx = x - sp->wound.center_x, dy = y - sp->wound.center_y;
           if (dx * dx + dy * dy > r2) continue;
           real_t sv = stratum_grid->GetConcentration(idx);
           if (sv < 0) {
@@ -183,6 +184,7 @@ struct WoundResolution : public StandaloneOperationImpl {
                 << step << (is_last ? " (safety net)" : " (keratinocyte dissolution)")
                 << std::endl;
     }
+    timer.Print("wound_resolution");
   }
 
  private:
@@ -196,14 +198,14 @@ struct WoundResolution : public StandaloneOperationImpl {
 
     GridContext ctx(stratum_grid, sp);
     int total = 0, filled = 0;
-    real_t r2 = sp->wound_radius * sp->wound_radius;
+    real_t r2 = sp->wound.radius * sp->wound.radius;
     real_t z_max = sp->volume_z_cornified + ctx.box_len;
 
     for (size_t idx = 0; idx < ctx.n; idx++) {
       real_t z = ctx.Z(idx);
       if (z < 0 || z > z_max) continue;
       real_t x = ctx.X(idx), y = ctx.Y(idx);
-      real_t dx = x - sp->wound_center_x, dy = y - sp->wound_center_y;
+      real_t dx = x - sp->wound.center_x, dy = y - sp->wound.center_y;
       if (dx * dx + dy * dy > r2) continue;
       total++;
       if (stratum_grid->GetConcentration(idx) > -0.5) filled++;
