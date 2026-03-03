@@ -33,6 +33,10 @@ Wound --> Destroyed vessels --> Low perfusion --> Low O2
                       M2 Macrophages --> VEGF (immune-vascular coupling)
 ```
 
+### Mechanistic toggle
+
+When `mech_vegf_production = true`, the flat `m2_vegf_rate` for macrophage VEGF production is replaced by HIF-1alpha stabilization kinetics. Each M2 macrophage reads local O2 and computes a hypoxia signal: `max(0, 1 - O2/threshold)`. VEGF production scales with this signal at `mech_hif_vegf_rate`, so macrophages in well-oxygenated regions produce little VEGF while those in hypoxic wound centers produce at full rate. This couples VEGF output to local oxygen status rather than using a uniform rate.
+
 ## Parameters
 
 From modules/angiogenesis/config.toml:
@@ -46,7 +50,10 @@ From modules/angiogenesis/config.toml:
 | `vegf_hypoxia_threshold` | 0.5 | normalized | O2 for HIF-1alpha induction | Schugart et al. 2008 ([DOI](https://doi.org/10.1073/pnas.0711642105)) |
 | `vegf_consumption_rate` | 0.1 | fraction | VEGF consumed per unit recovery | Calibrated |
 | `angio_vegf_rate` | 0.01 | per step | Perfusion recovery per unit VEGF | Flegg et al. 2012 ([DOI](https://doi.org/10.1016/j.jtbi.2012.01.043)) |
-| `m2_vegf_rate` | 0.001 | per step | VEGF per M2 macrophage | Jetten et al. 2014 ([DOI](https://doi.org/10.1007/s10456-013-9381-6)) |
+| `m2_vegf_rate` | 0.001 | per step | VEGF per M2 macrophage (parametric) | Jetten et al. 2014 ([DOI](https://doi.org/10.1007/s10456-013-9381-6)) |
+| `mech_vegf_production` | false | bool | HIF-1alpha VEGF replaces flat rate (test mode) | Convention |
+| `mech_hif_o2_threshold` | 0.3 | normalized | O2 below this stabilizes HIF-1alpha | Calibrated |
+| `mech_hif_vegf_rate` | 0.003 | per step | Max VEGF at zero O2 | Calibrated |
 
 ## Coupling
 
