@@ -1,0 +1,9 @@
+source,Gethin G (2007)
+journal,Wounds UK 3(3):52-56
+url,https://www.wounds-uk.com/journals/issue/15/article-details/the-significance-of-surface-ph-in-chronic-wounds
+wound_type,chronic wound surface pH (human)
+notes,"Chronic wounds with pH > 7.3 heal slower; wounds below pH 7.3 heal faster. Supports alkaline-to-acidic recovery trend. Chronic data (not directly time-resolved for acute)."
+observation,ph_value,alkalinity_normalized
+healing_wound_mean,7.0,0.79
+non_healing_wound_mean,7.4,1.00
+normal_skin,5.5,0.00

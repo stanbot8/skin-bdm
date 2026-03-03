@@ -1,0 +1,15 @@
+source,Schneider LA et al. (2007)
+doi,10.1007/s00403-006-0713-x
+figure,Review synthesis - wound pH recovery timeline
+wound_type,acute excisional (human)
+notes,"Alkaline wound pH (7.2-7.4) from serum exposure; recovery to acidic pH (5.5) via tissue metabolism and re-epithelialization. Acid mantle restoration requires stratum corneum regrowth, so recovery is delayed until re-epithelialization begins (day 5-7). Normalized: 1.0 = alkaline wound, 0.0 = normal acidic skin."
+day,alkalinity_normalized
+0,1.00
+1,1.00
+3,0.98
+5,0.90
+7,0.65
+10,0.35
+14,0.10
+21,0.01
+28,0.00
