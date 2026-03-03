@@ -251,7 +251,7 @@ lymphatic_drainage:
     title: Vascular Endothelial Growth Factor Receptor-3 in Lymphangiogenesis in Wound Healing
     journal: Am J Pathol 156(5):1499-1504
     doi: 10.1016/s0002-9440(10)65021-3
-    notes: Lymphangiogenesis follows angiogenesis with several day lag during wound healing. Supports lymphatic_onset_h and lymphatic_clearance_rate parameters.
+    notes: Lymphangiogenesis follows angiogenesis with several day lag during wound healing. Lymphatic drainage now handled by lymphatic module.
   - id: kataru2009
     authors: Kataru RP, Jung K, Jang C, Yang H, Schwendener RA, Baik JE, Han SH, Alitalo K, Koh GY
     year: 2009
