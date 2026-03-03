@@ -10,5 +10,6 @@ wound_surface = 0.946                 # ~35C/37C normalized wound surface temp
 perfusion_warming_rate = 0.025        # perfusion-driven rewarming per step
 surface_cooling_rate = 0.002          # evaporative/radiative heat loss at exposed surface
 q10_migration = 1.0                   # disabled for normal wound (active in biofilm/diabetic)
+q10_proliferation = 1.0              # disabled for normal wound (active in diabetic; doi:10.12968/jowc.2004.13.9.26702)
 q10_mmp = 1.3                        # MMP enzymatic activity Q10
 q10_biofilm = 2.0                     # bacterial growth Q10 (Ratkowsky et al. 1982)
