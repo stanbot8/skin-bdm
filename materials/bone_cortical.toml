@@ -1,0 +1,24 @@
+# Material: cortical bone (dense outer layer)
+# Pogue & Patterson 2006, Cowin 2001 (Bone Mechanics Handbook)
+[material]
+id = 20
+name = "bone_cortical"
+category = "bone"
+
+[material.optical]
+absorption = 0.02       # mu_a (mm^-1) at 920 nm, low due to mineral
+scattering = 2.5        # mu_s' (mm^-1), high from hydroxyapatite
+anisotropy = 0.9        # g factor
+
+[material.mechanical]
+stiffness = 15000.0     # kPa, rigid cortical bone
+density = 1.9           # g/cm^3
+
+[material.thermal]
+conductivity = 0.32     # W/(m*K)
+specific_heat = 1260    # J/(kg*K)
+
+[material.biological]
+cell_types = ["osteocyte", "osteoblast", "osteoclast"]
+vascularized = true
+innervated = true

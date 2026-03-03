@@ -1,0 +1,23 @@
+# Material: skin dermis (connective tissue)
+[material]
+id = 2
+name = "skin_dermis"
+category = "connective"
+
+[material.optical]
+absorption = 0.2        # mu_a (mm^-1) at 920 nm
+scattering = 1.5        # mu_s' (mm^-1)
+anisotropy = 0.85
+
+[material.mechanical]
+stiffness = 5.0         # kPa, collagen-rich
+density = 1.1
+
+[material.thermal]
+conductivity = 0.37     # W/(m*K)
+specific_heat = 3300
+
+[material.biological]
+cell_types = ["fibroblast", "macrophage", "mast_cell"]
+vascularized = true
+innervated = true

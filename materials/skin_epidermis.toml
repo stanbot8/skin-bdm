@@ -1,0 +1,23 @@
+# Material: skin epidermis (stratified squamous epithelium)
+[material]
+id = 1
+name = "skin_epidermis"
+category = "epithelial"
+
+[material.optical]
+absorption = 0.4        # mu_a (mm^-1) at 920 nm, melanin-dependent
+scattering = 2.0        # mu_s' (mm^-1), highly scattering
+anisotropy = 0.8        # g factor
+
+[material.mechanical]
+stiffness = 1.0         # kPa, normalized
+density = 1.1           # g/cm^3
+
+[material.thermal]
+conductivity = 0.21     # W/(m*K), Xu & Lu 2011
+specific_heat = 3590    # J/(kg*K)
+
+[material.biological]
+cell_types = ["keratinocyte", "melanocyte"]
+vascularized = false
+innervated = true
