@@ -1,0 +1,9 @@
+# Module: bioelectric -- transepithelial potential and galvanotaxis
+# Zhao et al. 2006 (doi:10.1038/nature04925)
+[skin.bioelectric]
+enabled = true                            # master switch
+voltage_diffusion = 0.1                   # fast ionic current spread (McCaig et al. 2005, doi:10.1152/physrev.00020.2004)
+voltage_decay = 0.01                      # charge leakage through tissue resistance
+voltage_epithelial_source = 0.05          # Na+/K+ ATPase maintains TEP (Barker et al. 1982, doi:10.1152/ajpregu.1982.242.3.R358)
+galvanotaxis_strength = 0.4              # voltage gradient biases cell migration (Zhao et al. 2006, doi:10.1038/nature04925)
+diabetic_voltage_factor = 0.6             # impaired endogenous wound currents (Reid & Zhao 2014, doi:10.1089/wound.2013.0442)
