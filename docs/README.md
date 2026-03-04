@@ -9,10 +9,10 @@
 | [Guide](guide.md) | Configuration, skin profiles, studies, running, visualization |
 | [Architecture](architecture.md) | UWYN hybrid agent-continuum design, CompositeField, field coupling |
 | [Parameters](parameters.md) | Parameter index with module links and config layering |
-| [Treatment Interventions](treatments.md) | 8 therapeutic interventions for diabetic wounds |
+| [Treatment Interventions](treatments.md) | Therapeutic interventions across 6 studies |
 | [Module Development](architecture.md#how-to-add-a-module) | Step-by-step guide to adding new modules |
 | [Batch and Sweeps](../batch/README.md) | Multi-run consensus, parameter sensitivity analysis |
-| [Studies](../studies/README.md) | Packaged experiments, scenarios, example outputs |
+| [Studies](../studies/README.md) | Packaged studies, experiments, example outputs |
 
 ## Module index
 
@@ -45,6 +45,7 @@ Each module is self-contained in `modules/` with its own `config.toml`, source f
 |--------|---------|--------|
 | [senescence](../modules/senescence/README.md) | DNA damage accumulation, SASP output (inflammation, MMP, TGF-beta) | Senescence |
 | [neuropathy](../modules/neuropathy/README.md) | Cutaneous nerve density, Wallerian degeneration, neuropeptide signaling | Nerve |
+| [ros](../modules/ros/README.md) | Oxidative stress, mitochondrial superoxide, antioxidant defense | ROS |
 
 ### Pathology modifiers
 
@@ -77,13 +78,27 @@ Each module is self-contained in `modules/` with its own `config.toml`, source f
 | [ph](../modules/ph/README.md) | Wound bed pH gradient, acid mantle disruption | pH |
 | [hemostasis](../modules/hemostasis/README.md) | Fibrin clot scaffold, platelet activation | Fibrin |
 
+### Biophysics
+
+| Module | Biology | Fields |
+|--------|---------|--------|
+| [bioelectric](../modules/bioelectric/) | Transepithelial potential, galvanotaxis | Voltage |
+| [mechanotransduction](../modules/mechanotransduction/) | Tissue stiffness, wound contraction | Stiffness |
+| [lymphatic](../modules/lymphatic/) | Lymphangiogenesis, interstitial fluid dynamics | Lymphatic, Edema |
+| [body_site](../modules/body_site/) | Anatomical region scaling factors (opt-in) | (modifier) |
+| [photon](../modules/photon/) | SLM light transport, opsin kinetics, phototoxicity | Opsin |
+| [burn](../modules/burn/) | Jackson's three-zone thermal injury, stasis zone | (modifier) |
+| [pressure](../modules/pressure/) | Ischemia-reperfusion, compression, shear | (modifier) |
+| [blood](../modules/blood/) | Hematocrit, platelet aggregation | (modifier) |
+| [scab](../modules/scab/) | Eschar formation, provisional wound cover | (modifier) |
+
 ## Validation
 
-The validation framework lives in [`literature/`](../literature/) with its own [README](../literature/README.md). Reference data is collocated with each module under `modules/<module>/data/`, with citations in each module's `SOURCES.yaml` (191 DOI-linked papers total).
+The validation framework lives in [`literature/`](../literature/) with its own [README](../literature/README.md). Reference data is collocated with each module under `modules/<module>/data/`, with citations in each module's `SOURCES.yaml`.
 
 ### Metrics columns
 
-The CSV written to `output/skibidy/metrics.csv` has 45 columns:
+The CSV written to `output/skibidy/metrics.csv` has 52 columns:
 
 | Column | Units | Description | Non-zero when |
 |--------|-------|-------------|---------------|
@@ -132,5 +147,13 @@ The CSV written to `output/skibidy/metrics.csv` has 45 columns:
 | `mean_glucose_wound` | a.u. | Mean glucose in wound | `[skin.glucose] enabled` |
 | `mean_lactate_wound` | a.u. | Mean lactate in wound | `[skin.lactate] enabled` |
 | `mean_no_wound` | a.u. | Mean nitric oxide in wound | `[skin.nitric_oxide] enabled` |
+| `mean_ros_wound` | a.u. | Mean reactive oxygen species in wound | `[skin.ros] enabled` |
+| `mean_stiffness_wound` | kPa | Mean tissue stiffness in wound | `[skin.mechanotransduction] enabled` |
+| `mean_lymphatic_wound` | normalized | Mean lymphatic density in wound | `[skin.lymphatic] enabled` |
+| `mean_edema_wound` | a.u. | Mean interstitial edema in wound | `[skin.lymphatic] enabled` |
+| `mean_voltage_wound` | mV | Mean transepithelial potential in wound | `[skin.bioelectric] enabled` |
+| `mean_tnf_alpha_wound` | a.u. | Mean TNF-alpha in wound | `ra_enabled` (study-scoped) |
+| `mean_il6_wound` | a.u. | Mean IL-6 in wound | `ra_enabled` (study-scoped) |
+| `mean_cartilage_wound` | normalized | Mean cartilage integrity in wound | `ra_enabled` (study-scoped) |
 
 `scripts/analysis/plot_metrics.py` generates figures from this CSV in `output/plots/`.

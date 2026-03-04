@@ -13,7 +13,7 @@ Skibidy uses a layered TOML configuration system. Core tissue parameters live in
 | Core | `bdm.core.toml` | Tissue biology, visualization, simulation bounds |
 | Modules | `modules/*/config.toml` | Per-module params in TOML subsections |
 | Profiles | `profiles/*.toml` | Biological phenotype overlays (skin type) |
-| Studies | `studies/*/preset.toml` | Scenario overlays (what happens to the skin) |
+| Studies | `studies/*/preset.toml` | Study overlays (what happens to the skin) |
 
 **Config layering order:** `bdm.core.toml` + `modules/*/config.toml` (merged) then skin profile (`--skin=NAME`) then study (`--study=NAME`)
 
@@ -47,6 +47,18 @@ Each module directory in `modules/` contains a `config.toml` owning one TOML sub
 | `lactate/` | `[skin.lactate]` | HIF-1a VEGF boost, collagen synthesis |
 | `nitric_oxide/` | `[skin.nitric_oxide]` | Vasodilation, antimicrobial, anti-fibrotic |
 | `ph/` | `[skin.ph]` | Wound bed pH gradient, acid mantle |
+| `senescence/` | `[skin.senescence]` | DNA damage accumulation, SASP output |
+| `neuropathy/` | `[skin.neuropathy]` | Nerve density, neuropeptide signaling |
+| `ros/` | `[skin.ros]` | Oxidative stress, mitochondrial superoxide, antioxidant defense |
+| `bioelectric/` | `[skin.bioelectric]` | Transepithelial potential, galvanotaxis |
+| `lymphatic/` | `[skin.lymphatic]` | Lymphangiogenesis, interstitial fluid dynamics |
+| `mechanotransduction/` | `[skin.mechanotransduction]` | Tissue stiffness, wound contraction |
+| `body_site/` | `[skin.body_site]` | Anatomical region scaling factors (opt-in) |
+| `photon/` | `[skin.photon]` | SLM light transport, opsin kinetics |
+| `burn/` | `[skin.burn]` | Jackson's thermal injury, stasis zone |
+| `pressure/` | `[skin.pressure]` | Ischemia-reperfusion, compression, shear |
+| `blood/` | `[skin.blood]` | Hematocrit, platelet aggregation |
+| `scab/` | `[skin.scab]` | Eschar formation, wound cover |
 
 Key names within modules drop their redundant prefix since the section provides context. For example, `wound_enabled` becomes `enabled` under `[skin.wound]`, and `diabetic_m1_duration_factor` becomes `m1_duration_factor` under `[skin.diabetic]`.
 
@@ -69,14 +81,14 @@ Parameters fall into three categories:
 | Category | Examples | Where |
 |----------|----------|-------|
 | **Skin biology** | Cell cycle, calcium gradient, perfusion baseline, layer geometry | `profiles/*.toml` |
-| **Scenario** | Wound timing, tumor seeding, module enable flags, num_steps | `studies/*/preset.toml` |
+| **Study** | Wound timing, tumor seeding, module enable flags, num_steps | `studies/*/preset.toml` |
 | **Simulation plumbing** | Metrics interval, visualization export, tissue bounds | `bdm.core.toml` only |
 
-Skin profiles (`profiles/`) define tissue biology, meaning what kind of skin. Study configs (`studies/*/preset.toml`) define scenarios, meaning what happens to that skin. Both are sparse TOML overlays applied to the merged config using `apply_preset.py`. Overlays can target any section (e.g. `[skin]`, `[skin.wound]`, `[skin.diabetic]`).
+Skin profiles (`profiles/`) define tissue biology, meaning what kind of skin. Study configs (`studies/*/preset.toml`) define experiments, meaning what happens to that skin. Both are sparse TOML overlays applied to the merged config using `apply_preset.py`. Overlays can target any section (e.g. `[skin]`, `[skin.wound]`, `[skin.diabetic]`).
 
 ```bash
 ./run.sh                              # interactive menu (pick skin + study)
-./run.sh --skin=aged --study=wound   # aged skin + wound scenario
+./run.sh --skin=aged --study=wound   # aged skin + wound experiment
 ./run.sh --list-skins                 # show available profiles
 ```
 
@@ -88,6 +100,12 @@ Skin profiles (`profiles/`) define tissue biology, meaning what kind of skin. St
 | `aged` | Slower cell cycle, fewer stem cells, thinner corneum, reduced perfusion |
 | `diabetic` | Prolonged M1 phase, slow resolution, microangiopathy |
 | `aged_diabetic` | Combined aging and diabetic impairments |
+| `rheumatoid` | Autoimmune synovial inflammation, elevated baseline TNF/IL-6 |
+| `burn` | Hypertrophic scar risk, massive immune response, barrier loss |
+| `pressure` | Immobilized elderly patient, immunosenescence, reduced perfusion |
+| `surgical` | Clean incision, approximated edges, minimal inflammation |
+| `tumor` | Tumor-permissive microenvironment |
+| `tumor_wound` | Tumor seeded at t=0, wound at day 8 |
 
 **Creating a custom profile:**
 
@@ -117,11 +135,15 @@ basal = 1.2
 
 ```bash
 ./run.sh                              # interactive menu
-./run.sh --study=wound               # wound healing scenario
+./run.sh --study=wound               # wound healing experiment
 ./run.sh --study=tumor               # tumor growth only
 ./run.sh --study=tumor-wound         # tumor at t=0, wound at day 8
 ./run.sh --study=diabetic-wound      # chronic diabetic ulcer
 ./run.sh --study=baseline            # homeostatic epidermis, no events
+./run.sh --study=burn                # thermal injury (Jackson's model)
+./run.sh --study=pressure-ulcer      # ischemia-reperfusion injury
+./run.sh --study=surgical            # surgical site infection
+./run.sh --study=rheumatoid          # RA synovial inflammation
 ./run.sh --diabetic                   # shorthand for --study=diabetic-wound
 ./run.sh --compare                    # run normal + diabetic back-to-back
 ./run.sh --no-view                    # skip ParaView viewer
@@ -176,20 +198,4 @@ python3 literature/compare_fibroblast.py    # myofibroblast + collagen
 python3 literature/compare_tumor.py         # tumor growth + Ki-67
 ```
 
-## Research modules
-
-| Module | Status | Description |
-|--------|--------|-------------|
-| Wound healing | Implemented | Punch biopsy, immune response, re-epithelialization, scar formation |
-| Fibroblast/scar | Implemented | TGF-beta-driven myofibroblast differentiation, collagen deposition |
-| MMP remodeling | Implemented | Matrix metalloproteinase dynamics with TIMP inhibition, collagen/fibronectin degradation |
-| Fibronectin | Implemented | Provisional matrix scaffold deposition by fibroblasts |
-| VEGF/Angiogenesis | Implemented | Hypoxia-driven VEGF, endothelial sprouting |
-| Tumor (BCC) | Implemented | Self-contained neoplastic growth, composable with wound events |
-| Vascular perfusion | Implemented | Vessel density field, wound disruption, angiogenesis recovery |
-| Biofilm | Implemented | Bacterial colonization, immune clearance, PAMP-driven inflammation |
-| Skin cancer (advanced) | Planned | Immune evasion, invasion/metastasis |
-| Pathogen response | Planned | Viral/bacterial agents (HSV, HPV, HIV), immune activation |
-| Aging | Planned | Stem cell exhaustion, senescence, epidermal thinning |
-| Hair follicle | Planned | Bulge stem cells, dermal papilla signaling |
-| Skincare | Planned | Topical substance penetration, retinoid effects |
+For the complete module index with biology, fields, and implementation status, see [docs/README.md](README.md#module-index).
