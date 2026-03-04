@@ -1,0 +1,15 @@
+# Body site: face -- high vascularity, fast healing, cosmetic priority
+# Rich anastomotic blood supply from facial artery branches.
+
+[skin.body_site]
+enabled = true
+site = "face"
+
+[skin.perfusion]
+basal = 1.8
+
+[skin.neuropathy]
+basal_nerve_density = 2.5
+
+[skin.temperature]
+wound_surface = 0.946

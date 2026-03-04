@@ -1,0 +1,16 @@
+# Body site: anterior shin -- venous leg ulcer location
+# Poor vascularity, thin dermis over tibia, slow healing.
+# Lee & Hwang 2002 (doi:10.1007/s00276-002-0034-5)
+
+[skin.body_site]
+enabled = true
+site = "shin"
+
+[skin.perfusion]
+basal = 0.55
+
+[skin.neuropathy]
+basal_nerve_density = 0.7
+
+[skin.temperature]
+wound_surface = 0.892

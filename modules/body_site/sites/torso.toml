@@ -1,0 +1,15 @@
+# Body site: torso (trunk) -- thick dermis, moderate everything
+# Surgical incision site. High resting tension along Langer's lines.
+
+[skin.body_site]
+enabled = true
+site = "torso"
+
+[skin.perfusion]
+basal = 1.1
+
+[skin.neuropathy]
+basal_nerve_density = 0.5
+
+[skin.temperature]
+wound_surface = 0.973

@@ -1,0 +1,8 @@
+# Module: body_site -- anatomical region scaling factors
+# Default: forearm (reference site for most wound healing studies)
+# Usage: python3 batch/batch.py --site foot_plantar --skin diabetic --study wound
+# Site TOMLs override perfusion, nerve density, temperature for specific body regions.
+# Lee & Hwang 2002 (doi:10.1007/s00276-002-0034-5)
+[skin.body_site]
+enabled = false                           # opt-in; default sim uses forearm baseline
+site = "forearm"                          # identifier for metrics/logging

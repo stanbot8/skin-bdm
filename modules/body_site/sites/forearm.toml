@@ -1,0 +1,7 @@
+# Body site: forearm (volar) -- reference site for wound healing studies
+# Most in-vivo wound healing data uses forearm as the standard site.
+# All values at baseline (no overrides needed).
+
+[skin.body_site]
+enabled = true
+site = "forearm"
