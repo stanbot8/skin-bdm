@@ -1,0 +1,19 @@
+# Body site: foot plantar (sole) -- diabetic foot ulcer, weight-bearing
+# Very thick epidermis (glabrous skin), no follicles, high mechanical load.
+# Lee & Hwang 2002 (doi:10.1007/s00276-002-0034-5)
+
+[skin.body_site]
+enabled = true
+site = "foot_plantar"
+
+# Perfusion: distal extremity, weight-bearing pressure occlusion
+[skin.perfusion]
+basal = 0.6
+
+# Neuropathy: dense mechanoreceptors but distal sensory gradient
+[skin.neuropathy]
+basal_nerve_density = 0.8
+
+# Temperature: cool distal extremity (~31C)
+[skin.temperature]
+wound_surface = 0.838

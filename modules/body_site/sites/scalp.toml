@@ -1,0 +1,17 @@
+# Body site: scalp -- high vascularity, dense follicles, fast healing
+# Rich blood supply from external carotid branches.
+# Ito et al. 2005 (doi:10.1038/nm1328): follicle bulge stem cells
+# contribute to wound re-epithelialization.
+
+[skin.body_site]
+enabled = true
+site = "scalp"
+
+[skin.perfusion]
+basal = 1.5
+
+[skin.neuropathy]
+basal_nerve_density = 1.2
+
+[skin.temperature]
+wound_surface = 0.946

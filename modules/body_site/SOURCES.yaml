@@ -1,0 +1,36 @@
+body_site:
+  description: Anatomical region-specific skin properties and scaling factors
+  sources:
+  - id: lee2002
+    authors: Lee Y, Hwang K
+    year: 2002
+    title: Skin thickness of Korean adults
+    journal: Surg Radiol Anat 24(3-4):183-189
+    doi: 10.1007/s00276-002-0034-5
+    notes: >
+      Measured skin thickness at 28 body regions in cadaveric specimens.
+      Epidermis ranges from 0.04mm (eyelid) to 0.17mm (palm). Dermis
+      from 0.6mm (eyelid) to 3.0mm (upper back). Supports
+      epidermal_thickness_factor and dermal_thickness_factor parameters.
+  - id: rittie2016
+    authors: Rittie L
+    year: 2016
+    title: Cellular mechanisms of skin repair in humans and other mammals
+    journal: J Cell Commun Signal 10(2):103-120
+    doi: 10.1007/s12079-016-0330-1
+    notes: >
+      Review of skin anatomy differences between body sites and species.
+      Discusses follicular contribution to re-epithelialization and the
+      role of site-specific stem cell niches. Supports follicle_density
+      and follicle_reepith_rate parameters.
+  - id: ito2005
+    authors: Ito M, Liu Y, Yang Z, Nguyen J, Liang F, Morris RJ, Cotsarelis G
+    year: 2005
+    title: Stem cells in the hair follicle bulge contribute to wound repair but not to homeostasis of the epidermis
+    journal: Nat Med 11(12):1351-1354
+    doi: 10.1038/nm1328
+    notes: >
+      Follicular bulge stem cells migrate radially into wounded epidermis
+      and contribute to re-epithelialization. Cells are recruited acutely
+      but do not persist long-term. Supports follicle_reepith_rate and
+      the site-dependent healing speed (follicle-rich sites heal faster).

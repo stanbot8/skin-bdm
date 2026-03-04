@@ -1,0 +1,15 @@
+# Body site: hand dorsum -- thin, mobile, high innervation
+# Common injury site. Thin skin, tendons close to surface.
+
+[skin.body_site]
+enabled = true
+site = "hand_dorsum"
+
+[skin.perfusion]
+basal = 0.8
+
+[skin.neuropathy]
+basal_nerve_density = 2.0
+
+[skin.temperature]
+wound_surface = 0.865
