@@ -25,11 +25,11 @@ struct BiofilmGrowthOp : public StandaloneOperationImpl {
     auto* sim = Simulation::GetActive();
     auto* sp = sim->GetParam()->Get<SimParam>();
 
-    if (!sp->biofilm_enabled || !sp->wound_enabled) return;
+    if (!sp->biofilm.enabled || !sp->wound.enabled) return;
 
     auto* scheduler = sim->GetScheduler();
     uint64_t step = GetGlobalStep(sim);
-    uint64_t wound_step = static_cast<uint64_t>(sp->wound_trigger_step);
+    uint64_t wound_step = static_cast<uint64_t>(sp->wound.trigger_step);
     if (step <= wound_step) return;
     uint64_t wound_age = step - wound_step;
 
@@ -40,7 +40,7 @@ struct BiofilmGrowthOp : public StandaloneOperationImpl {
 
     // Determine inflammation target grid (split/single pattern)
     DiffusionGrid* infl_grid = nullptr;
-    if (sp->split_inflammation_enabled) {
+    if (sp->inflammation.split_inflammation_enabled) {
       infl_grid = rm->GetDiffusionGrid(fields::kProInflammatoryId);
     } else {
       infl_grid = rm->GetDiffusionGrid(fields::kInflammationId);
@@ -48,7 +48,7 @@ struct BiofilmGrowthOp : public StandaloneOperationImpl {
 
     real_t z_max = sp->volume_z_cornified + ctx.box_len;
     bool seeding_step =
-        (wound_age == static_cast<uint64_t>(sp->biofilm_seed_delay) &&
+        (wound_age == static_cast<uint64_t>(sp->biofilm.seed_delay) &&
          !seeded_);
 
     for (size_t idx = 0; idx < ctx.n; idx++) {
@@ -65,20 +65,20 @@ struct BiofilmGrowthOp : public StandaloneOperationImpl {
 
       // Seeding: one-time inoculum at seed_delay
       if (seeding_step) {
-        biofilm_grid->ChangeConcentrationBy(idx, sp->biofilm_seed_amount);
-        current += sp->biofilm_seed_amount;
+        biofilm_grid->ChangeConcentrationBy(idx, sp->biofilm.seed_amount);
+        current += sp->biofilm.seed_amount;
       }
 
       // Logistic growth
       if (current > 1e-10) {
-        real_t K = sp->biofilm_carrying_capacity;
-        real_t delta = sp->biofilm_growth_rate * current * (1.0 - current / K);
+        real_t K = sp->biofilm.carrying_capacity;
+        real_t delta = sp->biofilm.growth_rate * current * (1.0 - current / K);
         if (delta > 1e-10) {
           biofilm_grid->ChangeConcentrationBy(idx, delta);
         }
 
         // PAMP-driven inflammation
-        real_t infl_delta = sp->biofilm_inflammation_rate * current;
+        real_t infl_delta = sp->biofilm.inflammation_rate * current;
         if (infl_delta > 1e-10) {
           infl_grid->ChangeConcentrationBy(idx, infl_delta);
         }

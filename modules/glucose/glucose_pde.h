@@ -12,8 +12,8 @@ namespace skibidy {
 // In diabetic mode, basal level elevated (hyperglycemia) driving AGE formation.
 struct GlucosePDE : public PDE {
   explicit GlucosePDE(const SimParam* sp)
-      : diffusion_(sp->glucose_diffusion),
-        decay_(sp->glucose_decay) {}
+      : diffusion_(sp->glucose_mod.diffusion),
+        decay_(sp->glucose_mod.decay) {}
 
   const char* GetName() const override { return fields::kGlucose; }
   int GetId() const override { return fields::kGlucoseId; }
@@ -25,7 +25,7 @@ struct GlucosePDE : public PDE {
     auto* grid = Grid(sim);
     size_t n = grid->GetNumBoxes();
     for (size_t i = 0; i < n; i++) {
-      grid->ChangeConcentrationBy(i, sp->glucose_basal_conc);
+      grid->ChangeConcentrationBy(i, sp->glucose_mod.basal_conc);
     }
   }
 
@@ -38,7 +38,7 @@ struct GlucosePDE : public PDE {
       if (!ctx.InWound(ctx.X(idx), ctx.Y(idx))) continue;
       // Dermal wound voxels lose glucose supply proportional to vascular damage
       real_t current = grid->GetConcentration(idx);
-      real_t target = sp->glucose_basal_conc * 0.5;  // 50% of basal
+      real_t target = sp->glucose_mod.basal_conc * 0.5;  // 50% of basal
       if (current > target) {
         grid->ChangeConcentrationBy(idx, target - current);
       }

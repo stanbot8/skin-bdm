@@ -39,7 +39,7 @@ struct CalciumPDE : public PDE {
   // Gated on Stratum recovery (cells must be present to rebuild tight junctions).
   void ApplySource(Simulation* sim, const CompositeField& fields) override {
     auto* sp = sim->GetParam()->Get<SimParam>();
-    if (!sp->wound_enabled) return;
+    if (!sp->wound.enabled) return;
 
     auto* ca_grid = Grid(sim);
     auto* stratum_grid = fields.Grid(fields::kStratum, sim);

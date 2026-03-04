@@ -27,9 +27,9 @@ struct GridContext {
       : res(grid->GetResolution()),
         n(grid->GetNumBoxes()),
         box_len(grid->GetBoxLength()),
-        cx(sp->wound_center_x),
-        cy(sp->wound_center_y),
-        r2(sp->wound_radius * sp->wound_radius) {
+        cx(sp->wound.center_x),
+        cy(sp->wound.center_y),
+        r2(sp->wound.radius * sp->wound.radius) {
     auto dims = grid->GetDimensions();
     lo = static_cast<real_t>(dims[0]);
   }
@@ -193,7 +193,7 @@ struct GridContext {
 //
 // Usage:
 //   ScaledGrid infl(rm->GetDiffusionGrid(fields::kInflammation), sp);
-//   infl.AgentDeposit(idx, sp->immune_cytokine_rate);   // auto-scaled
+//   infl.AgentDeposit(idx, sp->immune.cytokine_rate);   // auto-scaled
 // ---------------------------------------------------------------------------
 struct ScaledGrid {
   DiffusionGrid* grid;

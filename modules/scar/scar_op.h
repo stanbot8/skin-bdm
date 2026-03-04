@@ -26,12 +26,12 @@ inline void WriteScarValue(Keratinocyte* cell) {
   // Only stamp wound-area cells: mirrors the wound-cylinder check in
   // differentiation.h. Agents outside the wound cylinder (stem cells,
   // margin cells) must not write to wound voxels at dissolution time.
-  if (sp->wound_enabled) {
+  if (sp->wound.enabled) {
     Real3 raw = cell->GetPosition();
-    real_t dx_w = raw[0] - sp->wound_center_x;
-    real_t dy_w = raw[1] - sp->wound_center_y;
+    real_t dx_w = raw[0] - sp->wound.center_x;
+    real_t dy_w = raw[1] - sp->wound.center_y;
     if (dx_w * dx_w + dy_w * dy_w >
-        sp->wound_radius * sp->wound_radius) return;
+        sp->wound.radius * sp->wound.radius) return;
   }
 
   auto* rm = sim->GetResourceManager();
@@ -41,7 +41,7 @@ inline void WriteScarValue(Keratinocyte* cell) {
   // When fibroblasts are enabled, local collagen drives the decision.
   // When disabled, all wound-area cells become scar (legacy behavior).
   bool is_scar = true;
-  if (sp->fibroblast_enabled) {
+  if (sp->fibroblast.enabled) {
     auto* col_grid = rm->GetDiffusionGrid(fields::kCollagenId);
     if (col_grid) {
       // Check collagen at cell position AND at dermal depth below --
@@ -50,7 +50,7 @@ inline void WriteScarValue(Keratinocyte* cell) {
       real_t collagen = col_grid->GetValue(pos);
       Real3 dermal_pos = {pos[0], pos[1], sp->dermal_fibroblast_depth};
       real_t dermal_col = col_grid->GetValue(dermal_pos);
-      is_scar = (std::max(collagen, dermal_col) > sp->scar_collagen_threshold);
+      is_scar = (std::max(collagen, dermal_col) > sp->scar.collagen_threshold);
     }
   }
 
@@ -73,7 +73,7 @@ inline void WriteScarValue(Keratinocyte* cell) {
 
   // Scar field: binary marker for data/metrics
   // Skip when proportional mode is on (ScarAccumulationOp handles it)
-  if (!sp->scar_proportional_enabled && is_scar) {
+  if (!sp->scar.proportional_enabled && is_scar) {
     auto* scar_grid = rm->GetDiffusionGrid(fields::kScarId);
     if (scar_grid) {
       size_t sc_idx = scar_grid->GetBoxIndex(pos);
@@ -98,7 +98,7 @@ struct ScarAccumulationOp : public StandaloneOperationImpl {
     auto* sim = Simulation::GetActive();
     auto* sp = sim->GetParam()->Get<SimParam>();
 
-    if (!sp->scar_proportional_enabled || !sp->wound_enabled) return;
+    if (!sp->scar.proportional_enabled || !sp->wound.enabled) return;
 
     auto* rm = sim->GetResourceManager();
     auto* scar_grid = rm->GetDiffusionGrid(fields::kScarId);
@@ -107,12 +107,12 @@ struct ScarAccumulationOp : public StandaloneOperationImpl {
     // Collagen IS the scar -- deposited by myofibroblasts, degraded by MMPs.
     // Also stamps scar coloring into the Stratum field for visualization:
     // voxels where collagen > threshold get stratum 5 (scar basale).
-    if (sp->fibroblast_enabled) {
+    if (sp->fibroblast.enabled) {
       auto* col_grid = rm->GetDiffusionGrid(fields::kCollagenId);
       auto* stratum_grid = rm->GetDiffusionGrid(fields::kStratumId);
       GridContext ctx(scar_grid, sp);
       real_t z_max = sp->volume_z_cornified + ctx.box_len;
-      real_t col_thresh = sp->scar_collagen_threshold;
+      real_t col_thresh = sp->scar.collagen_threshold;
 
       // Dermal z-level where fibroblasts deposit collagen
       real_t dermal_z = sp->dermal_fibroblast_depth;
@@ -155,14 +155,14 @@ struct ScarAccumulationOp : public StandaloneOperationImpl {
 
     // Fallback: inflammation integral when fibroblasts disabled
     DiffusionGrid* infl_grid = nullptr;
-    if (sp->split_inflammation_enabled) {
+    if (sp->inflammation.split_inflammation_enabled) {
       infl_grid = rm->GetDiffusionGrid(fields::kProInflammatoryId);
     } else {
       infl_grid = rm->GetDiffusionGrid(fields::kInflammationId);
     }
 
     GridContext ctx(scar_grid, sp);
-    real_t rate = sp->scar_accumulation_rate;
+    real_t rate = sp->scar.accumulation_rate;
     real_t z_max = sp->volume_z_cornified + ctx.box_len;
 
     for (size_t idx = 0; idx < ctx.n; idx++) {

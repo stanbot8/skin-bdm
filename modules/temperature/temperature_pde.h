@@ -13,8 +13,8 @@ namespace skibidy {
 // sources/sinks handled in fused_source).
 struct TemperaturePDE : public PDE {
   explicit TemperaturePDE(const SimParam* sp)
-      : diffusion_(sp->temperature_diffusion),
-        decay_(sp->temperature_decay) {}
+      : diffusion_(sp->temperature.diffusion),
+        decay_(sp->temperature.decay) {}
 
   const char* GetName() const override { return fields::kTemperature; }
   int GetId() const override { return fields::kTemperatureId; }
@@ -34,7 +34,7 @@ struct TemperaturePDE : public PDE {
     auto* grid = Grid(sim);
     auto* sp = sim->GetParam()->Get<SimParam>();
     GridContext ctx(grid, sp);
-    real_t wound_temp = sp->temperature_wound_surface;
+    real_t wound_temp = sp->temperature.wound_surface;
     for (size_t idx = 0; idx < ctx.n; idx++) {
       if (!ctx.InWound(ctx.X(idx), ctx.Y(idx))) continue;
       // Epidermal wound voxels cool to surface temperature

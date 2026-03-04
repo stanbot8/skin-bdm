@@ -14,7 +14,7 @@ namespace skibidy {
 struct TIMPPDE : public SimplePDE {
   explicit TIMPPDE(const SimParam* sp)
       : SimplePDE(fields::kTIMP, fields::kTIMPId,
-                  sp->timp_diffusion, sp->timp_decay) {}
+                  sp->mmp.timp_diffusion, sp->mmp.timp_decay) {}
 };
 
 }  // namespace skibidy

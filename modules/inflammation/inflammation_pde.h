@@ -10,13 +10,13 @@ namespace skibidy {
 struct InflammationPDE : public SimplePDE {
   explicit InflammationPDE(const SimParam* sp)
       : SimplePDE(fields::kInflammation, fields::kInflammationId,
-                  sp->inflammation_diffusion, sp->inflammation_decay) {}
+                  sp->inflammation.diffusion, sp->inflammation.decay) {}
 };
 
 struct ProInflammatoryPDE : public SimplePDE {
   explicit ProInflammatoryPDE(const SimParam* sp)
       : SimplePDE(fields::kProInflammatory, fields::kProInflammatoryId,
-                  sp->inflammation_diffusion, sp->inflammation_decay) {}
+                  sp->inflammation.diffusion, sp->inflammation.decay) {}
 };
 
 struct AntiInflammatoryPDE : public SimplePDE {
@@ -31,7 +31,7 @@ struct AntiInflammatoryPDE : public SimplePDE {
 struct ImmunePressurePDE : public SimplePDE {
   explicit ImmunePressurePDE(const SimParam* sp)
       : SimplePDE(fields::kImmunePressure, fields::kImmunePressureId,
-                  sp->inflammation_diffusion, sp->inflammation_decay) {}
+                  sp->inflammation.diffusion, sp->inflammation.decay) {}
 };
 
 }  // namespace skibidy

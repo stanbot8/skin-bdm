@@ -18,13 +18,13 @@ struct DermisPDE : public PDE {
 
   void Init(Simulation* sim) override {
     auto* sp = sim->GetParam()->Get<SimParam>();
-    DefineStructuralGrid(sim, sp->dermis_diffusion, sp->dermis_decay);
+    DefineStructuralGrid(sim, sp->dermis.diffusion, sp->dermis.decay);
     // Sub-layer-aware initial profile (like ElastinPDE)
     real_t papillary_z = sp->dermal_z_papillary;
     real_t reticular_z = sp->dermal_z_reticular;
-    real_t papillary_d = sp->dermis_papillary_density;
-    real_t reticular_d = sp->dermis_reticular_density;
-    real_t hypodermis_d = sp->dermis_hypodermis_density;
+    real_t papillary_d = sp->dermis.papillary_density;
+    real_t reticular_d = sp->dermis.reticular_density;
+    real_t hypodermis_d = sp->dermis.hypodermis_density;
     ModelInitializer::InitializeSubstance(GetId(),
         [papillary_z, reticular_z, papillary_d, reticular_d, hypodermis_d](
             real_t x, real_t y, real_t z) -> real_t {

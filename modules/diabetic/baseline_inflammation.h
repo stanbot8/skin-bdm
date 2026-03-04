@@ -22,13 +22,13 @@ struct BaselineInflammationOp : public StandaloneOperationImpl {
     auto* sim = Simulation::GetActive();
     auto* sp = sim->GetParam()->Get<SimParam>();
 
-    if (!sp->diabetic_mode || !sp->wound_enabled) return;
-    if (sp->diabetic_baseline_inflammation <= 0) return;
+    if (!sp->diabetic.mode || !sp->wound.enabled) return;
+    if (sp->diabetic.baseline_inflammation <= 0) return;
 
     auto* rm = sim->GetResourceManager();
 
     DiffusionGrid* infl_grid = nullptr;
-    if (sp->split_inflammation_enabled) {
+    if (sp->inflammation.split_inflammation_enabled) {
       infl_grid = rm->GetDiffusionGrid(fields::kProInflammatoryId);
     } else {
       infl_grid = rm->GetDiffusionGrid(fields::kInflammationId);
@@ -36,7 +36,7 @@ struct BaselineInflammationOp : public StandaloneOperationImpl {
 
     GridContext ctx(infl_grid, sp);
     real_t z_max = sp->volume_z_cornified + ctx.box_len;
-    real_t rate = sp->diabetic_baseline_inflammation;
+    real_t rate = sp->diabetic.baseline_inflammation;
 
     auto* stratum_grid = rm->GetDiffusionGrid(fields::kStratumId);
 

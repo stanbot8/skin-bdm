@@ -15,7 +15,7 @@ namespace skibidy {
 struct SenescencePDE : public SimpleStructuralPDE {
   SenescencePDE(const SimParam* sp)
       : SimpleStructuralPDE(fields::kSenescence, fields::kSenescenceId,
-                            sp->senescence_diffusion, sp->senescence_decay) {}
+                            sp->senescence.diffusion, sp->senescence.decay) {}
 };
 
 }  // namespace skibidy

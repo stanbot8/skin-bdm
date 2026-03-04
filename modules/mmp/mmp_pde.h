@@ -13,7 +13,7 @@ namespace skibidy {
 struct MMPPDE : public SimplePDE {
   explicit MMPPDE(const SimParam* sp)
       : SimplePDE(fields::kMMP, fields::kMMPId,
-                  sp->mmp_diffusion, sp->mmp_residual_decay) {}
+                  sp->mmp.diffusion, sp->mmp.residual_decay) {}
 };
 
 }  // namespace skibidy

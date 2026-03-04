@@ -19,7 +19,7 @@ struct FibrinPDE : public SimpleStructuralPDE {
     auto* grid = Grid(sim);
     auto* sp = sim->GetParam()->Get<SimParam>();
     GridContext ctx(grid, sp);
-    real_t seed = sp->hemostasis_wound_seed;
+    real_t seed = sp->hemostasis.wound_seed;
     for (size_t idx = 0; idx < ctx.n; idx++) {
       if (ctx.InWound(ctx.X(idx), ctx.Y(idx))) {
         real_t z = ctx.Z(idx);

@@ -35,11 +35,11 @@ inline void ContinuumHandoff(Agent* agent) {
   // remain inline in differentiation.h. This is the fallback for any
   // removal path (safety timeout, coverage resolution).
   if (auto* kc = dynamic_cast<Keratinocyte*>(agent)) {
-    if (sp->wound_enabled) {
+    if (sp->wound.enabled) {
       Real3 pos = kc->GetPosition();
-      real_t dx = pos[0] - sp->wound_center_x;
-      real_t dy = pos[1] - sp->wound_center_y;
-      if (dx * dx + dy * dy <= sp->wound_radius * sp->wound_radius) {
+      real_t dx = pos[0] - sp->wound.center_x;
+      real_t dy = pos[1] - sp->wound.center_y;
+      if (dx * dx + dy * dy <= sp->wound.radius * sp->wound.radius) {
         WriteScarValue(kc);
       }
     }
@@ -51,7 +51,7 @@ inline void ContinuumHandoff(Agent* agent) {
   // to kTumorId (new continuum type: tumor tissue distinct from normal
   // tissue) and stamps stratum for visualization.
   if (auto* tc = dynamic_cast<TumorCell*>(agent)) {
-    if (!sp->tumor_enabled) return;
+    if (!sp->tumor.enabled) return;
     auto* rm = sim->GetResourceManager();
     Real3 pos = ClampToBounds(tc->GetPosition(), sim->GetParam());
 
@@ -64,14 +64,14 @@ inline void ContinuumHandoff(Agent* agent) {
       }
     }
 
-    if (sp->tumor_stratum_value > 0) {
+    if (sp->tumor.stratum_value > 0) {
       auto* stratum_grid = rm->GetDiffusionGrid(fields::kStratumId);
       if (stratum_grid) {
         size_t sidx = stratum_grid->GetBoxIndex(pos);
         real_t s_cur = stratum_grid->GetConcentration(sidx);
-        if (sp->tumor_stratum_value > s_cur) {
+        if (sp->tumor.stratum_value > s_cur) {
           stratum_grid->ChangeConcentrationBy(
-              sidx, sp->tumor_stratum_value - s_cur);
+              sidx, sp->tumor.stratum_value - s_cur);
         }
       }
     }

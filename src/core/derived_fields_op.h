@@ -38,17 +38,20 @@ struct DerivedFieldsOp : public StandaloneOperationImpl {
     auto* rm = sim->GetResourceManager();
 
     // Source grids (null when module disabled)
-    DiffusionGrid* col_grid = sp->fibroblast_enabled
+    DiffusionGrid* col_grid = sp->fibroblast.enabled
         ? rm->GetDiffusionGrid(fields::kCollagenId) : nullptr;
-    DiffusionGrid* fn_grid = sp->fibronectin_enabled
+    DiffusionGrid* fn_grid = sp->fibronectin.enabled
         ? rm->GetDiffusionGrid(fields::kFibronectinId) : nullptr;
-    DiffusionGrid* el_grid = sp->elastin_enabled
+    DiffusionGrid* el_grid = sp->elastin.enabled
         ? rm->GetDiffusionGrid(fields::kElastinId) : nullptr;
-    DiffusionGrid* fb_grid = sp->hemostasis_enabled
+    DiffusionGrid* fb_grid = sp->hemostasis.enabled
         ? rm->GetDiffusionGrid(fields::kFibrinId) : nullptr;
     DiffusionGrid* o2_grid = rm->GetDiffusionGrid(fields::kOxygenId);
     DiffusionGrid* water_grid = rm->GetDiffusionGrid(fields::kWaterId);
     DiffusionGrid* vasc_grid = rm->GetDiffusionGrid(fields::kVascularId);
+
+    // Guard: skip if core grids are not yet initialized
+    if (!o2_grid || !water_grid || !vasc_grid) return;
 
     // Weights from config
     real_t w_col = sp->ecm_weight_collagen;
@@ -57,6 +60,8 @@ struct DerivedFieldsOp : public StandaloneOperationImpl {
     real_t w_fb = sp->ecm_weight_fibrin;
 
     size_t n = ecm_quality_->GetNumBoxes();
+    size_t o2_n = o2_grid->GetNumBoxes();
+    if (n > o2_n) n = o2_n;  // clamp to smallest grid
 
     // Handle multi-resolution: source grids may differ in resolution.
     // If structural grids are coarser, use GetValue via world coordinates

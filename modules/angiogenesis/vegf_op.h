@@ -25,11 +25,11 @@ struct VEGFSourceOp : public StandaloneOperationImpl {
     auto* sim = Simulation::GetActive();
     auto* sp = sim->GetParam()->Get<SimParam>();
 
-    if (!sp->angiogenesis_enabled || !sp->wound_enabled) return;
+    if (!sp->angiogenesis.enabled || !sp->wound.enabled) return;
 
     auto* scheduler = sim->GetScheduler();
     uint64_t step = GetGlobalStep(sim);
-    uint64_t wound_step = static_cast<uint64_t>(sp->wound_trigger_step);
+    uint64_t wound_step = static_cast<uint64_t>(sp->wound.trigger_step);
     if (step <= wound_step) return;
 
     auto* rm = sim->GetResourceManager();
@@ -37,10 +37,10 @@ struct VEGFSourceOp : public StandaloneOperationImpl {
     auto* vegf_grid = rm->GetDiffusionGrid(fields::kVEGFId);
     GridContext ctx(vegf_grid, sp);
 
-    real_t threshold = sp->vegf_hypoxia_threshold;
-    real_t prod_rate = sp->vegf_production_rate;
-    if (sp->diabetic_mode) {
-      prod_rate *= sp->diabetic_vegf_factor;
+    real_t threshold = sp->angiogenesis.vegf_hypoxia_threshold;
+    real_t prod_rate = sp->angiogenesis.vegf_production_rate;
+    if (sp->diabetic.mode) {
+      prod_rate *= sp->diabetic.vegf_factor;
     }
     real_t z_max = sp->volume_z_cornified + ctx.box_len;
 

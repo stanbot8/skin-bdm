@@ -22,14 +22,14 @@ struct VascularPDE : public PDE {
 
   void Init(Simulation* sim) override {
     auto* sp = sim->GetParam()->Get<SimParam>();
-    DefineGrid(sim, sp->perfusion_diffusion, sp->perfusion_decay);
+    DefineGrid(sim, sp->perfusion.diffusion, sp->perfusion.decay);
 
     // Layer-specific perfusion profile with smooth sigmoid transitions.
     // Sigmoid blending avoids artificial diffusion gradients at boundaries.
-    real_t basal = sp->perfusion_basal;
-    real_t papillary_val = basal * sp->perfusion_papillary_fraction;
-    real_t reticular_val = basal * sp->perfusion_reticular_fraction;
-    real_t hypodermis_val = basal * sp->perfusion_hypodermis_fraction;
+    real_t basal = sp->perfusion.basal;
+    real_t papillary_val = basal * sp->perfusion.papillary_fraction;
+    real_t reticular_val = basal * sp->perfusion.reticular_fraction;
+    real_t hypodermis_val = basal * sp->perfusion.hypodermis_fraction;
     real_t z_papillary = sp->dermal_z_papillary;
     real_t z_reticular = sp->dermal_z_reticular;
 
@@ -59,34 +59,34 @@ struct VascularPDE : public PDE {
   // above (Stratum field proxy for tissue demand / growth factor signals).
   void ApplySource(Simulation* sim, const CompositeField& fields) override {
     auto* sp = sim->GetParam()->Get<SimParam>();
-    if (!sp->wound_enabled) return;
+    if (!sp->wound.enabled) return;
 
     auto* scheduler = sim->GetScheduler();
     uint64_t step = GetGlobalStep(sim);
-    uint64_t wound_step = static_cast<uint64_t>(sp->wound_trigger_step);
+    uint64_t wound_step = static_cast<uint64_t>(sp->wound.trigger_step);
     if (step <= wound_step) return;
 
     uint64_t wound_age = step - wound_step;
-    if (wound_age < static_cast<uint64_t>(sp->perfusion_angio_delay)) return;
+    if (wound_age < static_cast<uint64_t>(sp->perfusion.angio_delay)) return;
 
     auto* vasc_grid = Grid(sim);
     auto* stratum_grid = fields.Grid(fields::kStratum, sim);
     GridContext ctx(vasc_grid, sp);
 
-    real_t basal = sp->perfusion_basal;
-    real_t rate = sp->perfusion_angio_rate;
+    real_t basal = sp->perfusion.basal;
+    real_t rate = sp->perfusion.angio_rate;
     real_t z_papillary = sp->dermal_z_papillary;
     real_t z_reticular = sp->dermal_z_reticular;
-    real_t papillary_fraction = sp->perfusion_papillary_fraction;
-    real_t reticular_fraction = sp->perfusion_reticular_fraction;
-    real_t hypodermis_fraction = sp->perfusion_hypodermis_fraction;
+    real_t papillary_fraction = sp->perfusion.papillary_fraction;
+    real_t reticular_fraction = sp->perfusion.reticular_fraction;
+    real_t hypodermis_fraction = sp->perfusion.hypodermis_fraction;
     real_t angio_papillary = sp->angio_papillary_factor;
     real_t angio_reticular = sp->angio_reticular_factor;
     real_t angio_hypodermis = sp->angio_hypodermis_factor;
 
     // VEGF-modulated angiogenesis: cache grid pointer outside loop
     DiffusionGrid* vegf_grid = nullptr;
-    if (sp->angiogenesis_enabled) {
+    if (sp->angiogenesis.enabled) {
       vegf_grid = fields.Grid(fields::kVEGF, sim);
     }
 
@@ -140,7 +140,7 @@ struct VascularPDE : public PDE {
         if (vegf_grid) {
           real_t vegf_current = vegf_grid->GetConcentration(idx);
           real_t consume = std::min(vegf_current,
-                                    sp->vegf_consumption_rate * delta);
+                                    sp->angiogenesis.vegf_consumption_rate * delta);
           if (consume > 1e-10) {
             vegf_grid->ChangeConcentrationBy(idx, -consume);
           }

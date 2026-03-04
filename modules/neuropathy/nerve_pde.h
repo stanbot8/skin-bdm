@@ -14,7 +14,7 @@ namespace skibidy {
 struct NervePDE : public SimpleStructuralPDE {
   NervePDE(const SimParam* sp)
       : SimpleStructuralPDE(fields::kNerve, fields::kNerveId,
-                            sp->neuropathy_diffusion, sp->neuropathy_decay),
+                            sp->neuropathy.diffusion, sp->neuropathy.decay),
         sp_(sp) {}
 
   void Init(Simulation* sim) override {
@@ -22,9 +22,9 @@ struct NervePDE : public SimpleStructuralPDE {
     // Set basal nerve density in dermal tissue
     auto* grid = Grid(sim);
     GridContext ctx(grid, sp_);
-    real_t basal = sp_->neuropathy_basal_density;
-    if (sp_->diabetic_mode) {
-      basal *= sp_->diabetic_nerve_factor;
+    real_t basal = sp_->neuropathy.basal_density;
+    if (sp_->diabetic.mode) {
+      basal *= sp_->diabetic.nerve_factor;
     }
     for (size_t idx = 0; idx < ctx.n; idx++) {
       real_t z = ctx.Z(idx);

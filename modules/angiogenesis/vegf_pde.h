@@ -10,7 +10,7 @@ namespace skibidy {
 struct VEGFPDE : public SimplePDE {
   explicit VEGFPDE(const SimParam* sp)
       : SimplePDE(fields::kVEGF, fields::kVEGFId,
-                  sp->vegf_diffusion, sp->vegf_decay) {}
+                  sp->angiogenesis.vegf_diffusion, sp->angiogenesis.vegf_decay) {}
 };
 
 }  // namespace skibidy
