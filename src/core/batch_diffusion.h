@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "core/diffusion/diffusion_grid.h"
+#include "core/pde.h"
 #include "core/operation/operation.h"
 #include "core/operation/operation_registry.h"
 #include "core/resource_manager.h"
@@ -36,6 +37,7 @@ struct BatchDiffusionOp : public StandaloneOperationImpl {
 
     auto* sim = Simulation::GetActive();
     auto* sp = sim->GetParam()->Get<SimParam>();
+    PerfTimer timer(sp->debug_perf);
     real_t base_dt = sim->GetParam()->simulation_time_step;
 
     // Fast grids: step every tick
@@ -70,6 +72,8 @@ struct BatchDiffusionOp : public StandaloneOperationImpl {
         g->Step(base_dt);
       }
     }
+
+    timer.Print("batch_diffusion");
   }
 
  private:

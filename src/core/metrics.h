@@ -24,7 +24,10 @@ namespace skibidy {
 // MetricsExporter -- standalone operation that writes a CSV row of simulation
 // metrics every metrics_interval steps.
 //
-// 45 columns -- see header string below for full list
+// 53 columns -- see header string below for full list
+// Note: blood, burn, and pressure modules modify existing fields (perfusion,
+// inflammation, ROS) rather than creating new grids. Their effects show in
+// existing columns (mean_perfusion_wound, mean_infl_wound, mean_ros_wound).
 // ---------------------------------------------------------------------------
 struct MetricsExporter : public StandaloneOperationImpl {
   BDM_OP_HEADER(MetricsExporter);
@@ -58,7 +61,11 @@ struct MetricsExporter : public StandaloneOperationImpl {
             << "mean_fibrin_wound,"
             << "mean_ecm_quality,mean_tissue_viability,"
             << "mean_temperature_wound,mean_glucose_wound,"
-            << "mean_lactate_wound,mean_no_wound"
+            << "mean_lactate_wound,mean_no_wound,mean_ros_wound,"
+            << "mean_stiffness_wound,mean_lymphatic_wound,mean_edema_wound,mean_voltage_wound,"
+            << "mean_tnf_alpha_wound,mean_il6_wound,mean_cartilage_wound,mean_synovial_wound,"
+            << "mean_tcell_wound,mean_bone_wound,"
+            << "mean_scab_wound"
             << std::endl;
     }
 
@@ -142,8 +149,8 @@ struct MetricsExporter : public StandaloneOperationImpl {
       auto* tumor = dynamic_cast<TumorCell*>(agent);
       if (tumor) {
         if (tumor->GetCyclePhase() == kG0 &&
-            sp->tumor_handoff_delay > 0 &&
-            tumor->GetG0Steps() > sp->tumor_handoff_delay) {
+            sp->tumor.handoff_delay > 0 &&
+            tumor->GetG0Steps() > sp->tumor.handoff_delay) {
           return;
         }
         n_tumor_cells++;
@@ -177,8 +184,20 @@ struct MetricsExporter : public StandaloneOperationImpl {
     real_t mean_glucose = 0;
     real_t mean_lactate = 0;
     real_t mean_no = 0;
+    real_t mean_ros = 0;
+    real_t mean_stiffness = 0;
+    real_t mean_lymphatic = 0;
+    real_t mean_edema = 0;
+    real_t mean_voltage = 0;
+    real_t mean_tnf_alpha = 0;
+    real_t mean_il6 = 0;
+    real_t mean_cartilage = 0;
+    real_t mean_synovial = 0;
+    real_t mean_tcell = 0;
+    real_t mean_bone = 0;
+    real_t mean_scab = 0;
 
-    if (sp->wound_enabled) {
+    if (sp->wound.enabled) {
       auto* stratum_grid = rm->GetDiffusionGrid(fields::kStratumId);
       auto* o2_grid = rm->GetDiffusionGrid(fields::kOxygenId);
       auto* ca_grid = rm->GetDiffusionGrid(fields::kCalciumId);
@@ -187,64 +206,100 @@ struct MetricsExporter : public StandaloneOperationImpl {
 
       DiffusionGrid* tgfb_grid = nullptr;
       DiffusionGrid* col_grid = nullptr;
-      if (sp->fibroblast_enabled) {
+      if (sp->fibroblast.enabled) {
         tgfb_grid = rm->GetDiffusionGrid(fields::kTGFBetaId);
         col_grid = rm->GetDiffusionGrid(fields::kCollagenId);
       }
 
       DiffusionGrid* biofilm_grid = nullptr;
-      if (sp->biofilm_enabled) {
+      if (sp->biofilm.enabled) {
         biofilm_grid = rm->GetDiffusionGrid(fields::kBiofilmId);
       }
       DiffusionGrid* vegf_grid = nullptr;
-      if (sp->angiogenesis_enabled) {
+      if (sp->angiogenesis.enabled) {
         vegf_grid = rm->GetDiffusionGrid(fields::kVEGFId);
       }
       DiffusionGrid* mmp_grid = nullptr;
-      if (sp->mmp_enabled) {
+      if (sp->mmp.enabled) {
         mmp_grid = rm->GetDiffusionGrid(fields::kMMPId);
       }
       DiffusionGrid* fn_grid = nullptr;
-      if (sp->fibronectin_enabled) {
+      if (sp->fibronectin.enabled) {
         fn_grid = rm->GetDiffusionGrid(fields::kFibronectinId);
       }
       DiffusionGrid* elastin_grid = nullptr;
-      if (sp->elastin_enabled) {
+      if (sp->elastin.enabled) {
         elastin_grid = rm->GetDiffusionGrid(fields::kElastinId);
       }
       DiffusionGrid* ha_grid = nullptr;
-      if (sp->hyaluronan_enabled) {
+      if (sp->hyaluronan.enabled) {
         ha_grid = rm->GetDiffusionGrid(fields::kHyaluronanId);
       }
       DiffusionGrid* dermis_grid = nullptr;
-      if (sp->dermis_enabled) {
+      if (sp->dermis.enabled) {
         dermis_grid = rm->GetDiffusionGrid(fields::kDermisId);
       }
       DiffusionGrid* ph_grid = rm->GetDiffusionGrid(fields::kPHId);
       DiffusionGrid* fibrin_grid = nullptr;
-      if (sp->hemostasis_enabled) {
+      if (sp->hemostasis.enabled) {
         fibrin_grid = rm->GetDiffusionGrid(fields::kFibrinId);
       }
       DiffusionGrid* temp_grid_m = nullptr;
-      if (sp->temperature_enabled) {
+      if (sp->temperature.enabled) {
         temp_grid_m = rm->GetDiffusionGrid(fields::kTemperatureId);
       }
       DiffusionGrid* glucose_grid_m = nullptr;
-      if (sp->glucose_enabled) {
+      if (sp->glucose_mod.enabled) {
         glucose_grid_m = rm->GetDiffusionGrid(fields::kGlucoseId);
       }
       DiffusionGrid* lactate_grid_m = nullptr;
-      if (sp->lactate_enabled) {
+      if (sp->lactate.enabled) {
         lactate_grid_m = rm->GetDiffusionGrid(fields::kLactateId);
       }
       DiffusionGrid* no_grid_m = nullptr;
-      if (sp->nitric_oxide_enabled) {
+      if (sp->nitric_oxide.enabled) {
         no_grid_m = rm->GetDiffusionGrid(fields::kNitricOxideId);
+      }
+      DiffusionGrid* ros_grid_m = nullptr;
+      if (sp->ros.enabled) {
+        ros_grid_m = rm->GetDiffusionGrid(fields::kROSId);
+      }
+      DiffusionGrid* stiff_grid_m = nullptr;
+      if (sp->mechanotransduction.enabled) {
+        stiff_grid_m = rm->GetDiffusionGrid(fields::kStiffnessId);
+      }
+      DiffusionGrid* lymph_grid_m = nullptr;
+      DiffusionGrid* edema_grid_m = nullptr;
+      if (sp->lymphatic.enabled) {
+        lymph_grid_m = rm->GetDiffusionGrid(fields::kLymphaticId);
+        edema_grid_m = rm->GetDiffusionGrid(fields::kEdemaId);
+      }
+      DiffusionGrid* volt_grid_m = nullptr;
+      if (sp->bioelectric.enabled) {
+        volt_grid_m = rm->GetDiffusionGrid(fields::kVoltageId);
+      }
+      DiffusionGrid* scab_grid_m = nullptr;
+      if (sp->scab.enabled) {
+        scab_grid_m = rm->GetDiffusionGrid(fields::kScabId);
+      }
+      DiffusionGrid* tnf_grid_m = nullptr;
+      DiffusionGrid* il6_grid_m = nullptr;
+      DiffusionGrid* cart_grid_m = nullptr;
+      DiffusionGrid* syn_grid_m = nullptr;
+      DiffusionGrid* tcell_grid_m = nullptr;
+      DiffusionGrid* bone_grid_m = nullptr;
+      if (sp->ra.enabled) {
+        tnf_grid_m = rm->GetDiffusionGrid(fields::kTNFAlphaId);
+        il6_grid_m = rm->GetDiffusionGrid(fields::kIL6Id);
+        cart_grid_m = rm->GetDiffusionGrid(fields::kCartilageId);
+        syn_grid_m = rm->GetDiffusionGrid(fields::kSynovialFluidId);
+        tcell_grid_m = rm->GetDiffusionGrid(fields::kTCellDensityId);
+        bone_grid_m = rm->GetDiffusionGrid(fields::kBoneId);
       }
 
       DiffusionGrid* infl_grid = nullptr;
       DiffusionGrid* anti_grid = nullptr;
-      if (sp->split_inflammation_enabled) {
+      if (sp->inflammation.split_inflammation_enabled) {
         infl_grid = rm->GetDiffusionGrid(fields::kProInflammatoryId);
         anti_grid = rm->GetDiffusionGrid(fields::kAntiInflammatoryId);
       } else {
@@ -276,7 +331,11 @@ struct MetricsExporter : public StandaloneOperationImpl {
       real_t sum_fibrin = 0;
       real_t sum_ecm = 0;
       real_t sum_viability = 0;
-      real_t sum_temp = 0, sum_gluc = 0, sum_lac = 0, sum_no = 0;
+      real_t sum_temp = 0, sum_gluc = 0, sum_lac = 0, sum_no = 0, sum_ros = 0;
+      real_t sum_stiff = 0, sum_lymph = 0, sum_edema = 0, sum_volt = 0;
+      real_t sum_tnf = 0, sum_il6 = 0, sum_cart = 0, sum_syn = 0;
+      real_t sum_tcell = 0, sum_bone = 0;
+      real_t sum_scab = 0;
 
       // Compact loops: iterate only wound voxels via precomputed index lists.
       for (size_t idx : mask_.epi_wound) {
@@ -305,6 +364,12 @@ struct MetricsExporter : public StandaloneOperationImpl {
         if (glucose_grid_m) sum_gluc += glucose_grid_m->GetConcentration(idx);
         if (lactate_grid_m) sum_lac += lactate_grid_m->GetConcentration(idx);
         if (no_grid_m) sum_no += no_grid_m->GetConcentration(idx);
+        if (ros_grid_m) sum_ros += ros_grid_m->GetConcentration(idx);
+        if (volt_grid_m) sum_volt += volt_grid_m->GetConcentration(idx);
+        if (scab_grid_m) sum_scab += scab_grid_m->GetConcentration(sidx(scab_grid_m, idx));
+        if (tnf_grid_m) sum_tnf += tnf_grid_m->GetConcentration(idx);
+        if (il6_grid_m) sum_il6 += il6_grid_m->GetConcentration(idx);
+        if (tcell_grid_m) sum_tcell += tcell_grid_m->GetConcentration(idx);
       }
       for (size_t idx : mask_.dermal_wound) {
         dermal_voxels++;
@@ -319,6 +384,16 @@ struct MetricsExporter : public StandaloneOperationImpl {
         if (glucose_grid_m) sum_gluc += glucose_grid_m->GetConcentration(idx);
         if (lactate_grid_m) sum_lac += lactate_grid_m->GetConcentration(idx);
         if (no_grid_m) sum_no += no_grid_m->GetConcentration(idx);
+        if (ros_grid_m) sum_ros += ros_grid_m->GetConcentration(idx);
+        if (stiff_grid_m) sum_stiff += stiff_grid_m->GetConcentration(idx);
+        if (lymph_grid_m) sum_lymph += lymph_grid_m->GetConcentration(sidx(lymph_grid_m, idx));
+        if (edema_grid_m) sum_edema += edema_grid_m->GetConcentration(idx);
+        if (tnf_grid_m) sum_tnf += tnf_grid_m->GetConcentration(idx);
+        if (il6_grid_m) sum_il6 += il6_grid_m->GetConcentration(idx);
+        if (cart_grid_m) sum_cart += cart_grid_m->GetConcentration(sidx(cart_grid_m, idx));
+        if (syn_grid_m) sum_syn += syn_grid_m->GetConcentration(sidx(syn_grid_m, idx));
+        if (tcell_grid_m) sum_tcell += tcell_grid_m->GetConcentration(idx);
+        if (bone_grid_m) sum_bone += bone_grid_m->GetConcentration(sidx(bone_grid_m, idx));
       }
 
       if (total_voxels > 0) {
@@ -333,6 +408,7 @@ struct MetricsExporter : public StandaloneOperationImpl {
         mean_vegf = sum_vegf / total_voxels;
         if (ph_grid) mean_ph = sum_ph / total_voxels;
         if (fibrin_grid) mean_fibrin = sum_fibrin / total_voxels;
+        if (scab_grid_m) mean_scab = sum_scab / total_voxels;
         if (g_ecm_quality) mean_ecm_quality = sum_ecm / total_voxels;
         if (g_tissue_viability) mean_tissue_viability = sum_viability / total_voxels;
       }
@@ -349,6 +425,19 @@ struct MetricsExporter : public StandaloneOperationImpl {
         if (glucose_grid_m) mean_glucose = sum_gluc / all_wound;
         if (lactate_grid_m) mean_lactate = sum_lac / all_wound;
         if (no_grid_m) mean_no = sum_no / all_wound;
+        if (ros_grid_m) mean_ros = sum_ros / all_wound;
+        if (stiff_grid_m) mean_stiffness = sum_stiff / all_wound;
+        if (lymph_grid_m) mean_lymphatic = sum_lymph / all_wound;
+        if (edema_grid_m) mean_edema = sum_edema / all_wound;
+        if (tnf_grid_m) mean_tnf_alpha = sum_tnf / all_wound;
+        if (il6_grid_m) mean_il6 = sum_il6 / all_wound;
+        if (cart_grid_m) mean_cartilage = sum_cart / all_wound;
+        if (syn_grid_m) mean_synovial = sum_syn / all_wound;
+        if (tcell_grid_m) mean_tcell = sum_tcell / all_wound;
+        if (bone_grid_m) mean_bone = sum_bone / all_wound;
+      }
+      if (total_voxels > 0) {
+        if (volt_grid_m) mean_voltage = sum_volt / total_voxels;
       }
       if (dermal_voxels > 0) {
         mean_perfusion = sum_perf / dermal_voxels;
@@ -374,7 +463,7 @@ struct MetricsExporter : public StandaloneOperationImpl {
 
     // --- Tumor field cells (binary field: 1 filled voxel ≈ 1 handoff) ---
     int tumor_field_cells = 0;
-    if (sp->tumor_enabled) {
+    if (sp->tumor.enabled) {
       auto* tumor_grid = rm->GetDiffusionGrid(fields::kTumorId);
       if (tumor_grid) {
         size_t n_boxes = tumor_grid->GetNumBoxes();
@@ -430,7 +519,19 @@ struct MetricsExporter : public StandaloneOperationImpl {
           << mean_temperature << ","
           << mean_glucose << ","
           << mean_lactate << ","
-          << mean_no
+          << mean_no << ","
+          << mean_ros << ","
+          << mean_stiffness << ","
+          << mean_lymphatic << ","
+          << mean_edema << ","
+          << mean_voltage << ","
+          << mean_tnf_alpha << ","
+          << mean_il6 << ","
+          << mean_cartilage << ","
+          << mean_synovial << ","
+          << mean_tcell << ","
+          << mean_bone << ","
+          << mean_scab
           << std::endl;
     timer.Print("metrics");
   }
