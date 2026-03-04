@@ -6,8 +6,8 @@ bdm.toml.*
 batch/results/
 checkpoints/
 studies/*/results/
-studies/scenarios/
-studies/*/scenarios/combo_screen.toml
-studies/*/scenarios/refine_*.toml
+studies/*/experiments/combo_screen.toml
+studies/*/experiments/refine_*.toml
 studies/figures/
 literature/.crossref_cache.json
+src/core/study_hooks_gen.h
