@@ -1,0 +1,54 @@
+# Experiment: Burn Treatment Comparison
+#
+# Compares standard burn care protocols from conservative to comprehensive.
+# Tests whether layered interventions (cooling + antimicrobial + debridement
+# + scaffold) provide additive benefit over individual treatments.
+# All configs use default partial thickness burn (depth_fraction = 0.5).
+
+[experiment]
+name = "Treatment Comparison"
+description = "Comparative efficacy of burn treatments from untreated to full protocol"
+profile = "burn"
+study = "burn"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Untreated baseline
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Untreated"
+
+# ---------------------------------------------------------------------------
+# Cooling + silver sulfadiazine (basic first aid + antimicrobial)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cooling + Silver"
+treatments = ["cooling", "silver_sulfadiazine"]
+
+# ---------------------------------------------------------------------------
+# Debridement + silver sulfadiazine (surgical + antimicrobial)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Debridement + Silver"
+treatments = ["debridement", "silver_sulfadiazine"]
+
+# ---------------------------------------------------------------------------
+# Skin substitute alone (scaffold without debridement)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Skin Substitute"
+treatments = ["skin_substitute"]
+
+# ---------------------------------------------------------------------------
+# Debridement + skin substitute (surgical + scaffold)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Debridement + Skin Substitute"
+treatments = ["debridement", "skin_substitute"]
+
+# ---------------------------------------------------------------------------
+# Full protocol: cooling + debridement + silver + skin substitute
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Full Protocol"
+treatments = ["cooling", "debridement", "silver_sulfadiazine", "skin_substitute"]

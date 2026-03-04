@@ -1,0 +1,82 @@
+# Experiment: Antibiotic Prophylaxis Timing
+#
+# Tests the critical timing window for surgical antibiotic prophylaxis.
+# Clinical guidelines recommend administration within 60 minutes before
+# incision. This experiment models the effect of timing on tissue
+# antibiotic levels at the time of bacterial exposure.
+#
+# Pre-operative timing achieves peak tissue levels at incision; delayed
+# post-operative dosing allows a window of unprotected colonization.
+#
+# Based on: Classen et al. 1992, Bratzler & Houck 2004, Weber et al. 2008
+
+[experiment]
+name = "Timing Optimization"
+description = "Antibiotic prophylaxis timing window and SSI prevention efficacy"
+profile = "surgical"
+study = "surgical"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Pre-op at -1h: optimal timing (peak tissue levels at incision)
+# Full antibiotic effect on biofilm parameters
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Pre-op -1h (optimal)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.biofilm.growth_rate" = 0.001
+"skin.biofilm.neutrophil_clearance" = 0.005
+
+# ---------------------------------------------------------------------------
+# Pre-op at -3h: early dosing (tissue levels declining at incision)
+# Reduced antibiotic effect (75% of optimal)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Pre-op -3h (early)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.biofilm.growth_rate" = 0.002
+"skin.biofilm.neutrophil_clearance" = 0.0045
+
+# ---------------------------------------------------------------------------
+# Post-op at +6h: delayed dosing (6h of unprotected colonization)
+# Bacteria establish before antibiotic takes effect (50% of optimal)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Post-op +6h (delayed)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.biofilm.growth_rate" = 0.003
+"skin.biofilm.neutrophil_clearance" = 0.004
+
+# ---------------------------------------------------------------------------
+# Post-op at +24h: late dosing (24h of unprotected colonization)
+# Biofilm may be partially established (25% of optimal)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Post-op +24h (late)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.biofilm.growth_rate" = 0.004
+"skin.biofilm.neutrophil_clearance" = 0.0035
+
+# ---------------------------------------------------------------------------
+# No antibiotics: baseline infection risk without prophylaxis
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "No Antibiotics"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.biofilm.growth_rate" = 0.005
+"skin.biofilm.neutrophil_clearance" = 0.003

@@ -1,0 +1,4 @@
+[project]
+name = "full-model"
+description = "Wound healing with all mechanistic toggles on"
+category = "acute"

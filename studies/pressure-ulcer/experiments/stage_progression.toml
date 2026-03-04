@@ -1,0 +1,68 @@
+# Experiment: Pressure Ulcer Stage Progression
+#
+# Initialize tissue at each of the four NPUAP stages by setting cumulative
+# damage via overrides, then simulate 42 days to observe healing trajectory.
+# Stage I is reversible; Stage IV involves exposed deep structures.
+# Tests whether the model correctly predicts slower healing and potential
+# non-healing at higher stages.
+
+[experiment]
+name = "Stage Progression"
+description = "Healing trajectory from each initial pressure ulcer stage"
+profile = "pressure"
+study = "pressure-ulcer"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Stage I: non-blanchable erythema, intact skin, reversible
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Stage I (Erythema)"
+[experiment.configs.overrides]
+"skin.pressure.tissue_damage_rate" = 0.001     # mild: damage accumulates slowly
+"skin.pressure.ischemia_rate" = 0.01           # early ischemia, still partially perfused
+"skin.perfusion.basal" = 0.7                   # slightly reduced perfusion
+
+# ---------------------------------------------------------------------------
+# Stage II: partial thickness loss, epidermis and dermis involved
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Stage II (Partial Thickness)"
+[experiment.configs.overrides]
+"skin.pressure.tissue_damage_rate" = 0.003     # default: moderate ongoing damage
+"skin.pressure.ischemia_rate" = 0.02           # full ischemia under load
+"skin.perfusion.basal" = 0.55                  # compromised vasculature
+"skin.diabetic.prolif_factor" = 0.45           # damaged basal layer
+
+# ---------------------------------------------------------------------------
+# Stage III: full thickness loss into subcutaneous tissue
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Stage III (Full Thickness)"
+[experiment.configs.overrides]
+"skin.pressure.tissue_damage_rate" = 0.005     # severe ongoing damage
+"skin.pressure.ischemia_rate" = 0.03           # deep ischemia
+"skin.pressure.moisture_damage_rate" = 0.002   # exudate from deep wound
+"skin.perfusion.basal" = 0.45                  # severely compromised
+"skin.diabetic.prolif_factor" = 0.35           # major basal layer loss
+"skin.diabetic.collagen_factor" = 0.35         # subcutaneous tissue destruction
+"skin.fibroblast.density_factor" = 0.45        # fibroblast depletion in wound bed
+"skin.duration_days" = 60                      # extended: Stage III needs longer
+
+# ---------------------------------------------------------------------------
+# Stage IV: full thickness with exposed bone/tendon/muscle
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Stage IV (Bone/Tendon Exposed)"
+[experiment.configs.overrides]
+"skin.pressure.tissue_damage_rate" = 0.008     # extreme ongoing damage
+"skin.pressure.ischemia_rate" = 0.04           # profound ischemia
+"skin.pressure.moisture_damage_rate" = 0.003   # heavy exudate
+"skin.pressure.shear_factor" = 2.0             # deep tissue shear
+"skin.perfusion.basal" = 0.35                  # near-total vascular compromise
+"skin.diabetic.prolif_factor" = 0.25           # minimal remaining epithelium
+"skin.diabetic.collagen_factor" = 0.2          # massive tissue loss
+"skin.fibroblast.density_factor" = 0.3         # severe fibroblast depletion
+"skin.diabetic.fibroblast_lifespan_factor" = 0.5  # hostile wound environment
+"skin.immune.macrophage_m1_duration_h" = 120   # severe chronic inflammation
+"skin.duration_days" = 90                      # extended: Stage IV rarely heals in 42d

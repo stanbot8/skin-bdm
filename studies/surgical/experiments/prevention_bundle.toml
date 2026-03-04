@@ -1,0 +1,60 @@
+# Experiment: SSI Prevention Bundles
+#
+# Tests the additive effect of evidence-based SSI prevention measures.
+# Bundles are cumulative: each adds one more intervention on top of the
+# previous level. Models a contaminated (Class III) wound to create a
+# baseline infection risk that prevention measures can reduce.
+#
+# Based on: Ban et al. 2017, Berrios-Torres et al. 2017
+
+[experiment]
+name = "Prevention Bundle"
+description = "Additive effect of SSI prevention bundle components on contaminated wounds"
+profile = "surgical"
+study = "surgical"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Control: contaminated wound, no prevention measures
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "No Prevention (control)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.biofilm.growth_rate" = 0.005
+
+# ---------------------------------------------------------------------------
+# Antibiotics only: pre-operative cefazolin
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Antibiotics Only"
+treatments = ["prophylactic_antibiotics"]
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+
+# ---------------------------------------------------------------------------
+# Antibiotics + chlorhexidine skin prep
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Antibiotics + Chlorhexidine"
+treatments = ["prophylactic_antibiotics", "chlorhexidine"]
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+
+# ---------------------------------------------------------------------------
+# Full bundle: antibiotics + chlorhexidine + ERAS (normothermia, glycemic
+# control, nutrition optimization)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Full Bundle"
+treatments = ["prophylactic_antibiotics", "chlorhexidine", "enhanced_recovery"]
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02

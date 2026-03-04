@@ -60,6 +60,15 @@ def apply_profile(name):
     apply_overlay(path)
 
 
+def apply_site(name):
+    """Apply a body site overlay by name (looks up modules/body_site/sites/{name}.toml)."""
+    path = os.path.join(ROOT, "modules", "body_site", "sites", f"{name}.toml")
+    if not os.path.isfile(path):
+        print(f"ERROR: body site '{name}' not found.")
+        sys.exit(1)
+    apply_overlay(path)
+
+
 def apply_study(name):
     """Apply a study config by name (looks up studies/{name}/preset.toml)."""
     path = os.path.join(ROOT, "studies", name, "preset.toml")
@@ -67,6 +76,32 @@ def apply_study(name):
         print(f"ERROR: study '{name}' not found.")
         sys.exit(1)
     apply_overlay(path)
+
+
+def apply_treatment(name, study=None):
+    """Apply a treatment overlay by name.
+
+    Searches studies/{study}/treatments/ first if study is given,
+    then all studies/*/treatments/ directories.
+    """
+    if study:
+        path = os.path.join(ROOT, "studies", study, "treatments", f"{name}.toml")
+        if os.path.isfile(path):
+            apply_overlay(path)
+            return
+    # Search shared treatments
+    shared = os.path.join(ROOT, "studies", "shared", "treatments", f"{name}.toml")
+    if os.path.isfile(shared):
+        apply_overlay(shared)
+        return
+    # Search all study treatment dirs
+    import glob as _glob
+    for path in sorted(_glob.glob(os.path.join(
+            ROOT, "studies", "*", "treatments", f"{name}.toml"))):
+        apply_overlay(path)
+        return
+    print(f"ERROR: treatment '{name}' not found.")
+    sys.exit(1)
 
 
 def override_param(param_path, value):
@@ -109,12 +144,28 @@ def override_param(param_path, value):
                 found = True
 
     if not found:
-        print(f"WARNING: param '{param_path}' not found in bdm.toml")
+        # Append section and key if missing
+        if isinstance(value, bool):
+            val_str = "true" if value else "false"
+        elif isinstance(value, (int, float)):
+            val_str = str(value)
+        else:
+            val_str = f'"{value}"'
+        # Check if section exists but key is missing
+        section_exists = any(line.strip() == section_header for line in lines)
+        if section_exists:
+            # Find the section and append the key after it
+            for i, line in enumerate(lines):
+                if line.strip() == section_header:
+                    lines.insert(i + 1, f"{key} = {val_str}\n")
+                    break
+        else:
+            lines.append(f"\n{section_header}\n{key} = {val_str}\n")
 
     with open(bdm_toml, "w") as f:
         f.writelines(lines)
 
-    return found
+    return True
 
 
 # ---------------------------------------------------------------------------
@@ -152,16 +203,27 @@ def build_if_needed():
 # Simulation execution
 # ---------------------------------------------------------------------------
 
-def run_simulation():
+def run_simulation(output_path=None):
     """Run one simulation. Returns (success, elapsed_seconds).
+
+    If output_path is given, BDM writes directly there (no copy needed).
+    Otherwise falls back to the default output/ directory.
 
     Success is determined by metrics.csv existing (not exit code),
     because ParaView viz export can crash headless without affecting
     simulation results.
     """
-    output_dir = os.path.join(ROOT, "output")
-    if os.path.exists(output_dir):
-        shutil.rmtree(output_dir, ignore_errors=True)
+    if output_path:
+        # Write directly to the target directory.
+        # BDM appends the project name ("skibidy") as a subdirectory.
+        os.makedirs(output_path, exist_ok=True)
+        override_param("simulation.output_dir", output_path)
+        _last_output[0] = os.path.join(output_path, "skibidy")
+    else:
+        out = os.path.join(ROOT, "output")
+        if os.path.exists(out):
+            shutil.rmtree(out, ignore_errors=True)
+        _last_output[0] = os.path.join(out, "skibidy")
 
     # Disable viz export and suppress xdg-open/GUI for batch/AI runs.
     # skin.headless is the exposed flag checked by the binary.
@@ -169,17 +231,27 @@ def run_simulation():
     override_param("skin.headless", True)
 
     t0 = time.time()
-    subprocess.run(
+    result = subprocess.run(
         [os.path.join(ROOT, "build", "skibidy")],
         cwd=ROOT, capture_output=True, text=True)
     elapsed = time.time() - t0
 
-    return os.path.isfile(get_metrics_path()), elapsed
+    ok = os.path.isfile(get_metrics_path())
+    if not ok and result.returncode != 0:
+        # Log last 5 lines of stderr for debugging
+        err_lines = (result.stderr or "").strip().splitlines()[-5:]
+        if err_lines:
+            print(f"[sim stderr: {'; '.join(err_lines)}]", end=" ")
+    return ok, elapsed
+
+
+# Tracks where the last run wrote its output
+_last_output = [os.path.join(ROOT, "output", "skibidy")]
 
 
 def get_metrics_path():
     """Return path to the metrics CSV from the last run."""
-    return os.path.join(ROOT, "output", "skibidy", "metrics.csv")
+    return os.path.join(_last_output[0], "metrics.csv")
 
 
 # ---------------------------------------------------------------------------
@@ -282,6 +354,22 @@ def write_csv(data, path, columns=None):
 # Outcome extraction
 # ---------------------------------------------------------------------------
 
+_OUTCOME_ALIASES = {
+    "collagen_density": "mean_collagen_wound",
+    "inflammation_level": "mean_infl_wound",
+    "fibroblast_count": "n_fibroblasts",
+    "vascular_density": "mean_perfusion_wound",
+    "tnf_alpha_level": "mean_tnf_alpha_wound",
+    "il6_level": "mean_il6_wound",
+    "bone_density": "mean_bone_wound",
+    "cartilage_density": "mean_cartilage_wound",
+    "vegf_level": "mean_vegf_wound",
+    "mmp_level": "mean_mmp_wound",
+    "neutrophil_count": "n_neutrophils",
+    "macrophage_count": "n_macrophages",
+}
+
+
 def extract_outcome(data, column, measure="final"):
     """Extract a scalar outcome from a metrics timeseries.
 
@@ -292,6 +380,11 @@ def extract_outcome(data, column, measure="final"):
       time_to_N - first time value exceeds N (e.g. time_to_90)
     """
     values = data.get(column, [])
+    if not values:
+        # Try alias mapping
+        alias = _OUTCOME_ALIASES.get(column)
+        if alias:
+            values = data.get(alias, [])
     if not values:
         return float("nan")
 

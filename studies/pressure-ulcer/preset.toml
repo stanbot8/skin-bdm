@@ -1,7 +1,8 @@
-# Preset: wound -- punch biopsy wound healing (default experiment)
+# Preset: pressure-ulcer -- pressure ulcer (bedsore) simulation
 
 [skin]
-duration_days = 30
+duration_days = 42
+metrics_interval_h = 20
 
 [skin.wound]
 enabled = true
@@ -14,4 +15,7 @@ enabled = true
 enabled = true
 
 [skin.hemostasis]
+enabled = true
+
+[skin.pressure]
 enabled = true

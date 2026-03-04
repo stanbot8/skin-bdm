@@ -1,0 +1,82 @@
+# Morris sensitivity analysis: rheumatoid arthritis key parameters
+#
+# Screens RA-specific parameters for cartilage and bone erosion outcomes.
+#
+# Usage:
+#   python3 batch/sensitivity.py batch/configs/sensitivity_ra.toml
+#   python3 batch/sensitivity.py batch/configs/sensitivity_ra.toml -r 5
+
+[sensitivity]
+name = "rheumatoid_arthritis"
+study = "rheumatoid"
+skin = "rheumatoid"
+trajectories = 10
+levels = 4
+replicates = 1
+
+[outcomes]
+primary = "mean_cartilage_wound"
+secondary = ["mean_tnf_alpha_wound", "mean_il6_wound", "mean_bone_wound", "mean_infl_wound"]
+measure = "final"
+
+# TNF-alpha cytokine axis
+[[params]]
+param = "skin.ra.autoimmune_source"
+min = 0.0003
+max = 0.003
+
+[[params]]
+param = "skin.ra.tnf_decay"
+min = 0.02
+max = 0.1
+
+# IL-6 cytokine axis
+[[params]]
+param = "skin.ra.il6_autoimmune_source"
+min = 0.0005
+max = 0.005
+
+[[params]]
+param = "skin.ra.il6_decay"
+min = 0.02
+max = 0.08
+
+# Cartilage erosion
+[[params]]
+param = "skin.ra.cartilage_tnf_degradation"
+min = 0.00005
+max = 0.001
+
+[[params]]
+param = "skin.ra.cartilage_mmp_degradation"
+min = 0.0001
+max = 0.002
+
+# Bone erosion
+[[params]]
+param = "skin.ra.bone_rankl_erosion"
+min = 0.00002
+max = 0.0003
+
+# T-cell dynamics
+[[params]]
+param = "skin.ra.tcell_recruitment"
+min = 0.0003
+max = 0.003
+
+# Synovial pannus
+[[params]]
+param = "skin.ra.synovial_growth_rate"
+min = 0.0003
+max = 0.003
+
+# Cross-induction feedback
+[[params]]
+param = "skin.ra.tnf_il6_induction"
+min = 0.0003
+max = 0.003
+
+[[params]]
+param = "skin.ra.il6_inflammation_coupling"
+min = 0.0005
+max = 0.005

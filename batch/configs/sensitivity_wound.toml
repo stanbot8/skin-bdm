@@ -1,0 +1,138 @@
+# Morris sensitivity analysis: wound healing key parameters
+#
+# Screens 20 parameters across inflammation, fibroblast, ECM, immune,
+# and vascular modules for their effect on wound closure and collagen.
+#
+# Usage:
+#   python3 batch/sensitivity.py batch/configs/sensitivity_wound.toml
+#   python3 batch/sensitivity.py batch/configs/sensitivity_wound.toml -r 5  # quick
+#   python3 batch/sensitivity.py batch/configs/sensitivity_wound.toml -r 20 # thorough
+
+[sensitivity]
+name = "wound_healing"
+study = "wound"
+skin = "normal"
+trajectories = 10     # r=10 gives reliable ranking
+levels = 4            # p=4 grid levels per parameter
+replicates = 1        # 1 replicate (stochastic variance is low)
+
+[outcomes]
+primary = "wound_closure_pct"
+secondary = ["mean_collagen_wound", "mean_infl_wound", "n_fibroblasts", "mean_perfusion_wound"]
+measure = "auc"    # area under curve captures full trajectory dynamics
+
+# --- Parameter definitions ---
+# Each param needs: param (TOML path), min, max, log (optional)
+# Ranges are baseline +/- 50% unless biological limits apply.
+
+# Immune recruitment
+[[params]]
+param = "skin.immune.cytokine_rate"
+min = 0.002          # baseline 0.004
+max = 0.008
+
+[[params]]
+param = "skin.immune.neutrophil_lifespan_h"
+min = 48.0           # baseline 96
+max = 144.0
+
+[[params]]
+param = "skin.immune.macrophage_lifespan_h"
+min = 336.0          # baseline 672
+max = 1008.0
+
+[[params]]
+param = "skin.immune.macrophage_m1_duration_h"
+min = 24.0           # baseline 48
+max = 72.0
+
+# Inflammation
+[[params]]
+param = "skin.inflammation.decay"
+min = 0.005          # baseline 0.010
+max = 0.020
+
+[[params]]
+param = "skin.inflammation.diffusion"
+min = 0.15           # baseline 0.30
+max = 0.45
+
+# Fibroblast ECM production
+[[params]]
+param = "skin.fibroblast.collagen_deposition_rate"
+min = 0.00025        # baseline 0.0005
+max = 0.001
+
+[[params]]
+param = "skin.fibroblast.tgfb_rate"
+min = 0.0005         # baseline 0.001
+max = 0.002
+
+[[params]]
+param = "skin.fibroblast.myofibroblast_threshold"
+min = 0.0075         # baseline 0.015
+max = 0.030
+
+# Angiogenesis
+[[params]]
+param = "skin.angiogenesis.vegf_production_rate"
+min = 0.001          # baseline 0.002
+max = 0.004
+
+[[params]]
+param = "skin.angiogenesis.angio_vegf_rate"
+min = 0.005          # baseline 0.01
+max = 0.02
+
+# MMP remodeling
+[[params]]
+param = "skin.mmp.prommp_activation_rate"
+min = 0.04           # baseline 0.08
+max = 0.16
+
+[[params]]
+param = "skin.mmp.timp_fibroblast_rate"
+min = 0.001          # baseline 0.002
+max = 0.004
+
+# Scar formation
+[[params]]
+param = "skin.scar.accumulation_rate"
+min = 0.0005         # baseline 0.001
+max = 0.002
+
+# Wound re-epithelialization
+[[params]]
+param = "skin.wound.inward_bias"
+min = 0.15           # baseline 0.3
+max = 0.45
+
+# Fibronectin provisional matrix
+[[params]]
+param = "skin.fibronectin.deposition_rate"
+min = 0.0015         # baseline 0.003
+max = 0.006
+
+[[params]]
+param = "skin.fibronectin.decay"
+min = 0.005          # baseline 0.010
+max = 0.020
+
+# Oxygen and vascular
+[[params]]
+param = "skin.perfusion.angio_rate"
+min = 0.0025         # baseline 0.005
+max = 0.010
+
+# Hemostasis
+[[params]]
+param = "skin.hemostasis.mmp_degradation"
+min = 0.001          # baseline 0.002
+max = 0.004
+
+# Senescence
+[[params]]
+param = "skin.senescence.wound_accumulation_rate"
+min = 0.00001        # baseline 0.00002
+max = 0.0001
+log = true

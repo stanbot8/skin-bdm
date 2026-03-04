@@ -1,0 +1,56 @@
+# Experiment: Stasis Zone Rescue
+#
+# The zone of stasis is the critical salvageable region in Jackson's model.
+# Without intervention, ischemic tissue converts to coagulation necrosis
+# over 24 to 48 hours. Immediate cooling (cold running water, 20 min) is
+# the primary first aid intervention. This experiment tests the time window
+# for stasis rescue: how late can cooling be applied and still preserve
+# viable tissue?
+#
+# Clinical relevance: the "golden hour" of burn first aid determines
+# whether a deep partial thickness burn requires grafting or heals
+# conservatively.
+
+[experiment]
+name = "Stasis Zone Rescue"
+description = "Time-dependent salvage of the zone of stasis with cooling therapy"
+profile = "burn"
+study = "burn"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Untreated: stasis converts to coagulation (worst case)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Untreated (no cooling)"
+
+# ---------------------------------------------------------------------------
+# Cooling at 0h (immediate, best case)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cooling at 0h"
+treatments = ["cooling"]
+
+# ---------------------------------------------------------------------------
+# Cooling at 6h (delayed first aid)
+# Partial stasis deterioration has occurred; interpolate cooling effect at 75%
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cooling at 6h"
+[experiment.configs.overrides]
+"skin.burn.stasis_deterioration_rate" = 0.009    # 0.02 toward 0.005 at 75%
+"skin.burn.stasis_initial_viability" = 0.6       # 0.5 toward 0.7 at 75% (some already lost)
+"skin.burn.hyperemia_inflammation_boost" = 0.2   # 0.3 toward 0.15 at 75%
+"skin.perfusion.basal" = 0.85                    # 0.8 toward 0.9 at 75%
+
+# ---------------------------------------------------------------------------
+# Cooling at 24h (too late for most stasis tissue)
+# Stasis largely converted; cooling effect at 25%
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cooling at 24h"
+[experiment.configs.overrides]
+"skin.burn.stasis_deterioration_rate" = 0.016    # 0.02 toward 0.005 at 25%
+"skin.burn.stasis_initial_viability" = 0.45      # most stasis tissue already necrotic
+"skin.burn.hyperemia_inflammation_boost" = 0.26  # minimal cooling benefit
+"skin.perfusion.basal" = 0.82                    # marginal perfusion improvement

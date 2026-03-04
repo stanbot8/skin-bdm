@@ -1,0 +1,13 @@
+# Treatment: chlorhexidine skin preparation -- topical antiseptic
+# Literature: Darouiche et al. 2010, Dumville et al. 2015
+# Mechanism: chlorhexidine-alcohol prep reduces bacterial colonization at
+#            wound site by disrupting cell membranes; residual bactericidal
+#            activity persists for hours after application
+
+[skin.biofilm]
+growth_rate = 0.002                    # 0.005 -> 0.002: residual antiseptic activity
+seed_amount = 0.003                    # 0.01 -> 0.003: reduced skin flora at incision site
+carrying_capacity = 0.7                # 1.0 -> 0.7: antiseptic ceiling on biofilm density
+
+[skin.inflammation]
+decay = 0.0035                         # mild anti-inflammatory effect of reduced bioburden

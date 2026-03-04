@@ -116,7 +116,7 @@ python3 batch/checkpoint.py fork --checkpoint checkpoints/step_1680 \
     --skin diabetic --study diabetic-wound --treatment msc
 ```
 
-The checkpoint saves all 33 DiffusionGrid data arrays (approximately 348 KB) but not agent state. Agents re-spawn from field state after fork, so results have small absolute differences from full runs but preserve relative treatment rankings. A global step offset (`g_step_offset`) ensures all step-dependent logic (subcycling, wound triggers, treatment timing) uses the correct global time after fork.
+The checkpoint saves all 41 DiffusionGrid data arrays (approximately 348 KB) but not agent state. Agents re-spawn from field state after fork, so results have small absolute differences from full runs but preserve relative treatment rankings. A global step offset (`g_step_offset`) ensures all step-dependent logic (subcycling, wound triggers, treatment timing) uses the correct global time after fork.
 
 Controlled via environment variables (no bdm.toml changes needed):
 - `SKIBIDY_CKPT_SAVE_DIR`: directory to write checkpoint files

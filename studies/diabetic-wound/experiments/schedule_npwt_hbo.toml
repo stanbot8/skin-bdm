@@ -1,0 +1,351 @@
+# Auto-generated: combinatorial schedule (npwt+hbo)
+
+[experiment]
+name = "Schedule: npwt+hbo"
+description = "Combinatorial treatment scheduling"
+profile = "diabetic"
+study = "diabetic-wound"
+runs_per_config = 3
+
+[[experiment.configs]]
+label = "Untreated"
+
+[[experiment.configs]]
+label = "NPWT D0 + HBO D0"
+treatments = ["npwt", "hbo"]
+
+[[experiment.configs]]
+label = "NPWT D0 + HBO D3"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.migration_factor" = 0.8
+"skin.diabetic.prolif_factor" = 0.685714
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+"skin.water_recovery_rate" = 0.05
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D0 + HBO D7"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.migration_factor" = 0.8
+"skin.diabetic.prolif_factor" = 0.666667
+"skin.diabetic.vegf_factor" = 0.9
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+"skin.water_recovery_rate" = 0.05
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D0 + HBO D14"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.migration_factor" = 0.8
+"skin.diabetic.prolif_factor" = 0.65
+"skin.diabetic.vegf_factor" = 0.8
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+"skin.water_recovery_rate" = 0.05
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D0 + HBO D21"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.migration_factor" = 0.8
+"skin.diabetic.prolif_factor" = 0.65
+"skin.diabetic.vegf_factor" = 0.7
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.775
+"skin.water_recovery_rate" = 0.05
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D3 + HBO D0"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.migration_factor" = 0.775
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.vegf_factor" = 1.0
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.008
+"skin.perfusion.basal" = 0.85
+"skin.water_recovery_rate" = 0.047857
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D3 + HBO D3"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.migration_factor" = 0.775
+"skin.diabetic.prolif_factor" = 0.685714
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+"skin.water_recovery_rate" = 0.047857
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D3 + HBO D7"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.migration_factor" = 0.775
+"skin.diabetic.prolif_factor" = 0.666667
+"skin.diabetic.vegf_factor" = 0.9
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+"skin.water_recovery_rate" = 0.047857
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D3 + HBO D14"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.migration_factor" = 0.775
+"skin.diabetic.prolif_factor" = 0.639286
+"skin.diabetic.vegf_factor" = 0.8
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+"skin.water_recovery_rate" = 0.047857
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D3 + HBO D21"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.585714
+"skin.diabetic.migration_factor" = 0.775
+"skin.diabetic.prolif_factor" = 0.639286
+"skin.diabetic.vegf_factor" = 0.7
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.005714
+"skin.perfusion.basal" = 0.775
+"skin.water_recovery_rate" = 0.047857
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D7 + HBO D0"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.migration_factor" = 0.741667
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.vegf_factor" = 1.0
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.008
+"skin.perfusion.basal" = 0.85
+"skin.water_recovery_rate" = 0.045
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D7 + HBO D3"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.migration_factor" = 0.741667
+"skin.diabetic.prolif_factor" = 0.685714
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+"skin.water_recovery_rate" = 0.045
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D7 + HBO D7"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.migration_factor" = 0.741667
+"skin.diabetic.prolif_factor" = 0.666667
+"skin.diabetic.vegf_factor" = 0.9
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+"skin.water_recovery_rate" = 0.045
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D7 + HBO D14"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.migration_factor" = 0.741667
+"skin.diabetic.prolif_factor" = 0.633333
+"skin.diabetic.vegf_factor" = 0.8
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+"skin.water_recovery_rate" = 0.045
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D7 + HBO D21"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.566667
+"skin.diabetic.migration_factor" = 0.741667
+"skin.diabetic.prolif_factor" = 0.625
+"skin.diabetic.vegf_factor" = 0.7
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.005333
+"skin.perfusion.basal" = 0.775
+"skin.water_recovery_rate" = 0.045
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D14 + HBO D0"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.migration_factor" = 0.683333
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.vegf_factor" = 1.0
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.008
+"skin.perfusion.basal" = 0.85
+"skin.water_recovery_rate" = 0.04
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D14 + HBO D3"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.migration_factor" = 0.683333
+"skin.diabetic.prolif_factor" = 0.685714
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+"skin.water_recovery_rate" = 0.04
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D14 + HBO D7"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.migration_factor" = 0.683333
+"skin.diabetic.prolif_factor" = 0.666667
+"skin.diabetic.vegf_factor" = 0.9
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+"skin.water_recovery_rate" = 0.04
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D14 + HBO D14"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.migration_factor" = 0.683333
+"skin.diabetic.prolif_factor" = 0.633333
+"skin.diabetic.vegf_factor" = 0.8
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+"skin.water_recovery_rate" = 0.04
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D14 + HBO D21"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.55
+"skin.diabetic.migration_factor" = 0.683333
+"skin.diabetic.prolif_factor" = 0.6
+"skin.diabetic.vegf_factor" = 0.7
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.005
+"skin.perfusion.basal" = 0.775
+"skin.water_recovery_rate" = 0.04
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D21 + HBO D0"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.migration_factor" = 0.625
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.vegf_factor" = 1.0
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.008
+"skin.perfusion.basal" = 0.85
+"skin.water_recovery_rate" = 0.035
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D21 + HBO D3"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.678571
+"skin.diabetic.migration_factor" = 0.625
+"skin.diabetic.prolif_factor" = 0.685714
+"skin.diabetic.vegf_factor" = 0.957143
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007571
+"skin.perfusion.basal" = 0.839286
+"skin.water_recovery_rate" = 0.035
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D21 + HBO D7"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.65
+"skin.diabetic.migration_factor" = 0.625
+"skin.diabetic.prolif_factor" = 0.666667
+"skin.diabetic.vegf_factor" = 0.9
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.007
+"skin.perfusion.basal" = 0.825
+"skin.water_recovery_rate" = 0.035
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D21 + HBO D14"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.6
+"skin.diabetic.migration_factor" = 0.625
+"skin.diabetic.prolif_factor" = 0.633333
+"skin.diabetic.vegf_factor" = 0.8
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.006
+"skin.perfusion.basal" = 0.8
+"skin.water_recovery_rate" = 0.035
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT D21 + HBO D21"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.55
+"skin.diabetic.migration_factor" = 0.625
+"skin.diabetic.prolif_factor" = 0.6
+"skin.diabetic.vegf_factor" = 0.7
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.005
+"skin.perfusion.basal" = 0.775
+"skin.water_recovery_rate" = 0.035
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5

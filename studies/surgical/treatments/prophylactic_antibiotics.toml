@@ -1,0 +1,13 @@
+# Treatment: prophylactic antibiotics -- pre-operative systemic antibiotics
+# Literature: Bratzler & Houck 2004, Classen et al. 1992
+# Mechanism: bactericidal/bacteriostatic action reduces wound bioburden;
+#            standard of care is IV cefazolin 1h before incision
+
+[skin.biofilm]
+growth_rate = 0.001                    # 0.005 -> 0.001: systemic antibiotic suppresses planktonic growth
+seed_amount = 0.002                    # 0.01 -> 0.002: reduced inoculum via tissue antibiotic levels
+neutrophil_clearance = 0.005           # 0.003 -> 0.005: antibiotic-neutrophil synergy
+seed_delay_h = 96                      # 48 -> 96: antibiotic coverage delays colonization window
+
+[skin.inflammation]
+decay = 0.004                          # reduced PAMP-driven inflammation

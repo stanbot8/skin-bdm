@@ -1,0 +1,4 @@
+[project]
+name = "pressure-ulcer"
+description = "Pressure ulcer (bedsore) simulation"
+category = "chronic"

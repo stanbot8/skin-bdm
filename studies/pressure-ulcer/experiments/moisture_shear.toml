@@ -1,0 +1,56 @@
+# Experiment: Moisture and Shear as Exacerbating Factors
+#
+# 2x2 factorial design testing moisture (dry vs moist/incontinent) and
+# shear stress (low vs high) as co-factors in pressure ulcer development.
+# Moisture from incontinence or perspiration macerates skin, increasing
+# friction coefficient and vulnerability to shear. Shear forces cause
+# tissue deformation at the bone-muscle interface, amplifying deep
+# tissue injury even at sub-threshold surface pressures.
+
+[experiment]
+name = "Moisture and Shear Factors"
+description = "2x2 factorial: moisture and shear as pressure ulcer exacerbating factors"
+profile = "pressure"
+study = "pressure-ulcer"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Dry skin + low shear (best case under pressure)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Dry / Low Shear"
+[experiment.configs.overrides]
+"skin.pressure.moisture_damage_rate" = 0.0003  # dry, well-managed skin
+"skin.pressure.shear_factor" = 1.0             # minimal shear (proper positioning)
+
+# ---------------------------------------------------------------------------
+# Moist skin + low shear (incontinence but good positioning)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Moist / Low Shear"
+[experiment.configs.overrides]
+"skin.pressure.moisture_damage_rate" = 0.003   # incontinence-associated dermatitis
+"skin.pressure.shear_factor" = 1.0             # proper positioning maintained
+"skin.water_surface_loss_rate" = 0.005         # excess moisture at surface
+
+# ---------------------------------------------------------------------------
+# Dry skin + high shear (poor positioning, sliding in bed)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Dry / High Shear"
+[experiment.configs.overrides]
+"skin.pressure.moisture_damage_rate" = 0.0003  # dry skin
+"skin.pressure.shear_factor" = 2.5             # patient sliding, head-of-bed elevated
+"skin.pressure.tissue_damage_rate" = 0.004     # shear amplifies deep tissue injury
+
+# ---------------------------------------------------------------------------
+# Moist skin + high shear (worst case: incontinence + poor positioning)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Moist / High Shear"
+[experiment.configs.overrides]
+"skin.pressure.moisture_damage_rate" = 0.004   # wet skin increases friction coefficient
+"skin.pressure.shear_factor" = 3.0             # moisture amplifies shear (higher friction)
+"skin.pressure.tissue_damage_rate" = 0.005     # combined moisture + shear tissue damage
+"skin.water_surface_loss_rate" = 0.005         # excess surface moisture
+"skin.diabetic.baseline_inflammation" = 0.0008  # incontinence-associated chronic inflammation

@@ -1,0 +1,21 @@
+# Treatment: closed incision negative pressure therapy (ciNPT / Prevena)
+# Literature: Stannard et al. 2012, Hyldig et al. 2016
+# Mechanism: sub-atmospheric pressure over closed incision reduces dead space,
+#            decreases lateral tension, removes exudate, and improves perfusion
+
+[skin.wound]
+inward_bias = 0.55                     # 0.4 -> 0.55: mechanical approximation of wound edges
+
+[skin.perfusion]
+angio_rate = 0.007                     # 0.005 -> 0.007: mechanical strain stimulates angiogenesis
+
+[skin]
+water_recovery_rate = 0.06             # sealed dressing improves fluid balance
+water_surface_loss_rate = 0.01         # reduces TEWL via sealed dressing
+
+[skin.biofilm]
+growth_rate = 0.003                    # 0.005 -> 0.003: exudate removal limits bacterial substrate
+inflammation_rate = 0.0006             # 0.001 -> 0.0006: reduced PAMP load from exudate clearance
+
+[skin.inflammation]
+decay = 0.005                          # exudate removal clears inflammatory mediators faster

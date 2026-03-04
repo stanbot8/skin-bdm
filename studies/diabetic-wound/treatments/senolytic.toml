@@ -1,0 +1,15 @@
+# Treatment: senolytic therapy (dasatinib + quercetin)
+# Literature: Zhu et al. 2015 (doi:10.1111/acel.12344),
+#             Hickson et al. 2019 (doi:10.1016/j.ebiom.2019.08.069),
+#             Xu et al. 2018 (doi:10.1038/s41591-018-0092-9)
+# Mechanism: selective clearance of senescent cells reduces SASP burden,
+# restoring proliferative capacity and reducing chronic inflammation.
+# Clinical: intermittent oral dosing (3 days on, 28 days off) achieves
+# sustained senescent cell clearance due to slow re-accumulation.
+[skin.senescence]
+senolytic_clearance_rate = 0.005      # 0.0 -> 0.005: dasatinib+quercetin-mediated apoptosis
+wound_rate = 0.00005                  # 0.0001 -> 0.00005: reduced re-accumulation between doses
+
+# Downstream SASP reduction (indirect, via fewer senescent cells)
+# No direct SASP rate changes needed: clearance of producer cells
+# mechanistically reduces all SASP outputs (inflammation, MMP, TGF-beta)

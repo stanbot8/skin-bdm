@@ -1,0 +1,4 @@
+[project]
+name = "burn"
+description = "Acute thermal injury simulation"
+category = "acute"
