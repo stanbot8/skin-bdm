@@ -1,0 +1,33 @@
+quantity,simulation_unit,physical_unit,conversion_factor,notes
+Space,1 sim unit,50 um,geo_um_per_unit = 50.0,All positions and lengths in sim units; multiply by 50 to get micrometers
+Time,1 step,0.1 hours (6 minutes),dt = 0.1 h/step,BDM_ASSIGN_HOURS multiplies TOML hours by 10 to get steps
+Time (days),240 steps,1 day,BDM_ASSIGN_DAYS multiplies TOML days by 240,24 h/day x 10 steps/h = 240 steps/day
+Duration,7200 steps,30 days,duration_days * 240,Default simulation length (bdm.core.toml: duration_days = 30)
+Diffusion coefficient,D (sim),um^2/hour,"D_phys = D_sim * (um_per_unit)^2 / dt = D_sim * 2500 / 0.1 = D_sim * 25000",FTCS solver uses sim units internally; CFL: D*dt/dx^2 < 0.5
+Decay rate,lambda (per step),per hour,lambda_phys = lambda_sim / dt = lambda_sim * 10,Per-step rate divided by dt gives per-hour rate
+Decay half-life,steps,hours,t_half_h = ln(2) / (lambda_sim * 10),Derived from per-hour decay rate
+Voxel edge (fine grid),5.0 sim units,250 um,voxel_um / um_per_unit = 250 / 50 = 5,ref_box_length = 5.0; grid_resolution = 12 boxes per axis
+Voxel edge (coarse grid),10.0 sim units,500 um,voxel_um * (12/6) / um_per_unit,grid_resolution_structural = 6; structural (non-diffusing) fields
+Fine grid resolution,12 boxes/axis,12 x 12 x 12 = 1728 voxels,derived from domain extent / voxel_um,Diffusing fields: O2 water inflammation VEGF MMP etc.
+Coarse grid resolution,6 boxes/axis,6 x 6 x 6 = 216 voxels,grid_resolution_structural = 6,Structural fields: collagen fibronectin elastin fibrin scar dermis etc.
+Domain XY extent,-30 to +30 sim units,-1500 to +1500 um,(patch_um/2 + margin_um) / um_per_unit,tissue: -20 to 20; margin adds 10 on each side
+Domain Z extent,-30 to +30 sim units,-1500 to +1500 um,depth and height each 1500 um / 50 = 30,z<0 is dermis/hypodermis; z>0 is epidermis
+Tissue XY extent,-20 to +20 sim units,-1000 to +1000 um,patch_um / (2 * um_per_unit) = 2000 / 100 = 20,Active tissue area (no margin)
+VoxelEnv cache,128 bytes/voxel,16 doubles per voxel,16 x 8 bytes = 128,L2-friendly: 1000 voxels = 125 KB
+Calcium,mM (direct),mM,1:1 (no normalization),Sigmoid profile: basal 0.05 mM at z=0 to peak 1.5 mM at surface (Grabe and Neuber 2005)
+Oxygen,normalized 0 to 1,fraction of arterial pO2,1.0 = arterial pO2 at basement membrane,Exponential decay from z=0 upward; decay_length = 8 sim units
+Water/moisture,normalized 0 to 1,fraction of full hydration,1.0 = fully hydrated tissue,Exponential decay from z=0; background TEWL decay = 0.002/step
+KGF,nM (direct),nM,1:1 (no normalization),basal_conc = 2.0 nM at z=0; half_maximal Km = 0.5 nM
+Glucose,normalized 0 to 1,fraction of normal blood glucose,1.0 = 5.5 mM normal fasting glucose,Module-specific; diabetic profiles alter baseline
+Inflammation,normalized 0 to 1,arbitrary inflammatory index,Unitless composite signal,Pro-inflammatory cytokine proxy; net = pro - weight*anti
+VEGF,normalized 0 to 1,arbitrary growth factor level,Unitless; produced by M2 macrophages,m2_vegf_rate = 0.001/step; drives angiogenesis
+TGF-beta,normalized 0 to 1,arbitrary cytokine level,Unitless; M2 production m2_tgfb_rate = 0.003/step,Drives fibroblast activation and collagen deposition
+Collagen,normalized 0 to 1,fraction of mature ECM density,1.0 = fully mature collagen matrix,Structural grid (coarse); MMP degrades and fibroblasts deposit
+Fibronectin,normalized 0 to 1,fraction of provisional matrix,1.0 = dense fibronectin matrix,Provisional wound matrix; TGF-beta boosts production up to 2x
+TNF-alpha,normalized 0 to 1,arbitrary cytokine level,Unitless; diffusion = 0.04 decay = 0.02/step,17 kDa homotrimer; TNFR1/R2 endocytosis clearance
+IL-6,normalized 0 to 1,arbitrary cytokine level,Unitless; diffusion = 0.05 decay = 0.015/step,21 kDa; IL-6R/gp130 clearance (Kishimoto 2005)
+Nitric oxide,normalized 0 to 1,arbitrary NO concentration,Unitless; fast diffusion 0.02 rapid decay 0.05/step,iNOS from M1 macrophages and neutrophils
+Cell diameter,sim units,um,multiply by 50,Immune cells: 3.0 sim units = 150 um; division_diameter: 5.0 = 250 um
+Migration speed,sim units/step,um/hour,speed * um_per_unit / dt = speed * 50 / 0.1 = speed * 500,migration_speed = 3.0 sim units/step ~ 30 um/h (Larsen et al. 2006 calibration says 30; actual = 3*500=1500 but gradient_scale modulates to effective ~30)
+Cell cycle G1,hours (direct),hours,Stored as hours; division triggers at elapsed >= duration,g1_duration = 7.0 h; total cycle ~ 17 h
+Layer thickness,sim units,um,multiply by 50,basal = 3 (150 um) spinous = 15 (750 um) granular = 7 (350 um)

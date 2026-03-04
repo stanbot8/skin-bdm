@@ -12,8 +12,8 @@ Parameters are layered at runtime:
 
 1. `bdm.core.toml` contains core tissue parameters under `[skin]` and visualization/simulation settings
 2. `modules/*/config.toml` contains per-module parameters under `[skin.modulename]`
-3. `profiles/*.toml` provides skin phenotype overlays (normal, aged, diabetic, aged_diabetic)
-4. `studies/*/preset.toml` provides study scenario configs (wound, tumor, diabetic-wound, tumor-wound, baseline)
+3. `profiles/*.toml` provides skin phenotype overlays (normal, aged, diabetic, aged_diabetic, rheumatoid, burn, pressure, surgical, tumor, tumor_wound)
+4. `studies/*/preset.toml` provides study experiment configs (wound, diabetic-wound, tumor, tumor-wound, burn, pressure-ulcer, surgical, rheumatoid, baseline, full-model)
 
 The merge script (`scripts/config/merge_config.py`) combines layers 1 and 2 into `bdm.toml` (gitignored). Profiles and study configs are applied as sparse overrides via `scripts/config/apply_preset.py`.
 
@@ -43,6 +43,18 @@ The merge script (`scripts/config/merge_config.py`) combines layers 1 and 2 into
 | [Lactate](../modules/lactate/README.md#parameters) | `modules/lactate/config.toml` | Hypoxia production, VEGF boost, perfusion clearance |
 | [Nitric Oxide](../modules/nitric_oxide/README.md#parameters) | `modules/nitric_oxide/config.toml` | iNOS/eNOS production, vasodilation, antimicrobial |
 | [pH](../modules/ph/README.md#parameters) | `modules/ph/config.toml` | Wound bed pH, acid mantle, enzyme activity |
+| [Senescence](../modules/senescence/README.md#parameters) | `modules/senescence/config.toml` | DNA damage, SASP output (inflammation, MMP, TGF-beta) |
+| [Neuropathy](../modules/neuropathy/README.md#parameters) | `modules/neuropathy/config.toml` | Nerve density, Wallerian degeneration, neuropeptide signaling |
+| [ROS](../modules/ros/README.md#parameters) | `modules/ros/config.toml` | Oxidative stress, mitochondrial superoxide, antioxidant defense |
+| [Bioelectric](../modules/bioelectric/config.toml) | `modules/bioelectric/config.toml` | Transepithelial potential, galvanotaxis |
+| [Lymphatic](../modules/lymphatic/config.toml) | `modules/lymphatic/config.toml` | Lymphangiogenesis, interstitial fluid dynamics |
+| [Mechanotransduction](../modules/mechanotransduction/config.toml) | `modules/mechanotransduction/config.toml` | Tissue stiffness, wound contraction |
+| [Body Site](../modules/body_site/config.toml) | `modules/body_site/config.toml` | Anatomical region scaling factors (opt-in) |
+| [Photon](../modules/photon/README.md#parameters) | `modules/photon/config.toml` | SLM light transport, opsin kinetics, phototoxicity |
+| [Burn](../modules/burn/README.md#parameters) | `modules/burn/config.toml` | Jackson's thermal injury, stasis zone, TEWL, contracture |
+| [Pressure](../modules/pressure/README.md#parameters) | `modules/pressure/config.toml` | Ischemia-reperfusion, compression, shear, repositioning |
+| [Blood](../modules/blood/README.md#parameters) | `modules/blood/config.toml` | Hematocrit, platelet aggregation |
+| [Scab](../modules/scab/README.md#parameters) | `modules/scab/config.toml` | Eschar formation, provisional wound cover |
 
 ## Simulation settings
 
@@ -58,6 +70,19 @@ These parameters live in `bdm.core.toml` under `[skin]` and control simulation i
 | `subcycle_slow` | 10 | PDE sub-cycling for slow fields (water, hyaluronan, vascular) |
 | `subcycle_medium` | 5 | PDE sub-cycling for medium fields (inflammation, TGF-beta, MMP, VEGF) |
 | `hot_reload` | false | Watch bdm.toml for runtime parameter changes |
+
+## Mechanistic toggles
+
+Optional biophysical replacements for simplified parametric models. All default to `false`.
+
+| Toggle | Config section | Description |
+|--------|---------------|-------------|
+| `mech_immune_recruitment` | `skin.immune` | Gradient-driven monocyte extravasation (Michaelis-Menten) |
+| `mech_m1_m2_transition` | `skin.immune` | Efferocytosis engulfment count drives M1 to M2 |
+| `mech_collagen_deposition` | `skin.fibroblast` | Constitutive basal + TGF-beta receptor occupancy collagen |
+| `mech_vegf_production` | `skin.angiogenesis` | HIF-1alpha stabilization drives VEGF production |
+
+See each module's README for parameter details. Enable via `studies/full-model/preset.toml` for testing.
 
 ## Debug flags
 

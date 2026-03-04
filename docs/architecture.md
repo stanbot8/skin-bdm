@@ -8,7 +8,7 @@ Technical architecture of Skibidy, a hybrid agent-continuum skin tissue simulati
 
 Skibidy uses a hybrid agent-continuum architecture:
 
-- **Continuum at rest**: healthy skin is represented by 29 diffusion fields (Calcium, KGF, O2, Water, Vascular, Inflammation, ImmunePressure, ProInflammatory, AntiInflammatory, Stratum, Scar, Dermis, Elastin, Hyaluronan, TGF-beta, Collagen, MMP, TIMP, Fibronectin, VEGF, Biofilm, Tumor, Fibrin, pH, Temperature, Glucose, Lactate, NitricOxide, BasalDensity). No agents exist during homeostasis.
+- **Continuum at rest**: healthy skin is represented by 41 diffusion fields (see `src/core/field_names.h` for the full list). No agents exist during homeostasis.
 - **Event-driven agents**: when something happens (wound, infection, tumor), agents spawn to model the cellular response. Keratinocytes bootstrap from local field state at spawn time; immune cells arrive at configured post-wound delays and drive the inflammation field.
 - **Per-cell handoff**: stable cornified cells dissolve back into the continuum field individually.
 - **LOD toggles** per volume via `agents_enabled`: event modules escalate resolution at points of interest.
@@ -57,6 +57,19 @@ Each diffusion field is a `PDE` subclass that owns its initialization, per-step 
 | ProInflammatory | Zero | M1 macrophage cytokines (TNF-alpha, IL-1beta) | None (starts at zero) |
 | AntiInflammatory | Zero | M2 macrophage cytokines (IL-10, TGF-beta1) | None (starts at zero) |
 | BasalDensity | Homeostatic profile | Logistic growth toward rho_max, differentiation outflux | None (FTCS skipped) |
+| Senescence | Zero | DNA damage accumulation, age-driven | None (starts at zero) |
+| Nerve | Dermal profile | Wallerian degeneration in wound, regrowth | Wound disruption |
+| ROS | Zero | NADPH oxidase burst, mitochondrial superoxide | None (starts at zero) |
+| AGE | Zero | Advanced glycation end-products (diabetic) | None (starts at zero) |
+| ProMMP | Zero | Latent MMP zymogen, activation by ROS/plasmin | None (starts at zero) |
+| ActiveMMP | Zero | Activated MMP from ProMMP processing | None (starts at zero) |
+| Stiffness | Tissue profile | Mechanotransduction, wound contraction | Wound disruption |
+| Lymphatic | Dermal profile | Lymphangiogenesis, interstitial drainage | Wound disruption |
+| Edema | Zero | Interstitial fluid accumulation | None (starts at zero) |
+| Voltage | Transepithelial potential | Wound disruption, galvanotaxis signal | Wound disruption |
+| ECMQuality | Derived | Composite of collagen, fibronectin, elastin | Derived field |
+| TissueViability | Derived | Composite tissue health score | Derived field |
+| WoundMicroenv | Derived | Composite wound microenvironment score | Derived field |
 
 All PDE source terms share a `GridContext` helper that precomputes grid metadata (resolution, domain bounds, voxel coordinates) and wound geometry, eliminating repeated boilerplate across channels.
 
@@ -83,6 +96,21 @@ Several system-level behaviors emerge from local cell rules:
 - **Scar formation**: `WriteScarValue` checks local collagen concentration when a keratinocyte dissolves. High collagen (above `scar_collagen_threshold`) produces scar tissue (stratum+5); low collagen produces normal stratum. This makes scar an emergent outcome of the fibroblast/collagen cascade.
 - **Wound closure rate**: emerges from the interplay of O2 availability, water hydration, inflammation suppression, KGF growth factor signaling, and mechanical crowding.
 - **ECM remodeling balance**: net collagen accumulation emerges from the MMP/TIMP balance, TGF-beta signaling, and fibroblast activation state, rather than from a single degradation rate.
+
+## Mechanistic toggles
+
+Four optional mechanistic replacements can be enabled independently via boolean flags in their respective module configs. All default to `false`, preserving the parametric (calibrated) behavior. When enabled, they replace simplified rate models with biophysically grounded alternatives:
+
+| Toggle | Module | Replaces | Mechanistic model |
+|--------|--------|----------|-------------------|
+| `mech_immune_recruitment` | immune | threshold + rate + taper recruitment | Chemokine gradient magnitude with Michaelis-Menten saturation |
+| `mech_m1_m2_transition` | immune | Cytokine-threshold M1 to M2 | Efferocytosis engulfment count with timer ceiling fallback |
+| `mech_collagen_deposition` | fibroblast | Constant collagen rate | Constitutive basal + TGF-beta receptor occupancy (Michaelis-Menten) |
+| `mech_vegf_production` | angiogenesis | Flat M2 VEGF rate | HIF-1alpha stabilization under hypoxia |
+
+The `full-model` study preset (`studies/full-model/preset.toml`) enables M1 to M2, collagen, and VEGF toggles for validation testing. Gradient-driven recruitment is implemented but excluded from the test preset pending further calibration.
+
+All mechanistic modes share infrastructure with their parametric counterparts (e.g., the ICAM-1 adhesion taper is shared by both recruitment modes; the M1 duration ceiling is shared by both M1 to M2 modes).
 
 ## How to add a module
 
@@ -181,7 +209,7 @@ In `src/core/metrics.h`:
 
 ### 9. Add tests
 
-In `tests/test-suite.cc`:
+In `tests/` (e.g. `tests/pde_test.cc` for PDE tests, `tests/core_test.cc` for core tests):
 - Unit test for the PDE (init profile, source terms, wound response)
 - Unit test for agent/behavior logic
 - Integration test (run N steps, verify expected outcome)

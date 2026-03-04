@@ -1,0 +1,562 @@
+parameter,module,value,provenance,source,notes
+g1_duration,core,7.0,literature,Alberts et al. Molecular Biology of the Cell,G1 phase duration (hours)
+s_duration,core,6.0,literature,Alberts et al. Molecular Biology of the Cell,S phase duration (hours)
+g2_duration,core,3.0,literature,Alberts et al. Molecular Biology of the Cell,G2 phase duration (hours)
+m_duration,core,1.0,literature,Alberts et al. Molecular Biology of the Cell,M phase duration (hours)
+growth_rate,core,5,assumed,,Volume growth rate
+max_neighbors,core,14,assumed,,Contact inhibition neighbor threshold
+lateral_scatter,core,0.3,assumed,,Lateral scatter on division
+max_ta_divisions,core,4,assumed,,Max transit amplifying divisions
+division_diameter,core,5.0,assumed,,Cell diameter at division
+p_asymmetric,core,0.7,assumed,,Probability of asymmetric stem division
+stem_fraction,core,0.50,assumed,,Fraction of seeded basal cells that are stem
+calcium_diffusion,core,0.0,literature,Grabe and Neuber 2005,Static prescribed field (no diffusion)
+calcium_decay,core,0.0,literature,Grabe and Neuber 2005,No decay; gradient persists
+calcium_basal,core,0.05,literature,Grabe and Neuber 2005,mM concentration at basement membrane
+calcium_peak,core,1.5,literature,Grabe and Neuber 2005,mM concentration at tissue surface
+calcium_midpoint_z,core,18.0,calibrated,,z-height where sigmoid reaches 50%
+calcium_steepness,core,2.0,calibrated,,Sigmoid steepness (smaller = sharper)
+ca_spinous_threshold,core,0.1,assumed,,mM Ca2+ triggers spinous transition
+ca_granular_threshold,core,0.5,assumed,,mM Ca2+ triggers granular transition
+ca_cornified_threshold,core,1.0,assumed,,mM Ca2+ triggers cornified transition
+spinous_threshold,core,6.0,assumed,,z-height ceiling for calcium-driven basal identity
+kgf_diffusion,core,0.0,assumed,,Static prescribed field (no diffusion)
+kgf_decay,core,0.0,assumed,,No decay (persistent gradient)
+kgf_basal_conc,core,2.0,assumed,,nM concentration at basement membrane (z=0)
+kgf_half_maximal,core,0.5,assumed,,nM Michaelis-Menten Km (50% response)
+kgf_max_boost,core,1.0,assumed,,Max fold-increase in G1 to S transition rate
+kgf_decay_length,core,5.0,assumed,,z-scale for exponential decay of initial profile
+basal_thickness,core,3.0,assumed,,Basale layer height
+spinous_thickness,core,15.0,assumed,,Spinosum layer height
+granular_thickness,core,7.0,assumed,,Granulosum layer height
+papillary_thickness,core,2.0,assumed,,Papillary dermis depth
+reticular_thickness,core,6.0,assumed,,Reticular dermis depth
+volume_z_spinous,core,3.0,assumed,,Derived from basal_thickness
+volume_z_granular,core,18.0,assumed,,Derived from basal + spinous
+volume_z_cornified,core,25.0,assumed,,Derived from basal + spinous + granular
+dermal_z_papillary,core,-2.0,assumed,,Derived from -papillary
+dermal_z_reticular,core,-8.0,assumed,,Derived from -(papillary + reticular)
+oxygen_diffusion,core,0.1,assumed,,Diffusion coefficient
+oxygen_decay,core,0.01,assumed,,Consumption/decay rate
+oxygen_basal_conc,core,1.0,assumed,,Normalized; 1.0 = arterial pO2 at z=0
+oxygen_decay_length,core,8.0,assumed,,z-scale for initial exponential profile
+water_diffusion,core,1e-4,assumed,,Lateral diffusion
+water_decay,core,0.002,assumed,,Background TEWL
+water_basal_conc,core,1.0,assumed,,Normalized; 1.0 = fully hydrated
+water_decay_length,core,12.0,assumed,,z-scale for initial exponential profile
+water_recovery_rate,core,0.02,assumed,,Serum hydration rate per step
+water_surface_loss_rate,core,0.03,assumed,,Evaporation at exposed wound surface per step
+water_migration_threshold,core,0.3,assumed,,Min moisture for full migration speed
+water_prolif_threshold,core,0.4,assumed,,Min moisture for full proliferation rate
+repulsion_coeff,core,5.0,assumed,,Steric repulsion strength (Hertz contact)
+attraction_coeff,core,0.0,assumed,,Adhesion disabled (desmosomes/E-cadherin)
+shedding_delay,core,99999,assumed,,9999.9h = disabled
+apoptosis_delay,core,99999,assumed,,9999.9h = disabled
+geo_patch_um,core,2000.0,assumed,,Tissue lateral extent (um)
+geo_depth_um,core,1500.0,assumed,,Domain depth below basement membrane (um)
+geo_height_um,core,1500.0,assumed,,Domain height above basement membrane (um)
+geo_margin_um,core,500.0,assumed,,Empty margin beyond tissue (um)
+geo_um_per_unit,core,50.0,assumed,,Physical scale: 1 sim unit = N um
+geo_voxel_um,core,250.0,assumed,,Target voxel edge length (um)
+tissue_min,core,-20,assumed,,Derived from -patch_um / (2 * um_per_unit)
+tissue_max,core,20,assumed,,Derived from patch_um / (2 * um_per_unit)
+domain_min,core,-30,assumed,,Derived from tissue_min - margin_um/um_per_unit
+domain_max,core,30,assumed,,Derived from tissue_max + margin_um/um_per_unit
+domain_z_min,core,-30,assumed,,Derived from -depth_um / um_per_unit
+domain_z_max,core,30,assumed,,Derived from height_um / um_per_unit
+bounds_min,core,"{-20,-20,-30}",assumed,,Per-axis simulation bounds for position clamping
+bounds_max,core,"{20,20,30}",assumed,,Per-axis simulation bounds for position clamping
+num_steps,core,7200,assumed,,30 days = 7200 steps at 0.1h time step
+grid_resolution,core,12,assumed,,DiffusionGrid boxes per axis (derived from geometry)
+ref_box_length,core,5.0,assumed,,Box length (derived: voxel_um / um_per_unit)
+homeostatic_fold,core,0,assumed,,Steps in same stratum before agent folds to continuum (0=disabled)
+dissolution_closure_pct,core,90,assumed,,Dissolve all agents once wound closure >= this %
+angio_papillary_factor,core,1.5,assumed,,Capillaries regrow fastest
+angio_reticular_factor,core,1.0,assumed,,Baseline rate
+angio_hypodermis_factor,core,0.5,assumed,,Deep vessels recover slowly
+calcium_recovery_rate,core,0.002,assumed,,Fraction of target recovered per step
+oxygen_prolif_threshold,core,0.3,assumed,,O2 below this suppresses proliferation
+oxygen_recovery_enabled,core,true,assumed,,Vasculature regenerates as wound heals
+migration_enabled,core,true,assumed,,Master switch for migration
+migration_speed,core,3.0,calibrated,,Intrinsic crawl force (calibrated: ~30 um/h)
+migration_gradient_scale,core,15.0,calibrated,,Converts O2 gradient magnitude to speed [0.3 to 1]
+cil_suppression,core,1.0,assumed,,Contact inhibition of locomotion multiplier (1.0 = disabled)
+handoff_delay,core,500,assumed,,50h before cell dissolves (TOML: hours to steps)
+m1_transition_threshold,core,0.3,assumed,,Inflammation below this triggers M1 to M2
+m1_transition_min_age,core,120,assumed,,12h min in M1 before cytokine-driven transition
+immune_cell_diameter,core,3.0,assumed,,Neutrophil/macrophage diameter
+mech_immune_recruitment,core,false,assumed,,Gradient-driven recruitment test mode switch
+mech_recruit_gradient_scale,core,0.12,assumed,,Gradient magnitude to recruitment probability scaling
+mech_recruit_saturation_k,core,0.005,assumed,,Half-saturation for chemokine gradient (Michaelis-Menten)
+mech_m1_m2_transition,core,false,assumed,,Efferocytosis-count driven M1 to M2 test mode switch
+mech_efferocytosis_quota,core,1,assumed,,Single engulfment triggers M2 program (PS receptor)
+mech_m2_transition_rate,core,0.25,assumed,,Probability per step of transition once quota met
+mech_collagen_deposition,core,false,assumed,,TGF-beta receptor occupancy test mode switch
+mech_collagen_tgfb_km,core,0.035,assumed,,TGF-beta half-max for collagen synthesis (Michaelis-Menten)
+mech_collagen_vmax,core,0.00025,assumed,,TGF-b-responsive component Vmax
+mech_collagen_basal,core,0.00035,assumed,,Constitutive myofibroblast collagen rate (epigenetically locked)
+mech_vegf_production,core,false,assumed,,HIF-1alpha stabilization test mode switch
+mech_hif_o2_threshold,core,0.3,assumed,,O2 below this stabilizes HIF-1alpha
+mech_hif_vegf_rate,core,0.003,assumed,,Max VEGF production at zero O2
+anti_inflammation_diffusion,core,0.05,assumed,,Anti-inflammatory diffusion coefficient
+anti_inflammation_decay,core,0.002,assumed,,Anti-inflammatory decay rate
+anti_inflammation_weight,core,1.0,assumed,,Weight for net = pro - weight*anti
+efferocytosis_enabled,core,false,assumed,,Proximity-based M1 to M2
+efferocytosis_radius,core,5.0,assumed,,Search radius for dying neutrophils
+efferocytosis_age_fraction,core,0.8,assumed,,Neutrophil age fraction to be engulfable
+chemotaxis_enabled,core,false,assumed,,Follow inflammation gradient switch
+chemotaxis_speed_scale,core,1.0,assumed,,Gradient speed scaling factor
+angio_vegf_rate,core,0.01,assumed,,Perfusion recovery per unit VEGF per step
+m2_vegf_rate,core,0.001,assumed,,VEGF produced by M2 macrophages per step
+dermal_fibroblast_depth,core,-3.0,assumed,,z-coordinate for seeding (in dermis)
+dermal_fibroblast_margin,core,3.0,assumed,,Extra radius beyond wound for seeding ring
+m2_tgfb_rate,core,0.003,assumed,,M2 macrophage TGF-beta production rate
+decorin_sequestration_rate,core,0.0,literature,Yamaguchi 1990,Collagen-bound decorin neutralizes TGF-beta
+matrikine_mmp_boost,core,0.05,assumed,,ECM fragment positive feedback on MMP production
+fn_tgfb_max_boost,core,2.0,literature,Ignotz and Massague 1986,Max fold-increase in FN rate from TGF-beta
+fn_tgfb_half_maximal,core,0.01,assumed,,TGF-beta Km for FN production (Michaelis-Menten half-max)
+myofibroblast_fn_fraction,core,0.3,literature,Serini et al. 1998,EDA-FN production rate as fraction of activated rate
+age_decay,core,0.0001,assumed,,AGE turnover (very slow; cross-linked proteins persist)
+age_rage_inflammation,core,0.001,assumed,,RAGE-mediated NF-kB inflammation per AGE unit
+age_collagen_crosslink,core,0.15,assumed,,Fraction of MMP collagen degradation blocked by AGEs (0 to 1)
+age_m1_prolongation,core,0.05,assumed,,AGE-RAGE extends M1 duration (multiplier on AGE level)
+age_fibroblast_migration_impair,core,0.1,assumed,,AGE-mediated fibroblast migration impairment
+no_diffusion,core,0.02,assumed,,Fast diffusion (small molecule)
+no_decay,core,0.05,assumed,,Rapid autoxidation
+no_m1_production,core,0.01,assumed,,iNOS from M1 macrophages
+no_neutrophil_production,core,0.005,assumed,,iNOS from neutrophils
+no_vasodilation_factor,core,0.05,assumed,,Perfusion boost from NO
+no_antimicrobial_factor,core,0.3,assumed,,Biofilm suppression factor
+no_collagen_suppression,core,0.03,assumed,,Anti-fibrotic effect
+sasp_inflammation_rate,core,0.001,assumed,,SASP pro-inflammatory output
+sasp_mmp_rate,core,0.0005,assumed,,SASP MMP-3/9 output (as pro-MMP)
+sasp_tgfb_rate,core,0.0002,assumed,,SASP TGF-beta1 output
+senolytic_clearance_rate,core,0.0,assumed,,Treatment: senolytic drug clearance
+nerve_regeneration_rate,core,0.0002,assumed,,Nerve regrowth rate
+nerve_vegf_boost,core,0.5,assumed,,VEGF promotes nerve sprouting
+nerve_tgfb_inhibit,core,0.3,assumed,,TGF-beta inhibits neurite extension
+substance_p_inflammation,core,0.001,assumed,,Neurogenic inflammation
+substance_p_proliferation,core,0.15,assumed,,Keratinocyte proliferation boost
+cgrp_vasodilation,core,0.1,assumed,,CGRP perfusion boost
+stiffness_yap_threshold,core,0.3,assumed,,Stiffness above this promotes myofibroblast via YAP/TAZ
+stiffness_contraction_rate,core,0.0003,assumed,,Wound contraction from myofibroblast traction force
+stiffness_scar_factor,core,0.5,assumed,,Scar amplification from mechanical tension
+edema_leak_rate,core,0.003,assumed,,Vascular leak from inflammation
+edema_drainage_rate,core,0.01,assumed,,Lymphatic drainage of interstitial fluid
+edema_o2_impairment,core,0.3,assumed,,Edema reduces O2 delivery
+edema_migration_impairment,core,0.2,assumed,,Edema slows cell crawling
+voltage_diffusion,core,0.1,assumed,,Fast lateral spread (ionic current)
+voltage_decay,core,0.01,assumed,,Charge leakage
+voltage_epithelial_source,core,0.05,assumed,,Na+/K+ ATPase maintains TEP
+galvanotaxis_strength,core,0.4,calibrated,,Voltage gradient biases fibroblast migration
+tnf_alpha_diffusion,core,0.04,assumed,,TNF-alpha diffusion (17 kDa homotrimer)
+tnf_alpha_decay,core,0.02,assumed,,TNFR1/R2 receptor endocytosis clearance
+il6_diffusion,core,0.05,literature,doi:10.1146/annurev.immunol.23.021704.115806 (Kishimoto 2005),IL-6 diffusion (21 kDa)
+il6_decay,core,0.015,literature,doi:10.1146/annurev.immunol.23.021704.115806 (Kishimoto 2005),IL-6R/gp130 receptor endocytosis clearance
+ecm_weight_collagen,core,0.4,assumed,,Collagen contribution to ECM quality composite
+ecm_weight_fibronectin,core,0.3,assumed,,Fibronectin contribution to ECM quality composite
+ecm_weight_elastin,core,0.2,assumed,,Elastin contribution to ECM quality composite
+ecm_weight_fibrin,core,0.1,assumed,,Fibrin provisional matrix contribution to ECM quality composite
+ecm_migration_boost,core,1.5,assumed,,Composite ECM migration speed boost
+grid_resolution_structural,core,6,assumed,,Coarse grid resolution for structural fields
+scar_enabled,core,true,assumed,,Dissolved agents stamp stratum+5 into Stratum field
+metrics_interval,core,100,assumed,,10h between CSV rows (0 = disabled)
+metrics_autoopen,core,true,assumed,,Open CSV in default app after simulation
+headless,core,false,assumed,,Suppress all xdg-open/GUI calls
+m1_cytokine_taper,core,0.002,assumed,,M1 macrophage cytokine exp(-k*state_age)
+m2_tgfb_taper,core,0.003,assumed,,M2 macrophage TGF-beta exp(-k*state_age)
+subcycle_slow,core,1,assumed,,PDE sub-cycling for slow fields (water; hyaluronan)
+subcycle_medium,core,1,assumed,,PDE sub-cycling for medium fields (inflammation; TGF-beta; MMP)
+derived_fields_subcycle,core,5,assumed,,Recompute ECM/viability composites every N steps
+migration_subcycle,core,3,assumed,,Recompute O2/VEGF/FN gradients every N steps
+homeostasis_subcycle,core,3,assumed,,Skip full behavior for distant cells every N steps
+basal_density_enabled,core,true,assumed,,Logistic PDE for homeostatic basal layer continuum
+basal_density_max,core,1.0,assumed,,Normalized carrying capacity
+basal_density_div_rate,core,0.01,assumed,,Per-step growth rate at full resources
+basal_density_diff_rate,core,0.005,assumed,,Per-step differentiation outflux
+basal_density_subcycle,core,5,assumed,,Run density PDE every N steps
+demotion_radius_factor,core,2.8,calibrated,,Agents beyond factor*r demote to density
+hot_reload,core,false,assumed,,Check bdm.toml for parameter changes every metrics_interval steps
+debug_immune,core,false,assumed,,Immune cell diagnostic output
+debug_fibroblast,core,false,assumed,,Collagen/TGF-beta diagnostic output
+debug_wound,core,false,assumed,,Wound creation/resolution diagnostic output
+debug_scaled_grid,core,false,assumed,,ScaledGrid init diagnostic output
+debug_perf,core,false,assumed,,Wall-clock timing diagnostic output
+angiogenesis.vegf_migration_weight,angiogenesis,0.5,assumed,,Relative weight of VEGF chemotaxis (vs O2=1.0)
+angiogenesis.enabled,angiogenesis,true,assumed,,Module enabled switch
+angiogenesis.vegf_diffusion,angiogenesis,0.08,assumed,,VEGF diffusion coefficient
+angiogenesis.vegf_decay,angiogenesis,0.01,assumed,,VEGF natural decay rate
+angiogenesis.vegf_production_rate,angiogenesis,0.002,assumed,,Hypoxia-driven VEGF production
+angiogenesis.vegf_hypoxia_threshold,angiogenesis,0.5,assumed,,O2 level below which VEGF is produced
+angiogenesis.vegf_consumption_rate,angiogenesis,0.1,assumed,,VEGF consumed per unit perfusion recovery
+angiogenesis.vegf_production_taper,angiogenesis,0.001,assumed,,PHD2/3 negative feedback on VEGF production
+angiogenesis.vegf_receptor_clearance,angiogenesis,0.005,literature,Ferrara 2003,VEGFR-2 internalization rate per vascular density
+bioelectric.enabled,bioelectric,true,literature,doi:10.1038/nature04925 (Zhao et al. 2006),Bioelectric wound currents module
+biofilm.enabled,biofilm,false,assumed,,Module enabled switch
+biofilm.growth_rate,biofilm,0.005,assumed,,Per-step logistic growth
+biofilm.carrying_capacity,biofilm,1.0,assumed,,Max biofilm density per voxel
+biofilm.seed_delay,biofilm,480,assumed,,48h post-wound
+biofilm.seed_amount,biofilm,0.01,assumed,,Initial inoculum density
+biofilm.neutrophil_clearance,biofilm,0.003,assumed,,Clearance per neutrophil per step
+biofilm.macrophage_clearance,biofilm,0.001,assumed,,Clearance per macrophage per step
+biofilm.m1_block_threshold,biofilm,0.3,assumed,,Biofilm level blocking M1 to M2
+biofilm.inflammation_rate,biofilm,0.001,assumed,,PAMP-driven inflammation per biofilm
+blood.enabled,blood,false,literature,doi:10.1152/physrev.00016.2011 (Versteeg et al. 2013),Blood module enabled switch
+blood.bleed_rate,blood,0.02,assumed,,Baseline blood loss rate (normalized)
+blood.depth_bleed_factor,blood,1.5,assumed,,Deeper wounds bleed more
+blood.vascularity_coupling,blood,true,assumed,,bleed_rate *= local perfusion
+blood.intrinsic_rate,blood,0.01,assumed,,Contact activation (factor XII)
+blood.extrinsic_rate,blood,0.05,assumed,,Tissue factor exposure
+blood.thrombin_rate,blood,0.03,assumed,,Thrombin generation from converged pathways
+blood.thrombin_fibrin_coupling,blood,0.02,assumed,,Thrombin to fibrin conversion
+blood.platelet_aggregation,blood,0.04,assumed,,Platelet aggregation at wound
+blood.platelet_cytokine,blood,0.001,assumed,,PDGF/TGF-beta release to inflammation
+blood.clot_maturation_h,blood,4.0,assumed,,Clot stabilization time (hours)
+blood.fibrinolysis_delay_h,blood,48.0,assumed,,Fibrinolysis onset delay (hours)
+blood.initial_volume,blood,1.0,assumed,,Normalized blood volume
+blood.volume_loss_rate,blood,0.01,assumed,,Volume loss per hour at bleed_rate=1
+blood.volume_recovery_rate,blood,0.005,assumed,,Physiological compensation
+blood.shock_threshold,blood,0.6,assumed,,Below this: hemorrhagic shock
+blood.shock_perfusion_penalty,blood,0.3,assumed,,Perfusion multiplier in shock
+blood.hemoglobin,blood,1.0,assumed,,Normalized (1.0 = 14 g/dL)
+blood.anemia_threshold,blood,0.7,assumed,,Below this: impaired O2 delivery
+blood.anemia_o2_penalty,blood,0.5,assumed,,O2 delivery reduction factor
+blood.anticoagulant_level,blood,0.0,assumed,,0 = none; 1.0 = therapeutic
+blood.anticoag_coag_penalty,blood,0.4,assumed,,Coagulation rate reduction
+blood.anticoag_bleed_boost,blood,1.8,assumed,,Bleed rate increase
+blood.platelet_count,blood,1.0,assumed,,Normalized (1.0 = 250k/uL)
+blood.thrombocytopenia_threshold,blood,0.4,assumed,,Below this: impaired clotting
+burn.enabled,burn,false,literature,Jackson 1953; Herndon 2012 (ISBN 978-1-4377-2786-9),Jackson burn wound model
+burn.coagulation_necrosis,burn,0.95,assumed,,Irreversible cell death fraction in coagulation zone
+burn.stasis_viability,burn,0.5,assumed,,Zone of stasis initial viability
+burn.stasis_deterioration,burn,0.02,assumed,,Ischemic deterioration rate (h^-1)
+burn.hyperemia_boost,burn,0.3,assumed,,Inflammatory enhancement in hyperemia zone
+burn.depth_fraction,burn,0.5,assumed,,0 to 0.3 superficial; 0.3 to 0.7 partial; 0.7+ full
+burn.eschar_rate,burn,0.01,assumed,,Eschar formation from necrotic tissue
+burn.tewl_multiplier,burn,5.0,assumed,,Transepidermal water loss multiplier
+burn.fluid_loss_rate,burn,0.05,assumed,,Fluid loss through burn surface
+burn.infection_susceptibility,burn,3.0,assumed,,Barrier breach infection multiplier
+burn.contracture_rate,burn,0.002,assumed,,Excessive scar contraction tendency
+dermis.enabled,dermis,true,assumed,,Module enabled switch
+dermis.diffusion,dermis,0.001,assumed,,Slow dermal tissue diffusion
+dermis.decay,dermis,0.0,assumed,,No decay (structural)
+dermis.papillary_density,dermis,1.0,assumed,,Papillary dermis initial density
+dermis.reticular_density,dermis,0.8,assumed,,Reticular dermis initial density
+dermis.hypodermis_density,dermis,0.5,assumed,,Hypodermis initial density
+dermis.collagen_threshold,dermis,0.05,assumed,,Min collagen for recovery
+dermis.collagen_recovery_rate,dermis,0.002,assumed,,Recovery rate
+dermis.mmp_degradation,dermis,0.004,assumed,,MMP degradation of dermis
+dermis.papillary_rate_factor,dermis,1.5,assumed,,Papillary recovery rate factor
+dermis.reticular_rate_factor,dermis,1.0,assumed,,Reticular recovery rate factor
+dermis.hypodermis_rate_factor,dermis,0.5,assumed,,Hypodermis recovery rate factor
+diabetic.mode,diabetic,false,assumed,,Impair M1 to M2 transition mode switch
+diabetic.m1_duration_factor,diabetic,3.0,assumed,,M1 duration multiplier
+diabetic.resolution_factor,diabetic,0.3,assumed,,M2 resolution rate multiplier
+diabetic.efferocytosis_factor,diabetic,0.5,assumed,,Efferocytosis probability multiplier
+diabetic.prolif_factor,diabetic,0.5,assumed,,Keratinocyte G1 to S multiplier
+diabetic.migration_factor,diabetic,0.45,assumed,,Keratinocyte migration speed multiplier
+diabetic.fibroblast_activation_factor,diabetic,2.0,assumed,,Activation delay multiplier (>1 = slower)
+diabetic.collagen_factor,diabetic,0.4,assumed,,Collagen deposition multiplier
+diabetic.fibroblast_lifespan_factor,diabetic,0.6,assumed,,Fibroblast lifespan multiplier
+diabetic.baseline_inflammation,diabetic,0.0005,assumed,,Per-step inflammation added to wound
+diabetic.neutrophil_factor,diabetic,1.8,assumed,,Neutrophil spawn count multiplier
+diabetic.neutrophil_lifespan_factor,diabetic,3.0,assumed,,Neutrophil lifespan multiplier
+diabetic.neutrophil_apoptosis_factor,diabetic,0.3,assumed,,Impaired neutrophil apoptosis
+diabetic.neutrophil_waves_factor,diabetic,2.0,assumed,,Recruitment wave multiplier
+diabetic.neutrophil_window_factor,diabetic,3.0,assumed,,Spawn window multiplier
+diabetic.macrophage_taper_factor,diabetic,0.3,assumed,,Recruitment taper multiplier
+diabetic.macrophage_apoptosis_factor,diabetic,0.5,literature,Mirza and Koh 2011,Impaired macrophage apoptosis (NF-kB anti-apoptotic)
+diabetic.macrophage_emigration_factor,diabetic,0.5,assumed,,M2 emigration rate multiplier (impaired lymphatic clearance)
+diabetic.inflammation_sensitivity,diabetic,2.0,assumed,,Keratinocyte inflammation sensitivity multiplier
+diabetic.migration_infl_K,diabetic,0.08,assumed,,Hill half-max for migration inflammation gating
+diabetic.prolif_infl_K,diabetic,0.12,assumed,,Hill half-max for proliferation inflammation gating
+diabetic.biofilm_clearance_factor,diabetic,0.5,assumed,,Impaired neutrophil oxidative burst
+diabetic.vegf_factor,diabetic,0.4,assumed,,HIF-1alpha impairment
+diabetic.ph_recovery_factor,diabetic,0.5,assumed,,Impaired acid mantle restoration
+diabetic.mmp_factor,diabetic,3.0,literature,Lobmann et al. 2002 (doi:10.1007/s00125-002-0868-8),MMP overexpression multiplier
+diabetic.timp_production_factor,diabetic,0.4,literature,Lobmann et al. 2002 (doi:10.1007/s00125-002-0868-8),Reduced TIMP expression
+diabetic.no_factor,diabetic,0.6,assumed,,Impaired iNOS in diabetic tissue
+diabetic.senescence_factor,diabetic,2.5,assumed,,Hyperglycemia accelerates senescence
+diabetic.nerve_factor,diabetic,0.3,assumed,,Residual nerve density (70% loss)
+diabetic.nerve_regen_factor,diabetic,0.4,assumed,,Impaired regeneration
+diabetic.mito_ros_factor,diabetic,3.0,assumed,,Hyperglycemia superoxide overproduction
+diabetic.antioxidant_factor,diabetic,0.5,assumed,,Impaired SOD/catalase/GPx
+diabetic.lymphatic_factor,diabetic,0.4,assumed,,Impaired lymphangiogenesis
+diabetic.voltage_factor,diabetic,0.6,assumed,,Impaired ion transport
+elastin.enabled,elastin,false,assumed,,Module enabled switch
+elastin.diffusion,elastin,0.0,assumed,,No diffusion (structural)
+elastin.decay,elastin,0.0002,assumed,,Slow elastic fiber turnover
+elastin.basal_density,elastin,0.5,assumed,,Basal layer elastin density
+elastin.papillary_density,elastin,0.3,assumed,,Papillary dermis elastin density
+elastin.production_rate,elastin,0.0005,assumed,,Elastin production rate
+elastin.mmp_degradation,elastin,0.003,assumed,,MMP degradation of elastin
+fibroblast.enabled,fibroblast,true,assumed,,Module enabled switch
+fibroblast.spawn_delay,fibroblast,10,assumed,,1h post-wound
+fibroblast.spawn_waves,fibroblast,4,assumed,,Recruitment pulses
+fibroblast.spawn_window,fibroblast,960,assumed,,96h window
+fibroblast.diameter,fibroblast,4.0,assumed,,Cell diameter
+fibroblast.density_factor,fibroblast,1.0,assumed,,Density scaling factor
+fibroblast.activation_delay,fibroblast,100,assumed,,10h before auto-activation
+fibroblast.activation_threshold,fibroblast,0.1,assumed,,TGF-beta activation threshold
+fibroblast.myofibroblast_delay,fibroblast,960,assumed,,96h min in activated state
+fibroblast.myofibroblast_threshold,fibroblast,0.3,assumed,,TGF-beta threshold for myofibroblast
+fibroblast.apoptosis_threshold,fibroblast,0.003,assumed,,TGF-beta below this triggers apoptosis
+fibroblast.apoptosis_onset,fibroblast,1920,assumed,,192h as myofibroblast before apoptosis onset
+fibroblast.apoptosis_rate,fibroblast,0.0008,assumed,,Per-step apoptosis probability
+fibroblast.min_lifespan,fibroblast,1680,assumed,,168h (7d) minimum lifespan
+fibroblast.lifespan,fibroblast,6720,assumed,,672h (28d) maximum lifespan
+fibroblast.migration_speed,fibroblast,1.0,assumed,,Tractor force magnitude
+fibroblast.tgfb_diffusion,fibroblast,0.03,assumed,,TGF-beta diffusion coefficient
+fibroblast.tgfb_decay,fibroblast,0.005,assumed,,TGF-beta decay rate
+fibroblast.tgfb_wound_seed,fibroblast,0.15,literature,Shah et al. 1995,Platelet alpha-granule TGF-beta bolus
+fibroblast.tgfb_rate,fibroblast,0.005,assumed,,TGF-beta production rate
+fibroblast.collagen_deposition_rate,fibroblast,0.002,assumed,,Collagen deposition rate
+fibroblast.collagen_decay,fibroblast,0.0,assumed,,Collagen decay rate
+fibroblast.tgfb_receptor_consumption,fibroblast,0.0,literature,Vilar 2006,Per-cell receptor endocytosis
+fibroblast.tgfb_tissue_clearance,fibroblast,0.0,assumed,,Tissue receptor clearance scaled by local cell density
+fibroblast.collagen_o2_half_max,fibroblast,0.0,literature,Myllyharju 2003,O2 for half-max prolyl hydroxylation
+fibroblast.collagen_fn_transition,fibroblast,0.15,assumed,,Collagen level at which FN deposition ceases (ECM maturation)
+fibroblast.tgfb_taper,fibroblast,0.0012,assumed,,Myofibroblast TGF-beta exp(-k*state_age)
+fibroblast.activated_apoptosis_onset,fibroblast,1680,assumed,,168h as activated before stochastic death
+fibroblast.activated_apoptosis_rate,fibroblast,0.0003,assumed,,Per-step removal for activated fibroblasts
+fibronectin.haptotaxis_weight,fibronectin,0.3,assumed,,Relative weight of FN haptotaxis (vs O2=1.0)
+fibronectin.enabled,fibronectin,true,literature,doi:10.1002/jcb.240260206 (Grinnell 1984),Fibronectin essential for wound migration
+fibronectin.decay,fibronectin,0.005,assumed,,ECM turnover (half-life ~5.8 days)
+fibronectin.deposition_rate,fibronectin,0.003,assumed,,Deposited by activated fibroblasts
+fibronectin.serum_rate,fibronectin,0.001,assumed,,Plasma fibronectin from wound serum
+fibronectin.migration_boost,fibronectin,0.5,assumed,,Max migration speed boost on fibronectin
+fibronectin.wound_seed,fibronectin,0.3,literature,Clark 1996,Plasma fibronectin co-deposited with fibrin clot
+fibronectin.carrying_capacity,fibronectin,1.0,assumed,,Local saturation limit for fibroblast deposition
+glucose.enabled,glucose,true,literature,doi:10.1016/j.jmb.2007.03.007 (Brem et al. 2007),Glucose metabolic substrate module
+glucose.diffusion,glucose,0.005,assumed,,Interstitial glucose diffusion
+glucose.decay,glucose,0.0002,assumed,,Cellular uptake rate
+glucose.basal_conc,glucose,1.0,assumed,,Normalized healthy level
+glucose.perfusion_supply,glucose,0.008,assumed,,Perfusion-driven supply rate
+glucose.age_rate,glucose,0.0001,literature,Brownlee 2005,AGE formation rate from glucose
+glucose.age_inflammation,glucose,0.002,assumed,,AGE-driven inflammation per step (legacy)
+glucose.bacterial_consumption,glucose,0.01,assumed,,Biofilm glucose consumption
+glucose.prolif_threshold,glucose,0.05,assumed,,Min glucose for full proliferation
+hemostasis.enabled,hemostasis,false,assumed,,Module enabled switch
+hemostasis.decay,hemostasis,0.0003,assumed,,Slow fibrin clot turnover
+hemostasis.wound_seed,hemostasis,1.0,assumed,,Initial clot density
+hemostasis.tgfb_coupling,hemostasis,0.0005,assumed,,Fibrin to TGF-beta rate
+hemostasis.fibronectin_coupling,hemostasis,0.001,assumed,,Fibrin to fibronectin rate
+hemostasis.mmp_degradation,hemostasis,0.002,assumed,,MMP fibrinolysis rate
+hemostasis.migration_boost,hemostasis,0.3,assumed,,Keratinocyte migration boost from fibrin
+hyaluronan.enabled,hyaluronan,false,assumed,,Module enabled switch
+hyaluronan.diffusion,hyaluronan,0.01,assumed,,HA diffusion coefficient
+hyaluronan.decay,hyaluronan,0.005,assumed,,HA degradation rate
+hyaluronan.basal_density,hyaluronan,0.8,assumed,,Basal HA density
+hyaluronan.reticular_density,hyaluronan,0.4,assumed,,Reticular dermis HA density
+hyaluronan.production_rate,hyaluronan,0.002,assumed,,HA production rate
+hyaluronan.water_retention_factor,hyaluronan,0.5,assumed,,HA water retention factor
+hyaluronan.migration_scaffold_factor,hyaluronan,0.3,assumed,,HA migration scaffold factor
+immune.neutrophil_spawn_delay,immune,20,literature,Kim et al. 2008,2h post-wound neutrophil arrival
+immune.neutrophil_spawn_waves,immune,3,assumed,,Recruitment waves (gradual rise)
+immune.neutrophil_spawn_window,immune,240,assumed,,24h between first and last wave
+immune.neutrophil_lifespan,immune,480,literature,doi:10.1089/wound.2012.0383 (Wilgus et al. 2013),48h hard ceiling
+immune.neutrophil_min_survival,immune,120,assumed,,12h before apoptosis possible
+immune.neutrophil_apoptosis_rate,immune,0.0029,literature,doi:10.1089/wound.2012.0383 (Wilgus et al. 2013),Half-life ~24h
+immune.macrophage_spawn_delay,immune,240,literature,Rodero and Khosrotehrani 2010,24h monocyte extravasation delay
+immune.macrophage_spawn_threshold,immune,0.1,assumed,,Min inflammation for monocyte extravasation
+immune.macrophage_spawn_rate,immune,0.1,assumed,,Per-step spawn probability per unit excess inflammation
+immune.macrophage_spawn_taper,immune,0.0,assumed,,Per-hour decay of recruitment probability
+immune.macrophage_m1_duration,immune,480,literature,Krzyszczyk et al. 2018,48h in M1 state
+immune.macrophage_lifespan,immune,6720,literature,doi:10.4049/jimmunol.0903356 (Lucas et al. 2010),672h (28d) hard ceiling
+immune.macrophage_min_survival,immune,240,assumed,,24h before apoptosis possible
+immune.macrophage_apoptosis_rate,immune,0.00072,literature,doi:10.4049/jimmunol.0903356 (Lucas et al. 2010),Half-life ~4d
+immune.macrophage_emigration_rate,immune,0.02,assumed,,M2 exit rate once stratum re-epithelialized
+immune.cytokine_rate,immune,0.002,assumed,,Inflammation added per cell per step
+immune.resolution_rate,immune,0.005,assumed,,Inflammation consumed by M2 per step
+immune.migration_speed,immune,1.5,assumed,,Tractor force magnitude
+immune.neutrophil_cytokine_taper,immune,0.002,assumed,,Neutrophil cytokine exp(-k*age)
+inflammation.diffusion,inflammation,0.05,assumed,,Lateral cytokine spread
+inflammation.decay,inflammation,0.003,assumed,,Background clearance
+inflammation.migration_threshold,inflammation,1.0,assumed,,Above this migration suppressed
+inflammation.prolif_threshold,inflammation,1.5,assumed,,Above this proliferation suppressed
+inflammation.split_inflammation_enabled,inflammation,false,assumed,,Use separate pro/anti fields
+lactate.enabled,lactate,true,literature,doi:10.1089/ten.2007.0115 (Hunt et al. 2007),Lactate hypoxia metabolite module
+lactate.diffusion,lactate,0.01,assumed,,Tissue diffusion
+lactate.decay,lactate,0.02,assumed,,Clearance rate
+lactate.production_rate,lactate,0.003,assumed,,Hypoxia-driven production
+lactate.o2_threshold,lactate,0.3,assumed,,O2 below this triggers production
+lactate.vegf_boost,lactate,0.03,assumed,,VEGF production boost factor
+lactate.collagen_boost,lactate,0.03,assumed,,Collagen synthesis boost factor
+lactate.perfusion_clearance,lactate,0.005,assumed,,Perfusion-driven lactate clearance
+lymphatic.enabled,lymphatic,true,literature,doi:10.1182/blood-2008-09-176776 (Kataru et al. 2009),Lymphatic system module
+lymphatic.diffusion,lymphatic,0.005,assumed,,Slow lymphatic sprouting diffusion
+lymphatic.basal_density,lymphatic,0.8,assumed,,Healthy dermis lymphatic density
+lymphatic.regen_rate,lymphatic,0.0003,assumed,,Regeneration rate (slower than vascular)
+lymphatic.vegf_boost,lymphatic,0.3,assumed,,VEGF promotes lymphangiogenesis
+mechanotransduction.enabled,mechanotransduction,true,literature,doi:10.1038/nrm809 (Tomasek et al. 2002),Mechanotransduction module
+mmp.enabled,mmp,true,literature,doi:10.1007/s00125-002-0868-8 (Lobmann et al. 2002),MMP dynamics module
+mmp.diffusion,mmp,0.02,assumed,,MMP diffusion coefficient
+mmp.m1_rate,mmp,0.003,assumed,,MMP-9 from M1 macrophages per step
+mmp.neutrophil_rate,mmp,0.002,literature,Nwomeh 1998,MMP-8 from neutrophils per step
+mmp.fibroblast_rate,mmp,0.001,assumed,,MMP-1/3 from activated fibroblasts per step
+mmp.keratinocyte_rate,mmp,0.0005,assumed,,MMP-1 from wound-edge keratinocytes per step
+mmp.collagen_degradation,mmp,0.005,assumed,,Collagen loss per MMP unit per step
+mmp.fibronectin_degradation,mmp,0.002,assumed,,Fibronectin loss per MMP unit per step
+mmp.residual_decay,mmp,0.01,assumed,,Non-TIMP clearance (endocytosis; auto-degradation)
+mmp.timp_diffusion,mmp,0.02,literature,doi:10.1016/S0167-4838(99)00252-5 (Brew et al. 2000),TIMP diffusion (similar MW to MMP)
+mmp.timp_decay,mmp,0.005,assumed,,TIMP natural degradation
+mmp.timp_fibroblast_rate,mmp,0.002,assumed,,TIMP-1 from activated fibroblasts (primary source)
+mmp.timp_macrophage_rate,mmp,0.001,assumed,,TIMP-1 from M2 macrophages (pro-resolution)
+mmp.timp_keratinocyte_rate,mmp,0.0005,assumed,,TIMP-1 from wound-edge keratinocytes
+mmp.timp_inhibition_rate,mmp,0.08,assumed,,Second-order MMP*TIMP neutralization
+mmp.prommp_decay,mmp,0.002,literature,doi:10.1161/01.res.0000070112.80711.3d (Visse and Nagase 2003),Pro-MMP natural degradation
+mmp.prommp_activation_rate,mmp,0.15,literature,doi:10.1161/01.res.0000070112.80711.3d (Visse and Nagase 2003),Basal plasmin-mediated activation rate
+mmp.prommp_autocatalytic_rate,mmp,0.02,literature,doi:10.1161/01.res.0000070112.80711.3d (Visse and Nagase 2003),MMP-3 autocatalytic activation
+neuropathy.enabled,neuropathy,true,literature,doi:10.4049/jimmunol.1601751 (Suvas 2017),Neuropathy module
+neuropathy.diffusion,neuropathy,0.01,assumed,,Slow neurite extension diffusion
+neuropathy.decay,neuropathy,0.0,assumed,,Structural (no spontaneous loss)
+neuropathy.basal_density,neuropathy,1.0,assumed,,Normalized healthy innervation
+nitric_oxide.enabled,nitric_oxide,true,literature,doi:10.1016/S0022-4804(96)80068-5 (Schaffer et al. 1996),Nitric oxide module
+perfusion.diffusion,perfusion,0.03,assumed,,Capillary sprouting / lateral spread
+perfusion.decay,perfusion,0.0,assumed,,No decay (stable vessels)
+perfusion.basal,perfusion,1.0,assumed,,Healthy dermis = fully perfused
+perfusion.angio_rate,perfusion,0.005,assumed,,Recovery speed per step
+perfusion.angio_delay,perfusion,240,assumed,,24h before sprouting begins
+perfusion.papillary_fraction,perfusion,1.0,literature,doi:10.1046/j.1087-0024.2000.00010.x (Braverman 2000),Dense capillary loops
+perfusion.reticular_fraction,perfusion,0.7,literature,doi:10.1046/j.1087-0024.2000.00010.x (Braverman 2000),Arterioles and venules
+perfusion.hypodermis_fraction,perfusion,0.3,literature,doi:10.1046/j.1087-0024.2000.00010.x (Braverman 2000),Sparse large vessels
+perfusion.clearance_rate,perfusion,0.0,literature,Bramhall 1999,Venous clearance of soluble TGF-beta via blood flow
+ph.recovery_rate,ph,0.003,literature,doi:10.1111/j.1524-475X.2007.00230.x (Schneider et al. 2007),Acidification rate per step (perfusion-scaled)
+ph.migration_suppression,ph,0.5,literature,doi:10.1111/j.1524-475X.2007.00230.x (Schneider et al. 2007),Max speed reduction at full alkalinity
+ph.mmp_boost,ph,0.5,assumed,,MMP activity amplification at full alkalinity
+ph.biofilm_boost,ph,0.4,assumed,,Biofilm growth boost at full alkalinity
+ph.bohr_factor,ph,0.3,assumed,,O2 delivery reduction at full alkalinity (Bohr effect)
+photon.enabled,photon,false,literature,doi:10.1088/0031-9155/58/11/R37 (Jacques 2013),Photon transport module
+photon.absorption_coeff,photon,0.1,literature,doi:10.1088/0031-9155/58/11/R37 (Jacques 2013),mu_a (mm^-1) at 920 nm
+photon.scattering_coeff,photon,1.0,literature,doi:10.1088/0031-9155/58/11/R37 (Jacques 2013),mu_s' reduced scattering (mm^-1)
+photon.anisotropy,photon,0.9,literature,doi:10.1088/0031-9155/58/11/R37 (Jacques 2013),g scattering anisotropy
+photon.irradiance,photon,1.0,assumed,,Surface irradiance (normalized)
+photon.beam_radius,photon,0.3,assumed,,Beam spot radius (sim units)
+photon.beam_center_x,photon,0.0,assumed,,Beam center x
+photon.beam_center_y,photon,0.0,assumed,,Beam center y
+photon.diffusion,photon,0.3,assumed,,Effective photon diffusion coefficient
+photon.decay,photon,0.1,assumed,,Absorption sink
+photon.opsin_activation_rate,photon,0.5,literature,Fenno et al. 2011,ChR2 light-driven closed-to-open rate
+photon.opsin_deactivation_rate,photon,0.1,literature,Fenno et al. 2011,Thermal dark-state recovery
+photon.opsin_saturation,photon,0.8,literature,Fenno et al. 2011,Max open fraction
+photon.phototoxicity_threshold,photon,0.5,literature,Mardinly et al. 2018,Fluence threshold for ROS
+photon.phototoxicity_rate,photon,0.002,literature,Mardinly et al. 2018,ROS generation rate above threshold
+photon.thermal_coupling,photon,0.001,assumed,,Absorbed light to temperature rise
+pressure.enabled,pressure,false,literature,doi:10.12968/jowc.2007.16.8.27854 (Gefen 2007),Pressure ulcer module
+pressure.compression_threshold,pressure,0.3,assumed,,Compression above this occludes capillaries
+pressure.ischemia_rate,pressure,0.02,assumed,,Tissue damage accumulation under compression
+pressure.reperfusion_ros_burst,pressure,0.15,assumed,,ROS burst on pressure release
+pressure.shear_factor,pressure,1.5,assumed,,Shear stress amplifies compression damage
+pressure.tissue_damage_rate,pressure,0.003,assumed,,General tissue damage accumulation
+pressure.reposition_interval_h,pressure,0.0,assumed,,Hours between pressure relief (0 = constant)
+pressure.moisture_damage_rate,pressure,0.001,assumed,,Moisture-associated skin damage
+pressure.stage_1,pressure,0.15,assumed,,Non-blanchable erythema (NPUAP)
+pressure.stage_2,pressure,0.35,assumed,,Partial thickness skin loss (NPUAP)
+pressure.stage_3,pressure,0.60,assumed,,Full thickness skin loss (NPUAP)
+pressure.stage_4,pressure,0.85,assumed,,Full thickness tissue loss (NPUAP)
+ros.enabled,ros,true,literature,doi:10.1016/j.phrs.2008.06.004 (Schafer and Werner 2008),ROS module
+ros.diffusion,ros,0.03,assumed,,Fast diffusion (small molecule)
+ros.decay,ros,0.04,assumed,,Enzymatic scavenging (SOD; catalase; GPx)
+ros.neutrophil_burst,ros,0.015,assumed,,NADPH oxidase respiratory burst
+ros.m1_burst,ros,0.008,assumed,,M1 macrophage oxidative burst
+ros.mitochondrial_rate,ros,0.001,assumed,,Basal mitochondrial ETC leak
+ros.hypoxia_threshold,ros,0.4,assumed,,O2 below this amplifies mito ROS
+ros.hypoxia_amplification,ros,2.0,assumed,,Fold increase under hypoxia
+ros.senescence_rate,ros,0.0002,assumed,,DNA damage driving senescence
+ros.mmp_activation,ros,0.005,assumed,,Oxidative pro-MMP cysteine switch
+ros.angiogenesis_impairment,ros,0.1,assumed,,Endothelial dysfunction
+ros.inflammation_amplification,ros,0.0005,assumed,,NF-kB activation
+ros.collagen_damage,ros,0.001,assumed,,Oxidative cross-link damage
+ros.tissue_antioxidant,ros,0.02,assumed,,Enzymatic clearance by resident cells
+ros.perfusion_clearance,ros,0.005,assumed,,Vascular washout
+scab.enabled,scab,false,literature,doi:10.1038/sj.jid.5700701 (Eming et al. 2007),Scab module
+scab.wound_seed,scab,1.0,assumed,,Initial scab density in wound
+scab.decay,scab,0.0008,assumed,,Baseline turnover (shedding)
+scab.mmp_degradation,scab,0.001,assumed,,MMP-mediated breakdown
+scab.reepith_rate,scab,0.005,assumed,,Degradation proportional to barrier
+scab.moisture_softening,scab,0.002,assumed,,Moisture accelerates scab softening
+scab.evaporation_shield,scab,0.5,assumed,,Scab reduces surface water loss
+scab.migration_penalty,scab,0.15,assumed,,Scab impedes keratinocyte migration
+scar.proportional_enabled,scar,false,assumed,,Cumulative inflammation integral switch
+scar.accumulation_rate,scar,0.001,assumed,,scar += inflammation * rate per step
+scar.collagen_threshold,scar,0.003,assumed,,Local collagen above this triggers scar
+senescence.enabled,senescence,true,literature,doi:10.1016/j.devcel.2014.11.012 (Demaria et al. 2014),Senescence module
+senescence.diffusion,senescence,0.0,assumed,,Immobile
+senescence.decay,senescence,0.00005,assumed,,Very slow clearance
+senescence.wound_rate,senescence,0.0001,assumed,,Basal wound-induced accumulation
+senescence.infl_rate,senescence,0.0003,assumed,,Inflammation-driven accumulation
+senescence.age_rate,senescence,0.0005,assumed,,AGE-driven accumulation (diabetic)
+senescence.immune_clearance_rate,senescence,0.002,literature,doi:10.18632/oncotarget.6571 (Sagiv et al. 2016),NK/macrophage-mediated clearance
+temperature.enabled,temperature,true,literature,doi:10.1097/01.ASW.0000363527.76169.b2 (Fierheller and Sibbald 2010),Temperature module
+temperature.diffusion,temperature,0.001,assumed,,Thermal conduction
+temperature.decay,temperature,0.0,assumed,,No intrinsic decay
+temperature.wound_surface,temperature,0.946,assumed,,~35C/37C normalized
+temperature.perfusion_warming,temperature,0.025,assumed,,Rewarming rate per step
+temperature.surface_cooling,temperature,0.002,assumed,,Evaporative heat loss
+temperature.q10_migration,temperature,1.0,assumed,,Cell migration Q10 (disabled for normal)
+temperature.q10_proliferation,temperature,1.0,assumed,,Cell cycle Q10 (disabled normal; active diabetic)
+temperature.q10_mmp,temperature,1.3,assumed,,MMP enzymatic Q10
+temperature.q10_biofilm,temperature,2.0,assumed,,Bacterial growth Q10
+tumor.enabled,tumor,false,assumed,,Module enabled switch
+tumor.seed_time,tumor,0,assumed,,Seeding time (TOML: hours; 0 = frame 0)
+tumor.seed_x,tumor,-5.0,assumed,,Cluster center X (offset from wound)
+tumor.seed_y,tumor,-5.0,assumed,,Cluster center Y (offset from wound)
+tumor.seed_z,tumor,2.0,assumed,,Cluster center Z (basal layer)
+tumor.seed_count,tumor,5,assumed,,Initial cluster size
+tumor.diameter,tumor,4.0,assumed,,Cell diameter
+tumor.cycle_factor,tumor,3.85,calibrated,,All-phase duration multiplier (calibrated for Td~148d)
+tumor.g1_factor,tumor,3.85,calibrated,,G1 extension factor (equal to cycle_factor)
+tumor.max_neighbors,tumor,12,assumed,,Contact inhibition threshold (sphere packing max ~12 to 14)
+tumor.ci_steepness,tumor,2.0,assumed,,Soft CI exponent (0 = hard threshold; 2 = quadratic YAP/TAZ)
+tumor.growth_rate,tumor,5,assumed,,Volume growth rate (same as normal)
+tumor.max_cells,tumor,5000,assumed,,Carrying capacity (0 = unlimited)
+tumor.handoff_delay,tumor,5000,assumed,,500h in G0 before field conversion (0 = disabled)
+tumor.stratum_value,tumor,10.0,assumed,,Value written to Stratum field on handoff
+tumor.apoptosis_rate,tumor,0.0003,calibrated,,Per-step probability (calibrated with cycle for Td~148d)
+tumor.o2_threshold,tumor,0.05,literature,Gruber et al. 2004,BCC hypoxia tolerance via HIF-1alpha
+wound.center_x,wound,0.0,assumed,,x-center of punch biopsy (origin)
+wound.center_y,wound,0.0,assumed,,y-center of punch biopsy (origin)
+wound.radius,wound,12.0,calibrated,,Radius of circular wound (calibrated: 96 wound voxels)
+wound.trigger_step,wound,0,assumed,,0h = start wounded
+wound.enabled,wound,true,assumed,,Master switch
+wound.inward_bias,wound,0.3,assumed,,0=pure random; 1=pure center-directed
+wound.inflammation_source_rate,wound,0.003,assumed,,DAMPs/IL-1a from open wound per step
+wound.inflammation_source_taper,wound,0.0,assumed,,Exp decay rate for DAMP clearance (0=no taper)
+ra.enabled,rheumatoid,false,literature,doi:10.1038/nrdp.2018.1 (Smolen et al. 2018),Rheumatoid arthritis module
+ra.autoimmune_source,rheumatoid,0.001,assumed,,Chronic TNF-alpha production
+ra.il6_autoimmune_source,rheumatoid,0.0015,assumed,,Chronic IL-6 production
+ra.tnf_m1_rate,rheumatoid,0.001,assumed,,TNF-alpha from M1 macrophages (scaled by inflammation)
+ra.tnf_neutrophil_rate,rheumatoid,0.0005,assumed,,TNF-alpha from neutrophils (scaled by inflammation)
+ra.il6_m1_rate,rheumatoid,0.001,assumed,,IL-6 from M1 macrophages (scaled by inflammation)
+ra.flare_delay,rheumatoid,200,assumed,,Steps before autoimmune flare onset (~0.8 days)
+ra.flare_steepness,rheumatoid,0.03,assumed,,Sigmoid steepness (higher = sharper onset)
+ra.tnf_inflammation_coupling,rheumatoid,0.003,assumed,,TNF to NF-kB to generic inflammation amplification
+ra.tnf_mmp_boost,rheumatoid,0.003,literature,Mengshol 2000,TNF to MMP-1/3/13 transcription
+ra.tnf_vegf_boost,rheumatoid,0.002,assumed,,TNF to VEGF (pannus neovascularization)
+ra.tnf_il6_induction,rheumatoid,0.001,assumed,,TNF to NF-kB to IL-6 transcription
+ra.il6_inflammation_coupling,rheumatoid,0.002,assumed,,IL-6 to JAK/STAT3 to inflammation amplification
+ra.il6_cartilage_boost,rheumatoid,0.00015,assumed,,IL-6 to RANKL to osteoclast cartilage erosion
+ra.cartilage_basal,rheumatoid,1.0,assumed,,Normalized healthy cartilage integrity
+ra.cartilage_mmp_degradation,rheumatoid,0.0005,assumed,,Aggrecanase/collagenase erosion
+ra.cartilage_tnf_degradation,rheumatoid,0.0002,assumed,,Direct TNF osteoclast activation
+ra.pannus_fibroblast_boost,rheumatoid,2.0,assumed,,FLS hyperplasia multiplier on fibroblast spawn
+ra.m1_prolongation,rheumatoid,2.0,assumed,,M1 duration multiplier (sustained Th1 polarization)
+ra.synovial_basal,rheumatoid,0.1,assumed,,Baseline synovial lining density
+ra.synovial_growth_rate,rheumatoid,0.001,assumed,,Pannus growth per unit TNF+IL-6
+ra.synovial_carrying_capacity,rheumatoid,1.0,assumed,,Max pannus density
+ra.synovial_cytokine_boost,rheumatoid,0.3,assumed,,Pannus amplifies local cytokine production
+ra.synovial_erosion_boost,rheumatoid,0.2,assumed,,Pannus proximity amplifies cartilage erosion
+ra.tcell_diffusion,rheumatoid,0.01,literature,doi:10.1056/NEJMra1004965 (McInnes and Schett 2011),Slow T cell migration in tissue
+ra.tcell_decay,rheumatoid,0.008,assumed,,Apoptosis and lymphatic egress
+ra.tcell_recruitment,rheumatoid,0.001,assumed,,Inflammation-driven extravasation
+ra.tcell_proliferation,rheumatoid,0.001,assumed,,Antigen-driven clonal expansion (flare-gated)
+ra.tcell_carrying_capacity,rheumatoid,1.0,assumed,,Local density cap (normalized)
+ra.tcell_cytokine_weight,rheumatoid,0.3,assumed,,T cell contribution to autoimmune cytokine modulation
+ra.bone_basal,rheumatoid,1.0,literature,doi:10.1056/NEJMra1004965 (McInnes and Schett 2011),Normalized healthy bone integrity
+ra.bone_rankl_erosion,rheumatoid,0.00008,assumed,,IL-6 to RANKL to osteoclast resorption
+ra.bone_tnf_erosion,rheumatoid,0.00004,assumed,,TNF direct osteoclast activation
+ra.bone_depth_z,rheumatoid,-6.0,assumed,,z threshold for bone tissue (below reticular dermis)
+ra.treatment_delay,rheumatoid,0,assumed,,Steps after wound before treatment starts
+ra.drug_onset,rheumatoid,0,assumed,,Steps for drug to reach peak effect
+ra.anti_tnf_clearance,rheumatoid,0.0,assumed,,0 = no treatment; >0 = TNF neutralization rate
+ra.anti_il6r_clearance,rheumatoid,0.0,assumed,,0 = no treatment; >0 = IL-6 neutralization rate
