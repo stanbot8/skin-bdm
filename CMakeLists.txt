@@ -28,7 +28,20 @@ include(${BDM_USE_FILE})
 include_directories("src")
 include_directories("modules")
 include_directories("third_party")
+
+# Auto-discover study module directories (studies/*/modules/).
+# Biologists add modules here without editing CMakeLists.txt.
+file(GLOB STUDY_MODULE_DIRS "studies/*/modules")
+foreach(STUDY_DIR ${STUDY_MODULE_DIRS})
+    include_directories("${STUDY_DIR}")
+endforeach()
+
 file(GLOB_RECURSE PROJECT_HEADERS src/*.h modules/*.h)
+# Include study module headers in the build
+foreach(STUDY_DIR ${STUDY_MODULE_DIRS})
+    file(GLOB_RECURSE STUDY_HEADERS "${STUDY_DIR}/*.h")
+    list(APPEND PROJECT_HEADERS ${STUDY_HEADERS})
+endforeach()
 file(GLOB_RECURSE PROJECT_SOURCES src/*.cc)
 
 # main.cc lives at project root (outside src/) so libskibidy.so has no
@@ -50,6 +63,12 @@ endif()
 include_directories("tests")
 file(GLOB_RECURSE TEST_SOURCES tests/*.cc)
 file(GLOB_RECURSE TEST_HEADERS tests/*.h)
+# Auto-discover study-scoped tests (studies/*/tests/*.cc)
+foreach(STUDY_DIR ${STUDY_MODULE_DIRS})
+    get_filename_component(STUDY_PARENT "${STUDY_DIR}" DIRECTORY)
+    file(GLOB_RECURSE STUDY_TEST_SOURCES "${STUDY_PARENT}/tests/*.cc")
+    list(APPEND TEST_SOURCES ${STUDY_TEST_SOURCES})
+endforeach()
 
 add_library(libgtest IMPORTED STATIC GLOBAL)
 set_target_properties(libgtest PROPERTIES
