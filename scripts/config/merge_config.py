@@ -45,6 +45,11 @@ def merge(master_path="bdm.core.toml", modules_dir="modules",
     pattern = os.path.join(modules_dir, "*", "config.toml")
     module_files = sorted(glob.glob(pattern))
 
+    # Auto-discover study module configs (studies/*/modules/*/config.toml)
+    study_pattern = os.path.join("studies", "*", "modules", "*", "config.toml")
+    study_module_files = sorted(glob.glob(study_pattern))
+    module_files.extend(study_module_files)
+
     if not module_files:
         print(f"Warning: no module configs found in {modules_dir}/")
         with open(output_path, "w") as f:
@@ -80,6 +85,13 @@ def main():
     modules_dir = sys.argv[2] if len(sys.argv) > 2 else "modules"
     output = sys.argv[3] if len(sys.argv) > 3 else "bdm.toml"
     merge(master, modules_dir, output)
+
+    # Auto-generate study_hooks_gen.h (study module discovery)
+    gen_script = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              "gen_study_hooks.py")
+    if os.path.isfile(gen_script):
+        import subprocess
+        subprocess.run([sys.executable, gen_script], check=True)
 
 
 if __name__ == "__main__":
