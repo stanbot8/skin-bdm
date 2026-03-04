@@ -1,0 +1,15 @@
+# Surgical wound closure kinetics (primary intention)
+# Rapid closure due to approximated wound edges and suturing.
+# Primary intention healing follows a much faster timeline.
+# Sources: Gottrup 2004, Singer 1999
+day,closure_pct
+0,0
+0.5,15
+1,30
+2,50
+3,65
+5,80
+7,90
+10,96
+14,99
+21,100
