@@ -1,0 +1,4 @@
+[project]
+name = "tumor-wound"
+description = "Tumor at t=0 with delayed wound at day 8"
+category = "neoplastic"

@@ -1,0 +1,19 @@
+# Treatment: silver sulfadiazine (1% topical cream)
+# Literature: Fox 1968 (original), Atiyeh et al. 2007
+# Mechanism: broad-spectrum antimicrobial via silver ion release disrupting
+# bacterial DNA replication. Standard topical burn care for decades.
+# Reduces infection risk but may slow re-epithelialization slightly.
+
+[skin.burn]
+infection_susceptibility = 1.0      # 3.0 -> 1.0: effective antimicrobial coverage
+eschar_rate = 0.008                 # 0.01 -> 0.008: moist wound environment
+
+[skin.diabetic]
+prolif_factor = 1.1                 # 1.2 -> 1.1: silver mildly cytotoxic to keratinocytes
+migration_factor = 0.55             # 0.6 -> 0.55: slight migration impairment (Atiyeh et al. 2007)
+
+[skin]
+water_recovery_rate = 0.04          # cream layer reduces evaporative loss
+
+[skin.inflammation]
+decay = 0.004                       # antimicrobial action reduces inflammation source

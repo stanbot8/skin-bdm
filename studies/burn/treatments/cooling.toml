@@ -1,0 +1,14 @@
+# Treatment: immediate cold water cooling (first aid)
+# Literature: Cuttle et al. 2009, Bartlett et al. 2008
+# Mechanism: 20 min cold running water (12 to 15C) within first 3h reduces
+# stasis zone deterioration, preserves microvascular perfusion, and limits
+# inflammatory edema. Recommended by WHO and all major burn guidelines.
+
+[skin.burn]
+stasis_deterioration_rate = 0.005    # 0.02 -> 0.005: cooling preserves stasis zone viability
+stasis_initial_viability = 0.7      # 0.5 -> 0.7: less initial ischemic damage
+hyperemia_inflammation_boost = 0.15 # 0.3 -> 0.15: reduced inflammatory edema
+tewl_multiplier = 4.0               # 5.0 -> 4.0: modest barrier preservation
+
+[skin.perfusion]
+basal = 0.9                         # 0.8 -> 0.9: preserved microcirculation

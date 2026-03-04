@@ -65,10 +65,11 @@ else
       --compare)     COMPARE=true ;;
       --list-treatments)
         echo "Available treatments:"
-        for f in treatments/*.toml; do
+        for f in studies/*/treatments/*.toml; do
           name=$(basename "$f" .toml)
+          study=$(echo "$f" | cut -d/ -f2)
           desc=$(head -1 "$f" | sed 's/^# Treatment: //')
-          printf "  %-20s %s\n" "$name" "$desc"
+          printf "  %-20s [%-15s] %s\n" "$name" "$study" "$desc"
         done
         exit 0 ;;
       --list-skins)
@@ -183,7 +184,7 @@ if [ -n "$SKIN" ]; then
   python3 scripts/config/apply_preset.py "$SKIN_FILE" bdm.toml || exit 1
 fi
 
-# Phase 2: study config (scenario parameters)
+# Phase 2: study config (experiment parameters)
 if [ -n "$STUDY" ]; then
   STUDY_FILE="studies/${STUDY}/preset.toml"
   if [ ! -f "$STUDY_FILE" ]; then
@@ -195,8 +196,14 @@ fi
 
 # Phase 3: treatment overlay (applied on top of profile + study config)
 if [ -n "$TREATMENT" ]; then
-  TREATMENT_FILE="treatments/${TREATMENT}.toml"
-  if [ ! -f "$TREATMENT_FILE" ]; then
+  # Search study-scoped treatments first, then all studies
+  TREATMENT_FILE=""
+  if [ -n "$STUDY" ] && [ -f "studies/${STUDY}/treatments/${TREATMENT}.toml" ]; then
+    TREATMENT_FILE="studies/${STUDY}/treatments/${TREATMENT}.toml"
+  else
+    TREATMENT_FILE=$(find studies/*/treatments/ -name "${TREATMENT}.toml" 2>/dev/null | head -1)
+  fi
+  if [ -z "$TREATMENT_FILE" ] || [ ! -f "$TREATMENT_FILE" ]; then
     echo "ERROR: treatment '$TREATMENT' not found. Use --list-treatments to see available treatments."
     exit 1
   fi

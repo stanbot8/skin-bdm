@@ -1,0 +1,23 @@
+# Treatment: bioengineered skin substitute (Integra/Biobrane)
+# Literature: Burke et al. 1981 (Integra), Heimbach et al. 2003
+# Mechanism: bilayer collagen-GAG scaffold with silicone outer layer provides
+# dermal regeneration template, reduces transepidermal water loss, supports
+# re-epithelialization from wound margins. Used for deep partial and full
+# thickness burns after debridement.
+
+[skin.burn]
+tewl_multiplier = 1.5               # 5.0 -> 1.5: silicone layer restores barrier
+fluid_loss_rate = 0.01              # 0.05 -> 0.01: sealed wound surface
+infection_susceptibility = 1.8      # 3.0 -> 1.8: scaffold partially protects
+contracture_rate = 0.0008           # 0.002 -> 0.0008: scaffold guides organized remodeling
+
+[skin.diabetic]
+prolif_factor = 1.4                 # 1.2 -> 1.4: scaffold supports keratinocyte migration
+migration_factor = 0.8              # 0.6 -> 0.8: structured ECM aids cell movement
+collagen_factor = 1.0               # 1.3 -> 1.0: template normalizes deposition pattern
+
+[skin.perfusion]
+angio_rate = 0.006                  # 0.004 -> 0.006: scaffold promotes vascular ingrowth
+
+[skin]
+water_recovery_rate = 0.06          # silicone layer + scaffold support barrier recovery

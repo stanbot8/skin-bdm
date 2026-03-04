@@ -1,0 +1,55 @@
+# Experiment: Pressure Ulcer Cure Protocol
+#
+# Pressure ulcers become chronic when the ischemia-reperfusion cycle
+# perpetuates inflammation. Cure requires breaking this loop: complete
+# offloading (eliminate compression), aggressive wound care (VAC + silver),
+# and metabolic support (nutrition). Extended to 60 days for Stage II/III.
+
+[experiment]
+name = "Cure Protocol"
+description = "Multi-modal cure-oriented therapy for pressure ulcer resolution"
+profile = "pressure"
+study = "pressure-ulcer"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Untreated baseline (60 days)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Untreated 60d"
+[experiment.configs.overrides]
+"skin.duration_days" = 60
+
+# ---------------------------------------------------------------------------
+# Standard care: redistribution only
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Redistribution Only 60d"
+treatments = ["pressure_redistribution"]
+[experiment.configs.overrides]
+"skin.duration_days" = 60
+
+# ---------------------------------------------------------------------------
+# Cure: complete offloading + VAC + nutrition + silver
+# Eliminate compression entirely, restore perfusion, metabolic support,
+# antimicrobial protection, and negative pressure wound therapy
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cure: Full Protocol"
+treatments = ["offloading_protocol", "wound_vac", "nutrition", "silver_dressing"]
+[experiment.configs.overrides]
+"skin.duration_days" = 60
+
+# ---------------------------------------------------------------------------
+# Cure protocol + enhanced perfusion rescue
+# Adds aggressive perfusion recovery for ischemic tissue
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cure: Full + Perfusion Rescue"
+treatments = ["offloading_protocol", "wound_vac", "nutrition", "silver_dressing"]
+[experiment.configs.overrides]
+"skin.duration_days" = 60
+"skin.perfusion.basal" = 0.9
+"skin.perfusion.angio_rate" = 0.008
+"skin.pressure.reperfusion_ros_burst" = 0.02
+"skin.pressure.ischemia_rate" = 0.001

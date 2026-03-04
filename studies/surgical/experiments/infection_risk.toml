@@ -1,0 +1,64 @@
+# Experiment: Infection Risk by CDC Wound Class
+#
+# Models the four CDC surgical wound classifications with increasing
+# contamination levels. Clean wounds have minimal biofilm risk, while
+# dirty wounds have immediate high-density bacterial colonization.
+#
+# CDC classes: Mangram et al. 1999 (Guideline for Prevention of SSI)
+#   Clean: 1-5% SSI rate
+#   Clean-contaminated: 3-11% SSI rate
+#   Contaminated: 10-17% SSI rate
+#   Dirty: >27% SSI rate
+
+[experiment]
+name = "Infection Risk"
+description = "CDC wound classification and SSI risk across four contamination levels"
+profile = "surgical"
+study = "surgical"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Clean (Class I): no biofilm, atraumatic technique, no break in sterility
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Clean (Class I)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = false
+
+# ---------------------------------------------------------------------------
+# Clean-contaminated (Class II): low biofilm, delayed seeding (GI/GU entry)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Clean-Contaminated (Class II)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 72
+"skin.biofilm.seed_amount" = 0.005
+"skin.biofilm.growth_rate" = 0.003
+
+# ---------------------------------------------------------------------------
+# Contaminated (Class III): moderate biofilm, early seeding (open fracture,
+# gross spillage from GI tract)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Contaminated (Class III)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.biofilm.growth_rate" = 0.005
+"skin.biofilm.inflammation_rate" = 0.0015
+
+# ---------------------------------------------------------------------------
+# Dirty (Class IV): high biofilm, immediate seeding (existing infection,
+# devitalized tissue, fecal contamination)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Dirty (Class IV)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 0
+"skin.biofilm.seed_amount" = 0.05
+"skin.biofilm.growth_rate" = 0.008
+"skin.biofilm.inflammation_rate" = 0.003
+"skin.biofilm.m1_block_threshold" = 0.2

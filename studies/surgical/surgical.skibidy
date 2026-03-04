@@ -1,0 +1,4 @@
+[project]
+name = "surgical"
+description = "Clean incisional wound with surgical site infection"
+category = "acute"

@@ -1,0 +1,65 @@
+# Experiment: Diabetic Wound Cure Protocol
+#
+# Tests aggressive multi-modal therapy aimed at complete disease resolution,
+# not just symptom management. Combines senolytic clearance (removes chronic
+# senescent cell burden), MSC therapy (restores paracrine signaling), and
+# standard wound care. Extended to 60 days to verify sustained resolution.
+
+[experiment]
+name = "Cure Protocol"
+description = "Multi-modal cure-oriented therapy for diabetic wound resolution"
+profile = "diabetic"
+study = "diabetic-wound"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Untreated diabetic baseline (60 days)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Untreated 60d"
+[experiment.configs.overrides]
+"skin.duration_days" = 60
+
+# ---------------------------------------------------------------------------
+# Standard combination therapy (current best practice)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Standard Combo 60d"
+treatments = ["combination"]
+[experiment.configs.overrides]
+"skin.duration_days" = 60
+
+# ---------------------------------------------------------------------------
+# Cure protocol: senolytic + MSC + growth factor + moisture
+# Targets root cause (senescent cell burden) + regenerative support
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cure: Senolytic + MSC + GF"
+treatments = ["senolytic", "msc", "growth_factor", "moisture"]
+[experiment.configs.overrides]
+"skin.duration_days" = 60
+
+# ---------------------------------------------------------------------------
+# Cure protocol with anti-inflammatory added
+# Full 5-agent protocol: clear senescent cells, suppress inflammation,
+# restore paracrine function, stimulate proliferation, optimize moisture
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cure: Full 5-Agent"
+treatments = ["senolytic", "msc", "growth_factor", "anti_inflammatory", "moisture"]
+[experiment.configs.overrides]
+"skin.duration_days" = 60
+
+# ---------------------------------------------------------------------------
+# Severe diabetic + cure protocol (worst case scenario)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Severe + Cure Protocol"
+treatments = ["senolytic", "msc", "growth_factor", "anti_inflammatory", "moisture"]
+[experiment.configs.overrides]
+"skin.duration_days" = 60
+"skin.diabetic.m1_duration_factor" = 4.0
+"skin.diabetic.resolution_factor" = 0.1
+"skin.diabetic.prolif_factor" = 0.3
+"skin.diabetic.migration_factor" = 0.2
+"skin.diabetic.mmp_factor" = 4.0

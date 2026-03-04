@@ -1,0 +1,19 @@
+# Treatment: pressure redistribution surface (low-air-loss mattress + 2h repositioning)
+# Literature: McInnes et al. 2015 (Cochrane review), Berlowitz & Brienza 2007
+# Mechanism: alternating pressure surfaces redistribute load below capillary
+# closing pressure. Combined with 2-hour repositioning protocol, this restores
+# perfusion cycling and prevents sustained ischemia. Low-air-loss mattresses
+# also manage microclimate (moisture and temperature).
+[skin.pressure]
+compression_threshold = 0.5            # 0.3 -> 0.5: surface distributes load, higher threshold before ischemia
+ischemia_rate = 0.008                  # 0.02 -> 0.008: reduced ischemia from lower interface pressure
+tissue_damage_rate = 0.001             # 0.003 -> 0.001: less sustained damage
+moisture_damage_rate = 0.0003          # 0.001 -> 0.0003: microclimate management
+shear_factor = 1.1                     # 1.5 -> 1.1: low-friction cover reduces shear
+reposition_interval_h = 2             # 0 -> 2: standard 2h repositioning protocol
+
+[skin.perfusion]
+basal = 0.7                            # 0.6 -> 0.7: intermittent reperfusion restores some blood flow
+
+[skin]
+water_surface_loss_rate = 0.01         # low-air-loss manages skin microclimate

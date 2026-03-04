@@ -1,0 +1,16 @@
+# Treatment: surgical debridement (eschar removal)
+# Literature: Barret & Herndon 2003, Ong et al. 2006
+# Mechanism: early excision of necrotic eschar exposes viable wound bed,
+# removes bacterial reservoir, and allows granulation tissue formation.
+# Standard of care for deep partial and full thickness burns since 1970s.
+
+[skin.burn]
+eschar_rate = 0.001                  # 0.01 -> 0.001: eschar removed surgically
+coagulation_necrosis = 0.6          # 0.95 -> 0.6: necrotic tissue excised
+infection_susceptibility = 1.5      # 3.0 -> 1.5: bacterial reservoir removed
+
+[skin.diabetic]
+collagen_factor = 0.9               # 1.3 -> 0.9: cleaner wound bed normalizes deposition
+
+[skin.wound]
+inward_bias = 0.4                   # 0.3 -> 0.4: exposed viable tissue promotes contraction

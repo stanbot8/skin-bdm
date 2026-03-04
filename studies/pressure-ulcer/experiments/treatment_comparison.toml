@@ -1,0 +1,128 @@
+# Experiment: Treatment Comparison
+#
+# Head-to-head comparison of all five treatments and selected combinations.
+# Tests monotherapy effectiveness and whether combination approaches provide
+# synergistic benefit over single interventions.
+
+[experiment]
+name = "Treatment Comparison"
+description = "Head-to-head comparison of pressure ulcer treatments and combinations"
+profile = "pressure"
+study = "pressure-ulcer"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Untreated baseline
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Untreated"
+
+# ---------------------------------------------------------------------------
+# Pressure redistribution (low-air-loss mattress + 2h repositioning)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Redistribution"
+treatments = ["pressure_redistribution"]
+
+# ---------------------------------------------------------------------------
+# Wound VAC (negative pressure wound therapy)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Wound VAC"
+treatments = ["wound_vac"]
+
+# ---------------------------------------------------------------------------
+# Nutritional supplementation (protein, zinc, vitamin C)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Nutrition"
+treatments = ["nutrition"]
+
+# ---------------------------------------------------------------------------
+# Silver dressing (antimicrobial + moisture balance)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Silver Dressing"
+treatments = ["silver_dressing"]
+
+# ---------------------------------------------------------------------------
+# Redistribution + nutrition (prevention + metabolic support)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Redistribution + Nutrition"
+[experiment.configs.overrides]
+# Redistribution surface
+"skin.pressure.compression_threshold" = 0.5
+"skin.pressure.ischemia_rate" = 0.008
+"skin.pressure.tissue_damage_rate" = 0.001
+"skin.pressure.moisture_damage_rate" = 0.0003
+"skin.pressure.shear_factor" = 1.1
+"skin.pressure.reposition_interval_h" = 2
+"skin.pressure.reperfusion_ros_burst" = 0.10
+# Nutrition
+"skin.diabetic.prolif_factor" = 0.65
+"skin.fibroblast.density_factor" = 0.8
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.fibroblast_lifespan_factor" = 0.85
+"skin.immune.macrophage_m1_duration_h" = 80
+"skin.immune.macrophage_spawn_taper" = 0.0005
+# Combined perfusion boost
+"skin.perfusion.basal" = 0.75
+"skin.perfusion.angio_rate" = 0.004
+
+# ---------------------------------------------------------------------------
+# Wound VAC + nutrition (advanced wound care + metabolic support)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Wound VAC + Nutrition"
+[experiment.configs.overrides]
+# Wound VAC
+"skin.pressure.tissue_damage_rate" = 0.001
+"skin.pressure.moisture_damage_rate" = 0.0002
+"skin.pressure.reperfusion_ros_burst" = 0.10
+"skin.wound.inward_bias" = 0.5
+"skin.inflammation.decay" = 0.005
+# Nutrition
+"skin.diabetic.prolif_factor" = 0.65
+"skin.fibroblast.density_factor" = 0.8
+"skin.diabetic.collagen_factor" = 0.7
+"skin.diabetic.fibroblast_lifespan_factor" = 0.85
+"skin.immune.macrophage_m1_duration_h" = 80
+"skin.immune.macrophage_spawn_taper" = 0.0005
+# Combined perfusion
+"skin.perfusion.basal" = 0.8
+"skin.perfusion.angio_rate" = 0.006
+# Combined moisture
+"skin.water_recovery_rate" = 0.05
+"skin.water_surface_loss_rate" = 0.008
+
+# ---------------------------------------------------------------------------
+# All combined (redistribution + wound VAC + nutrition + silver + offloading)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "All Combined"
+[experiment.configs.overrides]
+# Offloading eliminates compression
+"skin.pressure.compression_threshold" = 1.0
+"skin.pressure.ischemia_rate" = 0.002
+"skin.pressure.reperfusion_ros_burst" = 0.03
+"skin.pressure.tissue_damage_rate" = 0.0005
+"skin.pressure.moisture_damage_rate" = 0.0002
+"skin.pressure.shear_factor" = 1.0
+"skin.pressure.reposition_interval_h" = 1
+# Best perfusion from offloading + VAC
+"skin.perfusion.basal" = 0.85
+"skin.perfusion.angio_rate" = 0.007
+# Nutrition + silver + VAC wound care
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.migration_factor" = 0.55
+"skin.fibroblast.density_factor" = 0.85
+"skin.diabetic.collagen_factor" = 0.75
+"skin.diabetic.fibroblast_lifespan_factor" = 0.9
+"skin.immune.macrophage_m1_duration_h" = 72
+"skin.immune.macrophage_spawn_taper" = 0.0006
+"skin.wound.inward_bias" = 0.5
+"skin.inflammation.decay" = 0.006
+"skin.diabetic.baseline_inflammation" = 0.0002
+"skin.water_recovery_rate" = 0.06
+"skin.water_surface_loss_rate" = 0.005

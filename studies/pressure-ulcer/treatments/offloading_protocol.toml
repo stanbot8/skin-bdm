@@ -1,0 +1,21 @@
+# Treatment: complete offloading (gold standard pressure elimination)
+# Literature: NPUAP/EPUAP/PPPIA Guidelines 2019, Gefen 2007
+# Mechanism: total removal of mechanical load from the affected area
+# (specialized beds, turning frames, or suspension). Eliminates compression
+# entirely, allowing full reperfusion recovery. This is the gold standard
+# for prevention and the prerequisite for any healing in established ulcers.
+# In practice, requires intensive nursing (q1-2h turning in immobile patients).
+[skin.pressure]
+compression_threshold = 1.0            # 0.3 -> 1.0: no compression reaches threshold (fully offloaded)
+ischemia_rate = 0.002                  # 0.02 -> 0.002: minimal residual ischemia (body weight only)
+reperfusion_ros_burst = 0.03           # 0.15 -> 0.03: minimal ROS (no ischemia-reperfusion cycle)
+tissue_damage_rate = 0.0005            # 0.003 -> 0.0005: near-zero pressure damage
+moisture_damage_rate = 0.0005          # 0.001 -> 0.0005: active skin care protocol
+shear_factor = 1.0                     # 1.5 -> 1.0: no shear forces
+reposition_interval_h = 1             # continuous repositioning protocol
+
+[skin.perfusion]
+basal = 0.8                            # 0.6 -> 0.8: full perfusion restoration
+
+[skin.diabetic]
+migration_factor = 0.55                # 0.4 -> 0.55: improved oxygenation supports migration

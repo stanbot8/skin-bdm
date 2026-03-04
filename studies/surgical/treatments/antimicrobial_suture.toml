@@ -1,0 +1,14 @@
+# Treatment: triclosan-coated antimicrobial suture
+# Literature: Leaper et al. 2017, de Jonge et al. 2017
+# Mechanism: triclosan (2,4,4-trichloro-2-hydroxydiphenyl ether) inhibits
+#            bacterial fatty acid synthesis at the closure site; sustained
+#            local antimicrobial effect over days to weeks
+
+[skin.biofilm]
+growth_rate = 0.002                    # 0.005 -> 0.002: local triclosan inhibits planktonic growth
+carrying_capacity = 0.6                # 1.0 -> 0.6: suture zone antimicrobial ceiling
+seed_amount = 0.004                    # 0.01 -> 0.004: reduced colonization at suture line
+inflammation_rate = 0.0005             # 0.001 -> 0.0005: less biofilm means less PAMP signaling
+
+[skin.wound]
+inward_bias = 0.45                     # 0.4 -> 0.45: suture provides mechanical approximation

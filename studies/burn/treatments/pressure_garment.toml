@@ -1,0 +1,20 @@
+# Treatment: pressure garment therapy (compression 15 to 25 mmHg)
+# Literature: Anzarut et al. 2009, Engrav et al. 2010
+# Mechanism: sustained mechanical compression reduces blood flow to scar,
+# induces fibroblast apoptosis, realigns collagen fibers, and prevents
+# hypertrophic scar formation. Applied after wound closure for 6 to 12 months.
+# Most effective when started within 2 weeks of epithelialization.
+
+[skin.burn]
+contracture_rate = 0.0005           # 0.002 -> 0.0005: compression prevents excessive contraction
+
+[skin.diabetic]
+collagen_factor = 0.9               # 1.3 -> 0.9: reduced disorganized collagen deposition
+fibroblast_activation_factor = 1.0  # 1.5 -> 1.0: pressure normalizes fibroblast activity
+fibroblast_lifespan_factor = 0.9    # 1.2 -> 0.9: pressure-induced apoptosis
+
+[skin.scar]
+enabled = true
+
+[skin.wound]
+inward_bias = 0.25                  # 0.3 -> 0.25: reduced wound contraction force

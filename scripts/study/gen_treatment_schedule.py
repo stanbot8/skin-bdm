@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Generate treatment combinatorial scenario TOMLs.
+"""Generate treatment combinatorial experiment TOMLs.
 
 Three-phase design for efficient exploration:
 
   Phase 1 (--phase screen): All 2^N-1 treatment subsets at day 0.
-    255 configs for 8 treatments, ~6.4h. Answers: which combos help?
+    511 configs for 9 treatments, ~12.8h. Answers: which combos help?
 
   Phase 2 (--phase refine): Read screen results, pick top N combos by T50,
     generate timing grids only for those. Efficient: explores 4-8 way combos
@@ -19,7 +19,7 @@ Usage:
     python3 scripts/study/gen_treatment_schedule.py --phase refine --top 10 --days 0,7,14
     python3 scripts/study/gen_treatment_schedule.py --phase timing --combo-max 2
 
-Output: studies/diabetic-wound/scenarios/
+Output: studies/diabetic-wound/experiments/
 """
 
 import argparse
@@ -40,19 +40,30 @@ except ModuleNotFoundError:
 
 ALL_TREATMENTS = [
     "npwt", "hbo", "growth_factor", "doxycycline",
-    "anti_inflammatory", "msc", "moisture", "combination",
+    "anti_inflammatory", "msc", "moisture", "combination", "senolytic",
 ]
 
 
-def load_treatment(name):
-    """Load a treatment TOML and return its parameter overrides as flat dict."""
-    path = os.path.join(REPO, "treatments", f"{name}.toml")
-    if not os.path.isfile(path):
-        print(f"ERROR: treatment not found: {path}")
-        sys.exit(1)
-    with open(path, "rb") as f:
-        data = tomllib.load(f)
-    return flatten_toml(data)
+def load_treatment(name, study="diabetic-wound"):
+    """Load a treatment TOML and return its parameter overrides as flat dict.
+
+    Searches study-scoped treatments first, then shared, then all studies.
+    """
+    import glob as _glob
+    candidates = [
+        os.path.join(REPO, "studies", study, "treatments", f"{name}.toml"),
+        os.path.join(REPO, "studies", "shared", "treatments", f"{name}.toml"),
+    ]
+    for c in candidates:
+        if os.path.isfile(c):
+            with open(c, "rb") as f:
+                return flatten_toml(tomllib.load(f))
+    for c in sorted(_glob.glob(os.path.join(
+            REPO, "studies", "*", "treatments", f"{name}.toml"))):
+        with open(c, "rb") as f:
+            return flatten_toml(tomllib.load(f))
+    print(f"ERROR: treatment not found: {name}")
+    sys.exit(1)
 
 
 def load_profile(name):
@@ -140,13 +151,13 @@ def _format_override(key, val):
 # Phase 1: Screening (all subsets at day 0)
 # ---------------------------------------------------------------------------
 
-def generate_screen_scenario(treatments, baseline, runs_per_config=3):
-    """Generate one scenario TOML with all 2^N-1 treatment subsets at day 0."""
+def generate_screen_experiment(treatments, baseline, runs_per_config=3):
+    """Generate one experiment TOML with all 2^N-1 treatment subsets at day 0."""
     lines = []
     lines.append(f"# Auto-generated: full combinatorial screen ({len(treatments)} treatments)")
     lines.append(f"# All subsets tested at day 0 (full treatment effect)")
     lines.append("")
-    lines.append("[scenario]")
+    lines.append("[experiment]")
     lines.append(f'name = "Combinatorial Screen"')
     lines.append(f'description = "All {2**len(treatments)-1} treatment subsets at day 0"')
     lines.append('profile = "diabetic"')
@@ -155,7 +166,7 @@ def generate_screen_scenario(treatments, baseline, runs_per_config=3):
     lines.append("")
 
     # Untreated baseline
-    lines.append("[[scenario.configs]]")
+    lines.append("[[experiment.configs]]")
     lines.append('label = "Untreated"')
     lines.append("")
 
@@ -166,7 +177,7 @@ def generate_screen_scenario(treatments, baseline, runs_per_config=3):
             tlist = ", ".join(f'"{t}"' for t in group)
             label = " + ".join(t.upper() for t in group)
 
-            lines.append("[[scenario.configs]]")
+            lines.append("[[experiment.configs]]")
             lines.append(f'label = "{label}"')
             lines.append(f"treatments = [{tlist}]")
             lines.append("")
@@ -178,14 +189,14 @@ def generate_screen_scenario(treatments, baseline, runs_per_config=3):
 # Phase 2: Timing grid (cross-product of start days)
 # ---------------------------------------------------------------------------
 
-def generate_timing_scenario(treatments, days_matrix, baseline, runs_per_config=3):
-    """Generate timing scenario for a specific treatment combo."""
+def generate_timing_experiment(treatments, days_matrix, baseline, runs_per_config=3):
+    """Generate timing experiment for a specific treatment combo."""
     combo_name = "+".join(treatments)
 
     lines = []
     lines.append(f"# Auto-generated: timing grid ({combo_name})")
     lines.append("")
-    lines.append("[scenario]")
+    lines.append("[experiment]")
     lines.append(f'name = "Timing: {combo_name}"')
     lines.append(f'description = "Start-day grid for {combo_name}"')
     lines.append('profile = "diabetic"')
@@ -194,7 +205,7 @@ def generate_timing_scenario(treatments, days_matrix, baseline, runs_per_config=
     lines.append("")
 
     # Untreated baseline
-    lines.append("[[scenario.configs]]")
+    lines.append("[[experiment.configs]]")
     lines.append('label = "Untreated"')
     lines.append("")
 
@@ -207,12 +218,12 @@ def generate_timing_scenario(treatments, days_matrix, baseline, runs_per_config=
             label = f"{t.upper()} Day {day} ({frac*100:.0f}%)"
             overrides = interpolate(baseline, treatment, frac)
 
-            lines.append("[[scenario.configs]]")
+            lines.append("[[experiment.configs]]")
             lines.append(f'label = "{label}"')
             if day == 0:
                 lines.append(f'treatments = ["{t}"]')
             elif overrides:
-                lines.append("[scenario.configs.overrides]")
+                lines.append("[experiment.configs.overrides]")
                 for key, val in sorted(overrides.items()):
                     fmt = _format_override(key, val)
                     if fmt:
@@ -235,13 +246,13 @@ def generate_timing_scenario(treatments, days_matrix, baseline, runs_per_config=
             merged = _merge_overrides(override_list, baseline)
             label = " + ".join(label_parts)
 
-            lines.append("[[scenario.configs]]")
+            lines.append("[[experiment.configs]]")
             lines.append(f'label = "{label}"')
             if all_day0:
                 tlist = ", ".join(f'"{t}"' for t in treatments)
                 lines.append(f"treatments = [{tlist}]")
             elif merged:
-                lines.append("[scenario.configs.overrides]")
+                lines.append("[experiment.configs.overrides]")
                 for key, val in sorted(merged.items()):
                     fmt = _format_override(key, val)
                     if fmt:
@@ -264,7 +275,7 @@ def parse_screen_results(results_dir):
     if not os.path.isfile(path):
         print(f"ERROR: screen results not found: {path}")
         print("Run the screen phase first:")
-        print("  ./studies/run-scenarios.sh studies/diabetic-wound/scenarios/combo_screen.toml")
+        print("  python3 studies/run_experiments.py studies/diabetic-wound/experiments/combo_screen.toml")
         sys.exit(1)
 
     results = []
@@ -317,9 +328,9 @@ def print_screen_ranking(results, top_n=20):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate treatment combinatorial scenario TOMLs")
+        description="Generate treatment combinatorial experiment TOMLs")
     parser.add_argument("--treatments", type=str, default=",".join(ALL_TREATMENTS),
-                        help="Comma-separated treatment names (default: all 8)")
+                        help="Comma-separated treatment names (default: all 9)")
     parser.add_argument("--phase", type=str, default="screen",
                         choices=["screen", "refine", "timing"],
                         help="Phase: screen (all subsets day 0), refine (top N from screen), "
@@ -334,13 +345,13 @@ def main():
                         help="Timing phase: max combo size (default: all)")
     parser.add_argument("--screen-dir", type=str, default=None, dest="screen_dir",
                         help="Refine phase: path to screen results dir "
-                             "(default: studies/scenarios/combinatorial_screen/)")
+                             "(default: studies/diabetic-wound/results/experiments/combinatorial_screen/)")
     parser.add_argument("--runs", type=int, default=3,
                         help="Runs per config (default: 3)")
     parser.add_argument("--dry-run", action="store_true", dest="dry_run",
                         help="Print config counts without writing files")
     parser.add_argument("--output-dir", type=str,
-                        default=os.path.join(REPO, "studies", "diabetic-wound", "scenarios"))
+                        default=os.path.join(REPO, "studies", "diabetic-wound", "experiments"))
     args = parser.parse_args()
 
     treatments = [t.strip() for t in args.treatments.split(",")]
@@ -363,7 +374,7 @@ def main():
             print(f"  [screen] combo_screen.toml: {n_configs} configs x {args.runs} runs "
                   f"= {n_configs * args.runs} sims")
         else:
-            content = generate_screen_scenario(treatments, baseline, args.runs)
+            content = generate_screen_experiment(treatments, baseline, args.runs)
             path = os.path.join(args.output_dir, "combo_screen.toml")
             with open(path, "w") as f:
                 f.write(content)
@@ -372,7 +383,7 @@ def main():
     # ---- Phase: Refine ----
     elif args.phase == "refine":
         screen_dir = args.screen_dir or os.path.join(
-            REPO, "studies", "scenarios", "combinatorial_screen")
+            REPO, "studies", "diabetic-wound", "results", "experiments", "combinatorial_screen")
         ranked = parse_screen_results(screen_dir)
 
         if not ranked:
@@ -399,7 +410,7 @@ def main():
                       f"= {n_configs * args.runs} sims (size {k})")
                 continue
 
-            content = generate_timing_scenario(treat_list, days, baseline, args.runs)
+            content = generate_timing_experiment(treat_list, days, baseline, args.runs)
             path = os.path.join(args.output_dir, name)
             with open(path, "w") as f:
                 f.write(content)
@@ -424,7 +435,7 @@ def main():
                           f"= {n_configs * args.runs} sims")
                     continue
 
-                content = generate_timing_scenario(group, days, baseline, args.runs)
+                content = generate_timing_experiment(group, days, baseline, args.runs)
                 path = os.path.join(args.output_dir, name)
                 with open(path, "w") as f:
                     f.write(content)
@@ -438,11 +449,11 @@ def main():
     if not args.dry_run and total_files > 0:
         print(f"\nRun with:")
         if args.phase == "screen":
-            print(f"  ./studies/run-scenarios.sh studies/diabetic-wound/scenarios/combo_screen.toml")
+            print(f"  python3 studies/run_experiments.py studies/diabetic-wound/experiments/combo_screen.toml")
         elif args.phase == "refine":
-            print(f"  ./studies/run-scenarios.sh studies/diabetic-wound/scenarios/refine_*.toml")
+            print(f"  python3 studies/run_experiments.py studies/diabetic-wound/experiments/refine_*.toml")
         elif args.phase == "timing":
-            print(f"  ./studies/run-scenarios.sh studies/diabetic-wound/scenarios/timing_*.toml")
+            print(f"  python3 studies/run_experiments.py studies/diabetic-wound/experiments/timing_*.toml")
 
 
 if __name__ == "__main__":

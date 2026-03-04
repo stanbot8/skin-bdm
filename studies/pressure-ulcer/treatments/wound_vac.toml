@@ -1,0 +1,26 @@
+# Treatment: negative pressure wound therapy (NPWT/VAC) for pressure ulcers
+# Literature: Morykwas et al. 1997, Dumville et al. 2015 (Cochrane)
+# Mechanism: sub-atmospheric pressure (125 mmHg) increases local blood flow,
+# promotes granulation tissue formation, removes excess exudate, and reduces
+# bacterial load. Indicated for Stage III/IV pressure ulcers after debridement.
+[skin.pressure]
+tissue_damage_rate = 0.001             # 0.003 -> 0.001: mechanical stimulus promotes tissue viability
+moisture_damage_rate = 0.0002          # 0.001 -> 0.0002: sealed dressing eliminates moisture damage
+
+[skin.perfusion]
+basal = 0.75                           # 0.6 -> 0.75: 4x blood flow increase under negative pressure
+angio_rate = 0.006                     # 0.003 -> 0.006: mechanical strain stimulates angiogenesis
+
+[skin]
+water_recovery_rate = 0.05            # sealed dressing improves fluid balance
+water_surface_loss_rate = 0.01        # reduces TEWL via sealed foam dressing
+
+[skin.wound]
+inward_bias = 0.5                      # 0.3 -> 0.5: macrodeformation pulls wound edges inward
+
+[skin.diabetic]
+prolif_factor = 0.65                   # 0.5 -> 0.65: microdeformation stimulates mitosis
+collagen_factor = 0.7                  # 0.5 -> 0.7: granulation tissue formation +60%
+
+[skin.inflammation]
+decay = 0.005                          # exudate removal clears inflammatory mediators faster

@@ -14,7 +14,6 @@ Usage:
 
 import argparse
 import os
-import shutil
 import sys
 import time
 
@@ -30,10 +29,16 @@ def main():
                         help="Number of runs (default: 20)")
     parser.add_argument("--study", type=str, default=None)
     parser.add_argument("--skin", type=str, default=None)
+    parser.add_argument("--site", type=str, default=None,
+                        help="Body site (e.g. foot_plantar, scalp)")
+    parser.add_argument("--treatment", type=str, default=None,
+                        help="Treatment overlay (e.g. anti_tnf, tocilizumab)")
     parser.add_argument("--validate", action="store_true",
                         help="Run validation on consensus")
     parser.add_argument("--no-validate", action="store_true",
                         help="Skip validation (default: skip)")
+    parser.add_argument("--seed", type=int, default=None,
+                        help="Base random seed (run i uses seed+i for reproducibility)")
     args = parser.parse_args()
     do_validate = args.validate and not args.no_validate
 
@@ -47,6 +52,8 @@ def main():
 
     print(f"=== Batch: {args.num_runs} runs ===")
     print(f"  Skin: {skin_label}, Study: {study_label}")
+    if args.seed is not None:
+        print(f"  Base seed: {args.seed}")
     print(f"  Output: {result_dir}/")
     print()
 
@@ -54,8 +61,12 @@ def main():
     lib.merge_config()
     if args.skin:
         lib.apply_profile(args.skin)
+    if args.site:
+        lib.apply_site(args.site)
     if args.study:
         lib.apply_study(args.study)
+    if args.treatment:
+        lib.apply_treatment(args.treatment, args.study)
     lib.build_if_needed()
 
     # Run simulations
@@ -66,30 +77,52 @@ def main():
         lib.merge_config()
         if args.skin:
             lib.apply_profile(args.skin)
+        if args.site:
+            lib.apply_site(args.site)
         if args.study:
             lib.apply_study(args.study)
+        if args.treatment:
+            lib.apply_treatment(args.treatment, args.study)
+
+        # Set reproducible seed: base_seed + run_index
+        run_seed = (args.seed + i) if args.seed is not None else None
+        if run_seed is not None:
+            lib.override_param("simulation.random_seed", run_seed)
 
         label = f"[{i + 1}/{args.num_runs}]"
         print(f"  {label}", end=" ", flush=True)
-        ok, elapsed = lib.run_simulation()
+        run_dir = os.path.join(raw_dir, f"run_{i:03d}")
+        ok, elapsed = lib.run_simulation(output_path=run_dir)
 
         if not ok:
             print(f"FAILED ({elapsed:.0f}s)")
             continue
 
-        src = lib.get_metrics_path()
-        if not os.path.isfile(src):
+        csv_path = lib.get_metrics_path()
+        if not os.path.isfile(csv_path):
             print(f"FAILED (no metrics)")
             continue
 
-        dst = os.path.join(raw_dir, f"run_{i:03d}.csv")
-        shutil.copy2(src, dst)
-        csv_paths.append(dst)
+        csv_paths.append(csv_path)
         print(f"OK ({elapsed:.0f}s)")
 
     t_total = time.time() - t_start
     print(f"\n{len(csv_paths)}/{args.num_runs} completed "
           f"({t_total:.0f}s total, {t_total / max(1, args.num_runs):.0f}s avg)")
+
+    # Write seed manifest for reproducibility
+    if args.seed is not None:
+        manifest_path = os.path.join(result_dir, "seed_manifest.csv")
+        with open(manifest_path, "w", newline="") as f:
+            import csv as _csv
+            w = _csv.writer(f)
+            w.writerow(["run", "seed", "status"])
+            for i in range(args.num_runs):
+                run_csv = os.path.join(raw_dir, f"run_{i:03d}",
+                                       "skibidy", "metrics.csv")
+                status = "ok" if os.path.isfile(run_csv) else "failed"
+                w.writerow([i, args.seed + i, status])
+        print(f"Seeds:     {manifest_path}")
 
     if not csv_paths:
         print("No successful runs.")

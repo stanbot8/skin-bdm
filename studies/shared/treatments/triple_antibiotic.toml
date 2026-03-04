@@ -1,0 +1,18 @@
+# Treatment: triple antibiotic ointment (bacitracin/neomycin/polymyxin B)
+# Literature: Dire et al. 1995 (PMID 7832344), Smack et al. 1996 (PMID 8629726)
+# Mechanism: broad-spectrum topical antimicrobial in petrolatum base. Reduces
+# wound infection rate by ~75% vs untreated (Dire et al.). Petrolatum base
+# maintains moist wound environment, accelerating re-epithelialization.
+# Unlike silver sulfadiazine, minimal keratinocyte cytotoxicity.
+
+[skin.diabetic]
+prolif_factor = 1.25                 # moist environment supports keratinocyte proliferation
+migration_factor = 0.65              # petrolatum base aids cell migration (vs dry wound)
+baseline_inflammation = 0.0003       # reduced bacterial burden lowers chronic inflammation
+
+[skin.inflammation]
+decay = 0.005                        # antimicrobial action removes inflammation source
+
+[skin]
+water_recovery_rate = 0.05           # occlusive petrolatum base reduces TEWL
+water_surface_loss_rate = 0.002      # barrier moisture retention

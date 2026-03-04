@@ -1,0 +1,4 @@
+[project]
+name = "wound"
+description = "Punch biopsy wound healing (default experiment)"
+category = "acute"

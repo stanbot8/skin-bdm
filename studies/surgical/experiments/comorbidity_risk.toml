@@ -1,0 +1,92 @@
+# Experiment: Comorbidity Risk Factors
+#
+# Tests which patient comorbidities most impair surgical wound healing
+# and increase SSI susceptibility. All configs use a contaminated wound
+# (Class III) to provide baseline infection pressure. Each comorbidity
+# modifies the surgical profile parameters to model the pathophysiology.
+#
+# Risk factors based on: Mangram et al. 1999, Anderson et al. 2014
+
+[experiment]
+name = "Comorbidity Risk"
+description = "Impact of patient comorbidities on surgical wound healing and SSI risk"
+profile = "surgical"
+study = "surgical"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Healthy baseline: surgical profile, contaminated wound
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Healthy (baseline)"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+
+# ---------------------------------------------------------------------------
+# Obese (BMI > 30): impaired perfusion, reduced migration, chronic
+# low-grade inflammation (Pierpont et al. 2014)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Obese"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.diabetic.prolif_factor" = 0.7
+"skin.diabetic.migration_factor" = 0.6
+"skin.diabetic.baseline_inflammation" = 0.0005
+"skin.perfusion.basal" = 0.85
+
+# ---------------------------------------------------------------------------
+# Diabetic: hyperglycemia impairs neutrophil function, collagen synthesis,
+# and angiogenesis (Brem & Tomic-Canic 2007, Brownlee 2005)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Diabetic"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.diabetic.prolif_factor" = 0.5
+"skin.diabetic.migration_factor" = 0.45
+"skin.diabetic.collagen_factor" = 0.4
+"skin.diabetic.neutrophil_factor" = 1.8
+"skin.diabetic.m1_duration_factor" = 2.5
+"skin.diabetic.resolution_factor" = 0.4
+"skin.perfusion.basal" = 0.7
+"skin.perfusion.angio_rate" = 0.002
+"skin.biofilm.neutrophil_clearance" = 0.001
+
+# ---------------------------------------------------------------------------
+# Immunosuppressed: corticosteroids or chemotherapy halve immune function
+# (Decker et al. 2011)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Immunosuppressed"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.diabetic.neutrophil_factor" = 0.35
+"skin.diabetic.m1_duration_factor" = 0.4
+"skin.diabetic.resolution_factor" = 0.6
+"skin.biofilm.neutrophil_clearance" = 0.0015
+"skin.biofilm.macrophage_clearance" = 0.0005
+
+# ---------------------------------------------------------------------------
+# Elderly (age > 75): reduced stem cell pool, impaired immune response,
+# slower angiogenesis (Gosain & DiPietro 2004)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Elderly"
+[experiment.configs.overrides]
+"skin.biofilm.enabled" = true
+"skin.biofilm.seed_delay_h" = 24
+"skin.biofilm.seed_amount" = 0.02
+"skin.aging_factor" = 0.6
+"skin.stem_fraction" = 0.06
+"skin.diabetic.neutrophil_factor" = 0.5
+"skin.diabetic.resolution_factor" = 0.8
+"skin.perfusion.angio_rate" = 0.003

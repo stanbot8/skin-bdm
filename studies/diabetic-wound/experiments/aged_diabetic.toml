@@ -1,0 +1,43 @@
+# Experiment: Aged + Diabetic Comorbidity
+#
+# Compare wound healing across four phenotypes:
+# normal, aged, diabetic, and aged+diabetic.
+# Tests whether impairments compound additively or synergistically.
+
+[experiment]
+name = "Aged Diabetic Comorbidity"
+description = "Interaction between aging and diabetes in wound healing"
+study = "diabetic-wound"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Normal wound (healthy adult)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Normal"
+profile = "normal"
+study = "wound"
+
+# ---------------------------------------------------------------------------
+# Aged wound
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Aged"
+profile = "aged"
+study = "wound"
+
+# ---------------------------------------------------------------------------
+# Diabetic wound
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Diabetic"
+profile = "diabetic"
+study = "diabetic-wound"
+
+# ---------------------------------------------------------------------------
+# Aged + diabetic (composite profile)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Aged + Diabetic"
+profile = "aged_diabetic"
+study = "diabetic-wound"

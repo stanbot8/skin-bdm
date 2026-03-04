@@ -1,0 +1,23 @@
+# Treatment: antimicrobial silver dressing (ionic silver/nanocrystalline)
+# Literature: Vermeulen et al. 2007 (Cochrane), Lo et al. 2008
+# Mechanism: sustained release of silver ions disrupts bacterial cell
+# membranes and biofilm matrix. The dressing also maintains optimal moisture
+# balance at the wound bed, absorbing excess exudate while preventing
+# desiccation. Reduces inflammatory burden by controlling bacterial
+# colonization that drives chronic inflammation.
+[skin.pressure]
+moisture_damage_rate = 0.0003          # 0.001 -> 0.0003: moisture management layer
+tissue_damage_rate = 0.002             # 0.003 -> 0.002: reduced biofilm-driven tissue breakdown
+
+[skin]
+water_recovery_rate = 0.04            # dressing donates moisture to wound bed
+water_surface_loss_rate = 0.008       # semi-occlusive barrier reduces TEWL
+
+[skin.inflammation]
+decay = 0.004                          # antimicrobial action reduces inflammatory stimulus
+
+[skin.diabetic]
+baseline_inflammation = 0.0003         # 0.0005 -> 0.0003: lower bacterial burden
+
+[skin.immune]
+macrophage_m1_duration_h = 84          # 96 -> 84: reduced pathogen-driven M1 persistence

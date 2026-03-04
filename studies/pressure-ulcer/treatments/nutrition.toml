@@ -1,0 +1,25 @@
+# Treatment: nutritional supplementation (protein, zinc, vitamin C)
+# Literature: Cereda et al. 2015, Langer & Fink 2014 (Cochrane)
+# Mechanism: malnutrition is a primary risk factor for pressure ulcers.
+# High-protein oral supplements (with arginine) support collagen synthesis.
+# Zinc is a cofactor for MMP regulation and immune cell function.
+# Vitamin C is essential for hydroxylation of proline in collagen fibrils
+# and acts as an antioxidant against reperfusion ROS.
+[skin.pressure]
+tissue_damage_rate = 0.002             # 0.003 -> 0.002: antioxidant protection reduces ROS damage
+reperfusion_ros_burst = 0.10           # 0.15 -> 0.10: vitamin C scavenges reperfusion ROS
+
+[skin.diabetic]
+prolif_factor = 0.65                   # 0.5 -> 0.65: improved cellular energy for mitosis
+collagen_factor = 0.7                  # 0.5 -> 0.7: arginine and vitamin C boost collagen synthesis
+fibroblast_lifespan_factor = 0.85      # 0.7 -> 0.85: reduced premature senescence
+
+[skin.fibroblast]
+density_factor = 0.8                   # 0.6 -> 0.8: protein supports fibroblast viability
+
+[skin.immune]
+macrophage_m1_duration_h = 80          # 96 -> 80: zinc supports M1 to M2 transition
+macrophage_spawn_taper = 0.0005        # 0.0003 -> 0.0005: improved immune resolution
+
+[skin.perfusion]
+angio_rate = 0.004                     # 0.003 -> 0.004: micronutrients support angiogenesis

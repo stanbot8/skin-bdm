@@ -1,0 +1,44 @@
+# Experiment: Hypertrophic Scar Prevention
+#
+# Burns are the leading cause of hypertrophic scarring, particularly deep
+# partial thickness injuries. Excessive collagen deposition, myofibroblast
+# persistence, and wound contracture produce raised, tight scars that
+# restrict movement. This experiment compares scar prevention strategies
+# for partial thickness burns (depth_fraction = 0.5).
+#
+# Pressure garment therapy (15 to 25 mmHg) is the standard of care.
+# Silicone sheeting hydrates the scar surface and may reduce TGF-beta
+# signaling. Combination therapy is increasingly recommended.
+
+[experiment]
+name = "Scar Prevention"
+description = "Hypertrophic scar prevention strategies for partial thickness burns"
+profile = "burn"
+study = "burn"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# No scar prevention (natural healing)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "No Prevention"
+
+# ---------------------------------------------------------------------------
+# Pressure garment alone (standard of care)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Pressure Garment"
+treatments = ["pressure_garment"]
+
+# ---------------------------------------------------------------------------
+# Pressure garment + silicone sheeting (combination anti-scar)
+# Silicone adds hydration and reduces TGF-beta driven fibrosis
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Pressure + Silicone"
+treatments = ["pressure_garment"]
+[experiment.configs.overrides]
+"skin.burn.contracture_rate" = 0.0003            # further reduction from silicone
+"skin.diabetic.collagen_factor" = 0.8            # 0.9 -> 0.8: silicone reduces fibrosis
+"skin.burn.tewl_multiplier" = 3.0                # silicone occlusion reduces water loss
+"skin.diabetic.fibroblast_activation_factor" = 0.9  # silicone hydration calms fibroblasts

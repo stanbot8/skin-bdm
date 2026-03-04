@@ -1,0 +1,51 @@
+# Experiment: Burn Wound Cure Protocol
+#
+# Deep partial-thickness burns risk hypertrophic scarring and contracture.
+# Cure means complete closure with minimal scar formation. Protocol combines
+# early cooling (limit zone of stasis), skin substitute (scaffold for
+# regeneration), debridement (remove necrotic tissue), and pressure garment
+# (scar prevention). Extended to 90 days for scar assessment.
+
+[experiment]
+name = "Cure Protocol"
+description = "Multi-modal cure-oriented therapy for burn wound resolution with scar prevention"
+profile = "burn"
+study = "burn"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Untreated burn baseline (90 days)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Untreated 90d"
+[experiment.configs.overrides]
+"skin.duration_days" = 90
+
+# ---------------------------------------------------------------------------
+# Standard care: cooling + silver sulfadiazine
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Standard Care 90d"
+treatments = ["cooling", "silver_sulfadiazine"]
+[experiment.configs.overrides]
+"skin.duration_days" = 90
+
+# ---------------------------------------------------------------------------
+# Cure: cooling + debridement + skin substitute + pressure garment
+# Full protocol targeting both closure and scar prevention
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cure: Full Protocol"
+treatments = ["cooling", "debridement", "skin_substitute", "pressure_garment"]
+[experiment.configs.overrides]
+"skin.duration_days" = 90
+
+# ---------------------------------------------------------------------------
+# Cure: all 5 treatments (full protocol + silver sulfadiazine)
+# Maximum intervention with antimicrobial coverage
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Cure: Full + Antimicrobial"
+treatments = ["cooling", "debridement", "skin_substitute", "pressure_garment", "silver_sulfadiazine"]
+[experiment.configs.overrides]
+"skin.duration_days" = 90

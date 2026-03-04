@@ -1,0 +1,64 @@
+# Auto-generated: npwt at different start times
+# Baseline: diabetic untreated
+
+[experiment]
+name = "NPWT Timing"
+description = "Effect of delaying npwt treatment"
+profile = "diabetic"
+study = "diabetic-wound"
+runs_per_config = 3
+
+[[experiment.configs]]
+label = "Untreated"
+
+[[experiment.configs]]
+label = "NPWT Day 0 (100%)"
+treatments = ["npwt"]
+
+[[experiment.configs]]
+label = "NPWT Day 3 (93%)"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.585714
+"skin.diabetic.migration_factor" = 0.775
+"skin.diabetic.prolif_factor" = 0.639286
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.005714
+"skin.water_recovery_rate" = 0.047857
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT Day 7 (83%)"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.566667
+"skin.diabetic.migration_factor" = 0.741667
+"skin.diabetic.prolif_factor" = 0.625
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.005333
+"skin.water_recovery_rate" = 0.045
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT Day 14 (67%)"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.533333
+"skin.diabetic.migration_factor" = 0.683333
+"skin.diabetic.prolif_factor" = 0.6
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.004667
+"skin.water_recovery_rate" = 0.04
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5
+
+[[experiment.configs]]
+label = "NPWT Day 21 (50%)"
+[experiment.configs.overrides]
+"skin.diabetic.collagen_factor" = 0.5
+"skin.diabetic.migration_factor" = 0.625
+"skin.diabetic.prolif_factor" = 0.575
+"skin.inflammation.decay" = 0.005
+"skin.perfusion.angio_rate" = 0.004
+"skin.water_recovery_rate" = 0.035
+"skin.water_surface_loss_rate" = 0.01
+"skin.wound.inward_bias" = 0.5

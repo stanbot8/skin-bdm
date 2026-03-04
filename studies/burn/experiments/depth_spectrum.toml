@@ -1,0 +1,71 @@
+# Experiment: Burn Depth Spectrum
+#
+# Tests healing trajectory across the full range of burn depths.
+# Superficial burns re-epithelialize rapidly from preserved adnexal structures.
+# Full thickness burns require granulation and scar formation, with high
+# contracture risk. The partial thickness boundary (0.5 to 0.7) is the
+# clinical decision point for surgical versus conservative management.
+
+[experiment]
+name = "Depth Spectrum"
+description = "Healing trajectory across superficial to full thickness burn depths"
+profile = "burn"
+study = "burn"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Superficial (epidermal only, depth 0.2)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Superficial (0.2)"
+[experiment.configs.overrides]
+"skin.burn.depth_fraction" = 0.2
+"skin.burn.coagulation_necrosis" = 0.3
+"skin.burn.stasis_initial_viability" = 0.8
+"skin.burn.tewl_multiplier" = 2.0
+"skin.burn.fluid_loss_rate" = 0.01
+"skin.burn.contracture_rate" = 0.0005
+"skin.burn.infection_susceptibility" = 1.5
+
+# ---------------------------------------------------------------------------
+# Superficial partial thickness (upper dermis, depth 0.4)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Superficial Partial (0.4)"
+[experiment.configs.overrides]
+"skin.burn.depth_fraction" = 0.4
+"skin.burn.coagulation_necrosis" = 0.6
+"skin.burn.stasis_initial_viability" = 0.6
+"skin.burn.tewl_multiplier" = 3.5
+"skin.burn.fluid_loss_rate" = 0.03
+"skin.burn.contracture_rate" = 0.001
+"skin.burn.infection_susceptibility" = 2.0
+
+# ---------------------------------------------------------------------------
+# Deep partial thickness (deep dermis, depth 0.6)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Deep Partial (0.6)"
+[experiment.configs.overrides]
+"skin.burn.depth_fraction" = 0.6
+"skin.burn.coagulation_necrosis" = 0.85
+"skin.burn.stasis_initial_viability" = 0.4
+"skin.burn.tewl_multiplier" = 5.5
+"skin.burn.fluid_loss_rate" = 0.06
+"skin.burn.contracture_rate" = 0.003
+"skin.burn.infection_susceptibility" = 3.5
+
+# ---------------------------------------------------------------------------
+# Full thickness (through dermis, depth 0.8)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Full Thickness (0.8)"
+[experiment.configs.overrides]
+"skin.burn.depth_fraction" = 0.8
+"skin.burn.coagulation_necrosis" = 0.98
+"skin.burn.stasis_initial_viability" = 0.2
+"skin.burn.tewl_multiplier" = 8.0
+"skin.burn.fluid_loss_rate" = 0.1
+"skin.burn.contracture_rate" = 0.005
+"skin.burn.infection_susceptibility" = 5.0
+"skin.burn.eschar_rate" = 0.02

@@ -1,0 +1,19 @@
+# Treatment: Enhanced Recovery After Surgery (ERAS) protocol
+# Literature: Ljungqvist et al. 2017, Gustafsson et al. 2013
+# Mechanism: multimodal perioperative optimization including nutrition,
+#            normothermia maintenance, glycemic control, and early mobilization;
+#            reduces surgical stress response and improves tissue healing
+
+[skin.diabetic]
+prolif_factor = 1.1                    # 1.0 -> 1.1: improved nutritional support
+migration_factor = 1.3                 # 1.2 -> 1.3: normothermia + nutrition
+fibroblast_activation_factor = 0.9     # 1.0 -> 0.9: faster activation via reduced stress response
+collagen_factor = 1.1                  # 1.0 -> 1.1: nutritional support improves collagen synthesis
+neutrophil_factor = 0.6                # 0.7 -> 0.6: reduced surgical stress attenuates recruitment
+resolution_factor = 1.3                # 1.2 -> 1.3: reduced cortisol improves M2 transition
+
+[skin.perfusion]
+basal = 1.05                           # 1.0 -> 1.05: normothermia maintains peripheral perfusion
+
+[skin.biofilm]
+neutrophil_clearance = 0.004           # 0.003 -> 0.004: glycemic control improves phagocytosis
