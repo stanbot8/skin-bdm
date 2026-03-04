@@ -55,6 +55,12 @@ def discover_sources_files():
     for path in sorted(glob.glob(pattern)):
         module = os.path.basename(os.path.dirname(path))
         files.append((path, module))
+    # Study-scoped module sources
+    studies_dir = os.path.join(_PROJECT_ROOT, "studies")
+    pattern = os.path.join(studies_dir, "*", "modules", "*", "SOURCES.yaml")
+    for path in sorted(glob.glob(pattern)):
+        module = os.path.basename(os.path.dirname(path))
+        files.append((path, module))
     # Monolithic fallback
     if os.path.isfile(_SOURCES_PATH):
         files.append((_SOURCES_PATH, None))

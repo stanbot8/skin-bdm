@@ -15,7 +15,7 @@ python3 literature/check_sources.py
 python3 batch/batch.py -n 10 --study wound --validate
 ```
 
-`validate_all.py` runs the source check first, then loads simulation metrics and validates whichever modules are present (wound, fibroblast, tumor).
+`validate_all.py` runs the source check first, then loads simulation metrics and validates whichever modules are present (wound, fibroblast, microenvironment, pH, tumor).
 
 ## Scripts
 
@@ -46,8 +46,9 @@ Plots are saved to `output/plots/`:
 | File | Contents |
 |------|----------|
 | `validation_dashboard.png` | Combined multi-panel dashboard |
-| `wound_validation.png` | Closure, inflammation, immune cells, stratification |
-| `fibroblast_validation.png` | Myofibroblast count + collagen accumulation |
+| `wound_validation.png` | Closure, inflammation, immune cells |
+| `fibroblast_validation.png` | Fibroblast, myofibroblast, collagen |
+| `microenvironment_validation.png` | TGF-b, VEGF, fibronectin, MMP, wound pH |
 | `tumor_validation.png` | Growth rate + doubling time |
 
 For detailed parameter sources and validation datasets, see each module's README under `modules/*/README.md`.
