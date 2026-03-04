@@ -20,6 +20,13 @@ sasp_inflammation_rate = 0.00002      # SASP-driven pro-inflammatory cytokine ou
 sasp_mmp_rate = 0.000005              # SASP MMP-3/MMP-9 production (deposited as pro-MMP)
 sasp_tgfb_rate = 0.000005             # SASP TGF-beta1 (fibrotic component)
 
+# Immune-mediated clearance (NK cells + M2 macrophages)
+# Sagiv et al. 2016 (doi:10.18632/aging.100897): NK cells recognize
+# NKG2D ligands (MICA/MICB) upregulated on senescent cells.
+# Kang et al. 2011 (doi:10.1038/nature10229): immune surveillance of senescence.
+# Rate scales with local immune pressure (proxy for NK/macrophage density).
+immune_clearance_rate = 0.002         # clearance rate * senescence * immune_pressure per step
+
 # Senolytic clearance (treatment parameter)
 senolytic_clearance_rate = 0.0         # ABT-263/dasatinib+quercetin clearance rate (0 = no treatment)
 

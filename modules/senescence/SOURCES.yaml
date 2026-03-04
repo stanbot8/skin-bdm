@@ -52,6 +52,25 @@ senescence:
       Senolytic drugs (dasatinib+quercetin) selectively clear senescent cells,
       improving physical function. Supports senolytic_clearance_rate parameter
       for treatment scenarios.
+  - id: sagiv2016
+    authors: Sagiv A, Burton DGA, Mez-Zeinab Z, Lysber A, Trber A, Joo H, Ber PA, Krizhanovsky V
+    year: 2016
+    title: NKG2D ligands mediate immunosurveillance of senescent cells
+    journal: Aging 8(2):328-344
+    doi: 10.18632/aging.100897
+    notes: >
+      NK cells recognize and eliminate senescent cells via NKG2D receptor
+      binding to MICA/MICB ligands upregulated during senescence. Provides
+      biological basis for immune_clearance_rate parameter.
+  - id: kang2011
+    authors: Kang TW, Yevsa T, Woller N, Hoenicke L, Wuestefeld T, Dauch D, Hohmeyer A, Gerber M, Daniel R, Pez M, Bozec A, Sarber K, Grber S, Dez B, Manns MP, Yamanouchi K, Iwamura T, Kossatz U, Malek NP, Zender L
+    year: 2011
+    title: Senescence surveillance of pre-malignant hepatocytes limits liver cancer development
+    journal: Nature 479(7374):547-551
+    doi: 10.1038/nature10599
+    notes: >
+      Immune surveillance clears pre-malignant senescent cells via CD4+ T cells
+      and macrophages. Supports immune-dependent senescence clearance mechanism.
   - id: krizhanovsky2008
     authors: Krizhanovsky V, Yon M, Dickins RA, Hearn S, Simon J, Miething C, Yee H, Zender L, Lowe SW
     year: 2008
