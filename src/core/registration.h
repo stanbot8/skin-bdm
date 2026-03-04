@@ -43,6 +43,20 @@
 #include "tissue/basal_density_pde.h"
 #include "senescence/senescence_pde.h"
 #include "neuropathy/nerve_pde.h"
+#include "ros/ros_pde.h"
+#include "mechanotransduction/stiffness_pde.h"
+#include "lymphatic/lymphatic_pde.h"
+#include "lymphatic/edema_pde.h"
+#include "bioelectric/voltage_pde.h"
+#include "rheumatoid/tnf_alpha_pde.h"
+#include "rheumatoid/cartilage_pde.h"
+#include "rheumatoid/il6_pde.h"
+#include "rheumatoid/synovial_fluid_pde.h"
+#include "rheumatoid/tcell_density_pde.h"
+#include "rheumatoid/bone_pde.h"
+#include "scab/scab_pde.h"
+#include "photon/fluence_pde.h"
+#include "photon/opsin_pde.h"
 
 // Operation headers
 #include "wound/wound_event.h"
@@ -75,12 +89,12 @@ inline void RegisterFields(Simulation* sim, const SimParam* sp,
   fields.Add(std::make_unique<OxygenPDE>());
   fields.Add(std::make_unique<StratumPDE>());
   // Wound-related fields only when wound is enabled
-  if (sp->wound_enabled) {
+  if (sp->wound.enabled) {
     fields.Add(std::make_unique<CalciumPDE>());
     fields.Add(std::make_unique<KgfPDE>());
     fields.Add(std::make_unique<ScarPDE>());
     fields.Add(std::make_unique<WaterPDE>());
-    if (sp->split_inflammation_enabled) {
+    if (sp->inflammation.split_inflammation_enabled) {
       fields.Add(std::make_unique<ProInflammatoryPDE>(sp));
       fields.Add(std::make_unique<AntiInflammatoryPDE>(sp));
     } else {
@@ -91,140 +105,199 @@ inline void RegisterFields(Simulation* sim, const SimParam* sp,
     fields.Add(std::make_unique<ImmunePressurePDE>(sp));
   }
   // Fibroblast module: TGF-beta and Collagen fields
-  if (sp->fibroblast_enabled) {
+  if (sp->fibroblast.enabled) {
     fields.Add(std::make_unique<TGFBetaPDE>(sp));
     fields.Add(std::make_unique<CollagenPDE>(sp));
   }
   // Biofilm module: sessile biofilm density field
-  if (sp->biofilm_enabled) {
+  if (sp->biofilm.enabled) {
     fields.Add(std::make_unique<BiofilmPDE>());
   }
   // Angiogenesis module: VEGF diffusion field
-  if (sp->angiogenesis_enabled) {
+  if (sp->angiogenesis.enabled) {
     fields.Add(std::make_unique<VEGFPDE>(sp));
   }
   // MMP module: matrix metalloproteinase field + TIMP inhibitor field + pro-MMP zymogen
-  if (sp->mmp_enabled) {
+  if (sp->mmp.enabled) {
     fields.Add(std::make_unique<MMPPDE>(sp));
     fields.Add(std::make_unique<ProMMPPDE>(sp));
     fields.Add(std::make_unique<TIMPPDE>(sp));
   }
   // Fibronectin module: provisional wound matrix
-  if (sp->fibronectin_enabled) {
+  if (sp->fibronectin.enabled) {
     fields.Add(std::make_unique<FibronectinPDE>(sp));
   }
   // Elastin module: elastic fiber network
-  if (sp->elastin_enabled) {
+  if (sp->elastin.enabled) {
     fields.Add(std::make_unique<ElastinPDE>());
   }
   // Hyaluronan module: HA / GAG ground substance
-  if (sp->hyaluronan_enabled) {
+  if (sp->hyaluronan.enabled) {
     fields.Add(std::make_unique<HyaluronanPDE>());
   }
   // Dermis module: dermal tissue integrity
-  if (sp->dermis_enabled) {
+  if (sp->dermis.enabled) {
     fields.Add(std::make_unique<DermisPDE>());
   }
   // pH module: wound alkalinity field
   fields.Add(std::make_unique<PHPDE>(sp));
   // Hemostasis module: fibrin clot provisional matrix
-  if (sp->hemostasis_enabled) {
+  if (sp->hemostasis.enabled) {
     fields.Add(std::make_unique<FibrinPDE>(sp));
   }
   // Tumor module: binary tumor tissue field
-  if (sp->tumor_enabled) {
+  if (sp->tumor.enabled) {
     fields.Add(std::make_unique<TumorPDE>());
   }
   // Temperature module: wound thermal regulation
-  if (sp->temperature_enabled) {
+  if (sp->temperature.enabled) {
     fields.Add(std::make_unique<TemperaturePDE>(sp));
   }
   // Glucose module: metabolic substrate
-  if (sp->glucose_enabled) {
+  if (sp->glucose_mod.enabled) {
     fields.Add(std::make_unique<GlucosePDE>(sp));
     // AGE field: accumulates in diabetic tissue from glucose glycation
-    if (sp->diabetic_mode) {
+    if (sp->diabetic.mode) {
       fields.Add(std::make_unique<AGEPDE>(sp));
     }
   }
   // Lactate module: hypoxia metabolite
-  if (sp->lactate_enabled) {
+  if (sp->lactate.enabled) {
     fields.Add(std::make_unique<LactatePDE>(sp));
   }
   // Nitric oxide module: immune antimicrobial and vasodilator
-  if (sp->nitric_oxide_enabled) {
+  if (sp->nitric_oxide.enabled) {
     fields.Add(std::make_unique<NitricOxidePDE>(sp));
   }
   // Basal density continuum: homeostatic keratinocyte population field.
   // D=0, decay=0 -- evolves via BasalDensityOp logistic PDE (not FTCS).
-  if (sp->basal_density_enabled && sp->wound_enabled) {
+  if (sp->basal_density_enabled && sp->wound.enabled) {
     fields.Add(std::make_unique<BasalDensityPDE>());
   }
   // Senescence module: senescent cell density (non-diffusing accumulator)
-  if (sp->senescence_enabled) {
+  if (sp->senescence.enabled) {
     fields.Add(std::make_unique<SenescencePDE>(sp));
   }
   // Neuropathy module: nerve fiber density (slow diffusion = neurite extension)
-  if (sp->neuropathy_enabled) {
+  if (sp->neuropathy.enabled) {
     fields.Add(std::make_unique<NervePDE>(sp));
+  }
+  // ROS module: reactive oxygen species (oxidative stress mediator)
+  if (sp->ros.enabled) {
+    fields.Add(std::make_unique<ROSPDE>(sp));
+  }
+  // Mechanotransduction module: tissue stiffness (derived from ECM)
+  if (sp->mechanotransduction.enabled) {
+    fields.Add(std::make_unique<StiffnessPDE>(sp));
+  }
+  // Lymphatic module: vessel density + interstitial edema
+  if (sp->lymphatic.enabled) {
+    fields.Add(std::make_unique<LymphaticPDE>(sp));
+    fields.Add(std::make_unique<EdemaPDE>(sp));
+  }
+  // Bioelectric module: transepithelial potential (galvanotaxis)
+  if (sp->bioelectric.enabled) {
+    fields.Add(std::make_unique<VoltagePDE>(sp));
+  }
+  // Scab module: protective wound crust (dried fibrin/platelet/exudate)
+  if (sp->scab.enabled) {
+    fields.Add(std::make_unique<ScabPDE>(sp));
+  }
+  // Photon transport module: fluence rate + opsin activation fields
+  if (sp->photon.enabled) {
+    fields.Add(std::make_unique<FluencePDE>(sp));
+    fields.Add(std::make_unique<OpsinPDE>(sp));
+  }
+  // Rheumatoid arthritis module: TNF-alpha + IL-6 cytokines + cartilage + synovial fluid
+  if (sp->ra.enabled) {
+    fields.Add(std::make_unique<TNFAlphaPDE>(sp));
+    fields.Add(std::make_unique<IL6PDE>(sp));
+    fields.Add(std::make_unique<CartilagePDE>(sp));
+    fields.Add(std::make_unique<SynovialFluidPDE>(sp));
+    fields.Add(std::make_unique<TCellDensityPDE>(sp));
+    fields.Add(std::make_unique<BonePDE>(sp));
   }
   fields.InitAll(sim);
 
   // --- Performance: skip FTCS solver for decay-only fields (D=0, decay>0) ---
   auto* rm = sim->GetResourceManager();
-  if (sp->fibronectin_enabled && sp->fibronectin_decay > 0) {
+  if (sp->fibronectin.enabled && sp->fibronectin.decay > 0) {
     rm->GetDiffusionGrid(fields::kFibronectinId)->SetTimeStep(1e30);
   }
-  if (sp->elastin_enabled && sp->elastin_decay > 0) {
+  if (sp->elastin.enabled && sp->elastin.decay > 0) {
     rm->GetDiffusionGrid(fields::kElastinId)->SetTimeStep(1e30);
   }
-  if (sp->hemostasis_enabled) {
+  if (sp->hemostasis.enabled) {
     rm->GetDiffusionGrid(fields::kFibrinId)->SetTimeStep(1e30);
+  }
+  if (sp->scab.enabled) {
+    rm->GetDiffusionGrid(fields::kScabId)->SetTimeStep(1e30);
   }
   // BasalDensity: D=0, decay=0 -- evolved by BasalDensityOp (logistic, not FTCS).
   // Disable BDM's FTCS step entirely so the grid is only touched by the op.
-  if (sp->basal_density_enabled && sp->wound_enabled) {
+  if (sp->basal_density_enabled && sp->wound.enabled) {
     rm->GetDiffusionGrid(fields::kBasalDensityId)->SetTimeStep(1e30);
   }
   // AGE: D=0, decay~0 -- structural accumulator, skip FTCS.
-  if (sp->glucose_enabled && sp->diabetic_mode) {
+  if (sp->glucose_mod.enabled && sp->diabetic.mode) {
     rm->GetDiffusionGrid(fields::kAGEId)->SetTimeStep(1e30);
   }
   // Senescence: D=0, non-diffusing -- evolved in fused_post (accumulation + SASP).
-  if (sp->senescence_enabled) {
+  if (sp->senescence.enabled) {
     rm->GetDiffusionGrid(fields::kSenescenceId)->SetTimeStep(1e30);
+  }
+  // Stiffness: D=0, decay=0 -- derived structural property, computed in fused_source.
+  if (sp->mechanotransduction.enabled) {
+    rm->GetDiffusionGrid(fields::kStiffnessId)->SetTimeStep(1e30);
+  }
+  // Edema: D=0, decay=0 -- evolved mechanistically in fused_source (leak vs drain).
+  if (sp->lymphatic.enabled) {
+    rm->GetDiffusionGrid(fields::kEdemaId)->SetTimeStep(1e30);
+  }
+  // Opsin: D=0 (membrane-bound), evolved by PhotonSourceHook kinetics.
+  if (sp->photon.enabled) {
+    rm->GetDiffusionGrid(fields::kOpsinId)->SetTimeStep(1e30);
+  }
+  // Cartilage + Synovial fluid: D=0, decay=0 -- structural fields, evolved mechanistically.
+  if (sp->ra.enabled) {
+    rm->GetDiffusionGrid(fields::kCartilageId)->SetTimeStep(1e30);
+    rm->GetDiffusionGrid(fields::kSynovialFluidId)->SetTimeStep(1e30);
+    rm->GetDiffusionGrid(fields::kBoneId)->SetTimeStep(1e30);
   }
 
   // --- PDE sub-cycling: solve slow fields less frequently ---
   real_t dt = sim->GetParam()->simulation_time_step;
   if (sp->subcycle_slow > 1) {
     real_t slow_dt = sp->subcycle_slow * dt;
-    if (sp->wound_enabled) {
+    if (sp->wound.enabled) {
       rm->GetDiffusionGrid(fields::kWaterId)->SetTimeStep(slow_dt);
     }
-    if (sp->hyaluronan_enabled) {
+    if (sp->hyaluronan.enabled) {
       rm->GetDiffusionGrid(fields::kHyaluronanId)->SetTimeStep(slow_dt);
     }
-    if (sp->perfusion_diffusion > 0) {
+    if (sp->perfusion.diffusion > 0) {
       rm->GetDiffusionGrid(fields::kVascularId)->SetTimeStep(slow_dt);
     }
-    if (sp->dermis_enabled && sp->dermis_diffusion > 0) {
+    if (sp->dermis.enabled && sp->dermis.diffusion > 0) {
       rm->GetDiffusionGrid(fields::kDermisId)->SetTimeStep(slow_dt);
     }
-    if (sp->temperature_enabled) {
+    if (sp->temperature.enabled) {
       rm->GetDiffusionGrid(fields::kTemperatureId)->SetTimeStep(slow_dt);
     }
-    if (sp->glucose_enabled) {
+    if (sp->glucose_mod.enabled) {
       rm->GetDiffusionGrid(fields::kGlucoseId)->SetTimeStep(slow_dt);
     }
-    if (sp->neuropathy_enabled && sp->neuropathy_diffusion > 0) {
+    if (sp->neuropathy.enabled && sp->neuropathy.diffusion > 0) {
       rm->GetDiffusionGrid(fields::kNerveId)->SetTimeStep(slow_dt);
+    }
+    if (sp->lymphatic.enabled && sp->lymphatic.diffusion > 0) {
+      rm->GetDiffusionGrid(fields::kLymphaticId)->SetTimeStep(slow_dt);
     }
   }
   if (sp->subcycle_medium > 1) {
     real_t med_dt = sp->subcycle_medium * dt;
-    if (sp->wound_enabled) {
-      if (sp->split_inflammation_enabled) {
+    if (sp->wound.enabled) {
+      if (sp->inflammation.split_inflammation_enabled) {
         rm->GetDiffusionGrid(fields::kProInflammatoryId)->SetTimeStep(med_dt);
         rm->GetDiffusionGrid(fields::kAntiInflammatoryId)->SetTimeStep(med_dt);
       } else {
@@ -232,22 +305,30 @@ inline void RegisterFields(Simulation* sim, const SimParam* sp,
       }
       rm->GetDiffusionGrid(fields::kImmunePressureId)->SetTimeStep(med_dt);
     }
-    if (sp->fibroblast_enabled) {
+    if (sp->fibroblast.enabled) {
       rm->GetDiffusionGrid(fields::kTGFBetaId)->SetTimeStep(med_dt);
     }
-    if (sp->mmp_enabled) {
+    if (sp->mmp.enabled) {
       rm->GetDiffusionGrid(fields::kMMPId)->SetTimeStep(med_dt);
       rm->GetDiffusionGrid(fields::kProMMPId)->SetTimeStep(med_dt);
       rm->GetDiffusionGrid(fields::kTIMPId)->SetTimeStep(med_dt);
     }
-    if (sp->angiogenesis_enabled) {
+    if (sp->angiogenesis.enabled) {
       rm->GetDiffusionGrid(fields::kVEGFId)->SetTimeStep(med_dt);
     }
-    if (sp->lactate_enabled) {
+    if (sp->lactate.enabled) {
       rm->GetDiffusionGrid(fields::kLactateId)->SetTimeStep(med_dt);
     }
-    if (sp->nitric_oxide_enabled) {
+    if (sp->nitric_oxide.enabled) {
       rm->GetDiffusionGrid(fields::kNitricOxideId)->SetTimeStep(med_dt);
+    }
+    if (sp->ros.enabled) {
+      if (auto* g = rm->GetDiffusionGrid(fields::kROSId)) g->SetTimeStep(med_dt);
+    }
+    if (sp->ra.enabled) {
+      if (auto* g = rm->GetDiffusionGrid(fields::kTNFAlphaId)) g->SetTimeStep(med_dt);
+      if (auto* g = rm->GetDiffusionGrid(fields::kIL6Id)) g->SetTimeStep(med_dt);
+      if (auto* g = rm->GetDiffusionGrid(fields::kTCellDensityId)) g->SetTimeStep(med_dt);
     }
   }
 }
@@ -280,7 +361,7 @@ inline void RegisterOperations(Simulation* sim, const SimParam* sp,
   scheduler->ScheduleOp(immune_op, OpType::kPreSchedule);
 
   // --- Fibroblast recruitment (delayed spawning at wound margin) ---
-  if (sp->fibroblast_enabled) {
+  if (sp->fibroblast.enabled) {
     OperationRegistry::GetInstance()->AddOperationImpl(
         "FibroblastRecruitment", OpComputeTarget::kCpu,
         new FibroblastRecruitment());
@@ -289,7 +370,7 @@ inline void RegisterOperations(Simulation* sim, const SimParam* sp,
   }
 
   // --- Tumor initiation (seeds tumor cluster at configured step) ---
-  if (sp->tumor_enabled) {
+  if (sp->tumor.enabled) {
     OperationRegistry::GetInstance()->AddOperationImpl(
         "TumorInitiation", OpComputeTarget::kCpu, new TumorInitiation());
     auto* tumor_op = NewOperation("TumorInitiation");
@@ -297,22 +378,24 @@ inline void RegisterOperations(Simulation* sim, const SimParam* sp,
   }
 
   // --- PDE source terms: fused single-pass when wound_enabled ---
-  if (sp->wound_enabled) {
+  if (sp->wound.enabled) {
     OperationRegistry::GetInstance()->AddOperationImpl(
         "FusedWoundSourceOp", OpComputeTarget::kCpu,
         new FusedWoundSourceOp());
     auto* fused_src = NewOperation("FusedWoundSourceOp");
     scheduler->ScheduleOp(fused_src, OpType::kPreSchedule);
 
-    bool need_post = sp->biofilm_enabled || sp->scar_proportional_enabled ||
-                     sp->diabetic_mode || sp->mmp_enabled ||
-                     sp->fibronectin_enabled || sp->hemostasis_enabled ||
-                     sp->senescence_enabled || sp->neuropathy_enabled;
+    bool need_post = sp->biofilm.enabled || sp->scar.proportional_enabled ||
+                     sp->diabetic.mode || sp->mmp.enabled ||
+                     sp->fibronectin.enabled || sp->hemostasis.enabled ||
+                     sp->senescence.enabled || sp->neuropathy.enabled ||
+                     sp->ros.enabled || sp->mechanotransduction.enabled ||
+                     sp->lymphatic.enabled || sp->ra.enabled;
     if (need_post) {
       OperationRegistry::GetInstance()->AddOperationImpl(
           "FusedWoundPostOp", OpComputeTarget::kCpu, new FusedWoundPostOp());
       auto* fused_post = NewOperation("FusedWoundPostOp");
-      scheduler->ScheduleOp(fused_post, OpType::kPostSchedule);
+      scheduler->ScheduleOp(fused_post);
     }
   } else {
     OperationRegistry::GetInstance()->AddOperationImpl(
@@ -329,7 +412,7 @@ inline void RegisterOperations(Simulation* sim, const SimParam* sp,
   scheduler->ScheduleOp(venv_op, OpType::kPreSchedule);
 
   // --- Basal density continuum evolution ---
-  if (sp->basal_density_enabled && sp->wound_enabled) {
+  if (sp->basal_density_enabled && sp->wound.enabled) {
     OperationRegistry::GetInstance()->AddOperationImpl(
         "BasalDensityOp", OpComputeTarget::kCpu, new BasalDensityOp());
     auto* density_op = NewOperation("BasalDensityOp");
