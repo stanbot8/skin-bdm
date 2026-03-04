@@ -54,7 +54,7 @@ inline Real3 ClampToBounds(const Real3& pos, const Param* p) {
 inline real_t GetNetInflammation(Simulation* sim, const Real3& qpos) {
   auto* sp = sim->GetParam()->Get<SimParam>();
   auto* rm = sim->GetResourceManager();
-  if (sp->split_inflammation_enabled) {
+  if (sp->inflammation.split_inflammation_enabled) {
     auto* pro_grid = rm->GetDiffusionGrid(fields::kProInflammatoryId);
     auto* anti_grid = rm->GetDiffusionGrid(fields::kAntiInflammatoryId);
     real_t pro = pro_grid->GetValue(qpos);

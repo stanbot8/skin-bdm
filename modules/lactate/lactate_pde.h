@@ -12,8 +12,8 @@ namespace skibidy {
 // synthesis by fibroblasts. Cleared by vascular perfusion.
 struct LactatePDE : public PDE {
   explicit LactatePDE(const SimParam* sp)
-      : diffusion_(sp->lactate_diffusion),
-        decay_(sp->lactate_decay) {}
+      : diffusion_(sp->lactate.diffusion),
+        decay_(sp->lactate.decay) {}
 
   const char* GetName() const override { return fields::kLactate; }
   int GetId() const override { return fields::kLactateId; }

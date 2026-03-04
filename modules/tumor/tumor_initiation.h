@@ -26,10 +26,10 @@ struct TumorInitiation : public StandaloneOperationImpl {
     auto* scheduler = sim->GetScheduler();
     auto* sp = sim->GetParam()->Get<SimParam>();
 
-    if (!sp->tumor_enabled || fired_) return;
+    if (!sp->tumor.enabled || fired_) return;
 
     uint64_t step = GetGlobalStep(sim);
-    if (step < static_cast<uint64_t>(sp->tumor_seed_time)) return;
+    if (step < static_cast<uint64_t>(sp->tumor.seed_time)) return;
 
     SpawnTumor(sim, sp);
     fired_ = true;
@@ -42,11 +42,11 @@ struct TumorInitiation : public StandaloneOperationImpl {
     auto* ctxt = sim->GetExecutionContext();
     auto* random = sim->GetRandom();
 
-    real_t cx = sp->tumor_seed_x;
-    real_t cy = sp->tumor_seed_y;
-    real_t cz = sp->tumor_seed_z;
-    real_t d = sp->tumor_diameter;
-    int n = sp->tumor_seed_count;
+    real_t cx = sp->tumor.seed_x;
+    real_t cy = sp->tumor.seed_y;
+    real_t cz = sp->tumor.seed_z;
+    real_t d = sp->tumor.diameter;
+    int n = sp->tumor.seed_count;
 
     // Sphere radius: scales with cube root of cell count (loose packing ~50%)
     real_t R = (d / 2.0) * std::cbrt(static_cast<real_t>(n) / 0.5);

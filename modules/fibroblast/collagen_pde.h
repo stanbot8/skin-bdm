@@ -10,7 +10,7 @@ namespace skibidy {
 struct CollagenPDE : public SimpleStructuralPDE {
   explicit CollagenPDE(const SimParam* sp)
       : SimpleStructuralPDE(fields::kCollagen, fields::kCollagenId,
-                            0, sp->collagen_decay) {}
+                            0, sp->fibroblast.collagen_decay) {}
 };
 
 }  // namespace skibidy

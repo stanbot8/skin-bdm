@@ -51,7 +51,7 @@ struct WaterPDE : public PDE {
       real_t target = sp->water_basal_conc * vasc_grid->GetConcentration(idx);
       real_t current = water_grid->GetConcentration(idx);
 
-      if (sp->wound_enabled && ctx.InWound(ctx.X(idx), ctx.Y(idx))) {
+      if (sp->wound.enabled && ctx.InWound(ctx.X(idx), ctx.Y(idx))) {
         // Wound dermis: gentle recovery toward vascular target.
         // Diffusion from margins provides the rapid initial fill (exudate).
         if (current < target) {
@@ -68,7 +68,7 @@ struct WaterPDE : public PDE {
     }
 
     // Epidermal: evaporation + serum recovery (wound voxels only)
-    if (!sp->wound_enabled) return;
+    if (!sp->wound.enabled) return;
     for (size_t idx = 0; idx < ctx.n; idx++) {
       real_t z = ctx.Z(idx);
       if (z < 0) continue;

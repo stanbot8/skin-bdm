@@ -20,11 +20,9 @@ struct StratumPDE : public PDE {
     DefineGrid(sim, 0, 0);
     // Allow wound void value of -1 (BDM default lower_threshold_ is 0).
     Grid(sim)->SetLowerThreshold(-2.0);
-    // GetDermalSubLayer returns kPapillary/kReticular/kHypodermis for z<0
-    // (fine-grained) instead of flat kDermis from GetStratumAt.
     ModelInitializer::InitializeSubstance(GetId(),
         [vm](real_t x, real_t y, real_t z) {
-          return static_cast<real_t>(vm->GetDermalSubLayer({x, y, z}));
+          return static_cast<real_t>(vm->GetStratumAt({x, y, z}));
         });
     MarkPrescribed(sim);  // agent-written, no diffusion
   }

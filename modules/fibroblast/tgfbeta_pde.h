@@ -10,14 +10,14 @@ namespace skibidy {
 struct TGFBetaPDE : public SimplePDE {
   explicit TGFBetaPDE(const SimParam* sp)
       : SimplePDE(fields::kTGFBeta, fields::kTGFBetaId,
-                  sp->tgfb_diffusion, sp->tgfb_decay) {}
+                  sp->fibroblast.tgfb_diffusion, sp->fibroblast.tgfb_decay) {}
 
   // Platelet alpha-granule degranulation: TGF-beta1 released from clot
   // within minutes of hemostasis (Shah et al. 1995, doi:10.1016/S0140-6736(95)90124-8).
   void ApplyWound(Simulation* sim, real_t, real_t, real_t) override {
     auto* grid = Grid(sim);
     auto* sp = sim->GetParam()->Get<SimParam>();
-    real_t seed = sp->tgfb_wound_seed;
+    real_t seed = sp->fibroblast.tgfb_wound_seed;
     if (seed <= 0) return;
     GridContext ctx(grid, sp);
     for (size_t idx = 0; idx < ctx.n; idx++) {

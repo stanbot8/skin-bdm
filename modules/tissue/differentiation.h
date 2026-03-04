@@ -60,11 +60,11 @@ struct Differentiation : public Behavior {
     // exist where individual behavior matters (the wound front).
     // Only kBasal cells in the homeostatic zone demote; differentiating or
     // actively migrating wound-zone cells stay as agents.
-    if (sp->basal_density_enabled && sp->wound_enabled &&
+    if (sp->basal_density_enabled && sp->wound.enabled &&
         cell->GetStratum() == kBasal) {
-      real_t ddx = pos[0] - sp->wound_center_x;
-      real_t ddy = pos[1] - sp->wound_center_y;
-      real_t demotion_r = sp->demotion_radius_factor * sp->wound_radius;
+      real_t ddx = pos[0] - sp->wound.center_x;
+      real_t ddy = pos[1] - sp->wound.center_y;
+      real_t demotion_r = sp->demotion_radius_factor * sp->wound.radius;
       if (ddx * ddx + ddy * ddy > demotion_r * demotion_r) {
         auto* rm_d = sim->GetResourceManager();
         auto* dens_grid = rm_d->GetDiffusionGrid(fields::kBasalDensityId);
@@ -85,11 +85,11 @@ struct Differentiation : public Behavior {
 
     // Wound wall: soft repulsion at wound boundary.
     // Cells can poke slightly past the edge but get pushed back gently.
-    if (sp->wound_enabled) {
-      real_t dx = pos[0] - sp->wound_center_x;
-      real_t dy = pos[1] - sp->wound_center_y;
+    if (sp->wound.enabled) {
+      real_t dx = pos[0] - sp->wound.center_x;
+      real_t dy = pos[1] - sp->wound.center_y;
       real_t dist = std::sqrt(dx * dx + dy * dy);
-      real_t r = sp->wound_radius;
+      real_t r = sp->wound.radius;
       real_t overshoot = dist - r;
       if (overshoot > 0 && dist > 1e-6) {
         // Push back 30% of the overshoot per step (soft spring)
@@ -127,11 +127,11 @@ struct Differentiation : public Behavior {
     // the grid always has a perfect 1:1 record of where differentiation
     // occurred -- no information is lost on agent handoff.
     if (!vm->AreAgentsEnabled(new_stratum)) {
-      if (sp->wound_enabled) {
-        real_t dx_w = pos[0] - sp->wound_center_x;
-        real_t dy_w = pos[1] - sp->wound_center_y;
+      if (sp->wound.enabled) {
+        real_t dx_w = pos[0] - sp->wound.center_x;
+        real_t dy_w = pos[1] - sp->wound.center_y;
         if (dx_w * dx_w + dy_w * dy_w <=
-            sp->wound_radius * sp->wound_radius) {
+            sp->wound.radius * sp->wound.radius) {
           auto* stratum_grid = rm->GetDiffusionGrid(fields::kStratumId);
           if (stratum_grid) {
             size_t vidx = stratum_grid->GetBoxIndex(qpos);
@@ -151,11 +151,11 @@ struct Differentiation : public Behavior {
 
     // Stratum field recovery: write agent stratum back into the
     // continuum Stratum grid to visually close the wound breach.
-    if (sp->wound_enabled) {
-      real_t dx_w = pos[0] - sp->wound_center_x;
-      real_t dy_w = pos[1] - sp->wound_center_y;
+    if (sp->wound.enabled) {
+      real_t dx_w = pos[0] - sp->wound.center_x;
+      real_t dy_w = pos[1] - sp->wound.center_y;
       if (dx_w * dx_w + dy_w * dy_w <=
-          sp->wound_radius * sp->wound_radius) {
+          sp->wound.radius * sp->wound.radius) {
         auto* stratum_grid = rm->GetDiffusionGrid(fields::kStratumId);
         if (stratum_grid) {
           // Use raw voxel value (not interpolated) to prevent accumulation

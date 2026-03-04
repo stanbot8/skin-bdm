@@ -68,14 +68,14 @@ struct HotReloadOp : public StandaloneOperationImpl {
 
   void UpdateGridDecayRates(Simulation* sim, const SimParam* sp) {
     auto* rm = sim->GetResourceManager();
-    if (sp->mmp_enabled) {
+    if (sp->mmp.enabled) {
       auto* grid = rm->GetDiffusionGrid(fields::kMMPId);
       if (grid) {
-        grid->SetDecayConstant(sp->mmp_residual_decay);
+        grid->SetDecayConstant(sp->mmp.residual_decay);
       }
       auto* timp = rm->GetDiffusionGrid(fields::kTIMPId);
       if (timp) {
-        timp->SetDecayConstant(sp->timp_decay);
+        timp->SetDecayConstant(sp->mmp.timp_decay);
       }
     }
   }

@@ -41,9 +41,9 @@ struct TumorBehavior : public Behavior {
     real_t dt = sim->GetParam()->simulation_time_step;
 
     // --- Apoptosis check (any phase) ---
-    if (sp->tumor_apoptosis_rate > 0) {
+    if (sp->tumor.apoptosis_rate > 0) {
       auto* rng = sim->GetRandom();
-      if (rng->Uniform(0, 1) < sp->tumor_apoptosis_rate) {
+      if (rng->Uniform(0, 1) < sp->tumor.apoptosis_rate) {
         ContinuumHandoff(cell);
         cell->RemoveFromSimulation();
         return;
@@ -56,7 +56,7 @@ struct TumorBehavior : public Behavior {
     real_t ran = random->Uniform(0, 1);
 
     // Scaled phase durations
-    real_t cf = sp->tumor_cycle_factor;
+    real_t cf = sp->tumor.cycle_factor;
 
     switch (cell->GetCyclePhase()) {
       case kG1: {
@@ -65,7 +65,7 @@ struct TumorBehavior : public Behavior {
         // Khoo et al. 2019 (doi:10.2340/00015555-3325)
         // Constant hazard rate: p = dt/T per step gives exponentially
         // distributed exit times with mean T (reliably adjustable).
-        real_t T_g1 = sp->g1_duration * cf * sp->tumor_g1_factor;
+        real_t T_g1 = sp->g1_duration * cf * sp->tumor.g1_factor;
         real_t p = dt / T_g1;
 
         // O2-dependent proliferation: hypoxia suppresses G1->S
@@ -73,7 +73,7 @@ struct TumorBehavior : public Behavior {
         auto* o2_grid = rm->GetDiffusionGrid(fields::kOxygenId);
         Real3 qpos = ClampToBounds(cell->GetPosition(), sim->GetParam());
         real_t o2 = o2_grid->GetValue(qpos);
-        real_t o2_factor = std::min(1.0, o2 / sp->tumor_o2_threshold);
+        real_t o2_factor = std::min(1.0, o2 / sp->tumor.o2_threshold);
         if (o2_factor < 0) o2_factor = 0;
         p *= o2_factor;
 
@@ -85,7 +85,7 @@ struct TumorBehavior : public Behavior {
       }
       case kS: {
         if (cell->GetDiameter() < sp->division_diameter) {
-          cell->ChangeVolume(sp->tumor_growth_rate);
+          cell->ChangeVolume(sp->tumor.growth_rate);
         }
         real_t p = dt / (sp->s_duration * cf);
         if (p > ran) {
@@ -109,7 +109,7 @@ struct TumorBehavior : public Behavior {
 
           // Carrying capacity (cached once per step, not per cell)
           bool at_capacity = false;
-          if (sp->tumor_max_cells > 0) {
+          if (sp->tumor.max_cells > 0) {
             auto step = GetGlobalStep(sim);
             if (step != cached_step_) {
               cached_step_ = step;
@@ -118,7 +118,7 @@ struct TumorBehavior : public Behavior {
                 if (dynamic_cast<TumorCell*>(a)) cached_count_++;
               });
             }
-            at_capacity = (cached_count_ >= sp->tumor_max_cells);
+            at_capacity = (cached_count_ >= sp->tumor.max_cells);
           }
 
           if (!at_capacity && cell->GetDiameter() >= sp->division_diameter) {
@@ -134,15 +134,15 @@ struct TumorBehavior : public Behavior {
             // Soft contact inhibition (YAP/TAZ mechanotransduction):
             // division probability decreases smoothly with neighbor count.
             bool can_divide = false;
-            if (sp->tumor_ci_steepness > 0) {
+            if (sp->tumor.ci_steepness > 0) {
               real_t ratio = static_cast<real_t>(neighbors) /
-                             static_cast<real_t>(sp->tumor_max_neighbors);
+                             static_cast<real_t>(sp->tumor.max_neighbors);
               if (ratio < 1.0) {
-                real_t p = 1.0 - std::pow(ratio, sp->tumor_ci_steepness);
+                real_t p = 1.0 - std::pow(ratio, sp->tumor.ci_steepness);
                 can_divide = (random->Uniform(0, 1) < p);
               }
             } else {
-              can_divide = (neighbors < sp->tumor_max_neighbors);
+              can_divide = (neighbors < sp->tumor.max_neighbors);
             }
 
             if (can_divide) {
@@ -154,7 +154,7 @@ struct TumorBehavior : public Behavior {
               // Vertical extrusion: base component ensures 3D nodular
               // growth even at low density; increases with crowding.
               real_t crowding = static_cast<real_t>(neighbors) /
-                                static_cast<real_t>(sp->tumor_max_neighbors);
+                                static_cast<real_t>(sp->tumor.max_neighbors);
               real_t dz;
               if (crowding > 0.3) {
                 real_t extrusion = (crowding - 0.3) / 0.7;
@@ -187,15 +187,15 @@ struct TumorBehavior : public Behavior {
           // Soft CI re-entry: probability based on neighbor count,
           // evaluated against 2/3 effective max (hysteresis).
           bool re_enter = false;
-          if (sp->tumor_ci_steepness > 0) {
-            real_t eff_max = sp->tumor_max_neighbors * 2.0 / 3.0;
+          if (sp->tumor.ci_steepness > 0) {
+            real_t eff_max = sp->tumor.max_neighbors * 2.0 / 3.0;
             real_t ratio = static_cast<real_t>(neighbors) / eff_max;
             if (ratio < 1.0) {
-              real_t p = 1.0 - std::pow(ratio, sp->tumor_ci_steepness);
+              real_t p = 1.0 - std::pow(ratio, sp->tumor.ci_steepness);
               re_enter = (random->Uniform(0, 1) < p);
             }
           } else {
-            re_enter = (neighbors < sp->tumor_max_neighbors * 2 / 3);
+            re_enter = (neighbors < sp->tumor.max_neighbors * 2 / 3);
           }
 
           if (re_enter) {
@@ -207,7 +207,7 @@ struct TumorBehavior : public Behavior {
         }
 
         // UWYN handoff: quiescent long enough -> convert to field
-        if (sp->tumor_handoff_delay > 0 && g0 > sp->tumor_handoff_delay) {
+        if (sp->tumor.handoff_delay > 0 && g0 > sp->tumor.handoff_delay) {
           ContinuumHandoff(cell);
           cell->RemoveFromSimulation();
           return;
