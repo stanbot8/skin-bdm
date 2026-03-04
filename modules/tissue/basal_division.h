@@ -47,12 +47,12 @@ struct BasalDivision : public Behavior {
     // state. Skip the expensive G1 grid lookups and division checks every
     // homeostasis_subcycle steps; phase_elapsed keeps accumulating above
     // so transition probabilities self-correct on check steps.
-    if (sp->homeostasis_subcycle > 1 && sp->wound_enabled) {
+    if (sp->homeostasis_subcycle > 1 && sp->wound.enabled) {
       Real3 cpos = cell->GetPosition();
-      real_t hx = cpos[0] - sp->wound_center_x;
-      real_t hy = cpos[1] - sp->wound_center_y;
+      real_t hx = cpos[0] - sp->wound.center_x;
+      real_t hy = cpos[1] - sp->wound.center_y;
       real_t hdist2 = hx * hx + hy * hy;
-      real_t hmargin = 1.5 * sp->wound_radius;
+      real_t hmargin = 1.5 * sp->wound.radius;
       if (hdist2 > hmargin * hmargin) {
         uint64_t hstep = GetGlobalStep(sim);
         if (hstep % static_cast<uint64_t>(sp->homeostasis_subcycle) != 0) {
@@ -94,17 +94,17 @@ struct BasalDivision : public Behavior {
         // Diabetic: linear Hill K/(K+I) for gradual, persistent
         // suppression reflecting chronic sensitivity (Rasik & Shukla 2000).
         real_t eff_infl = env.immune_pressure;
-        if (sp->diabetic_mode) {
-          eff_infl *= sp->diabetic_inflammation_sensitivity;
+        if (sp->diabetic.mode) {
+          eff_infl *= sp->diabetic.inflammation_sensitivity;
         }
         real_t infl_factor = 1.0;
-        if (sp->diabetic_mode) {
-          real_t K = sp->diabetic_prolif_infl_K;
+        if (sp->diabetic.mode) {
+          real_t K = sp->diabetic.prolif_infl_K;
           if (K + eff_infl > 1e-12) {
             infl_factor = K / (K + eff_infl);
           }
         } else {
-          real_t K = sp->inflammation_prolif_threshold;
+          real_t K = sp->inflammation.prolif_threshold;
           real_t K2 = K * K;
           real_t denom = K2 + eff_infl * eff_infl;
           if (denom > 1e-12) {
@@ -116,17 +116,40 @@ struct BasalDivision : public Behavior {
         // Glucose-dependent proliferation: ATP availability gates cell cycle.
         // Only active in diabetic mode -- normal wound glucose delivery is
         // never the limiting factor for proliferation.
-        if (sp->glucose_enabled && sp->diabetic_mode) {
+        if (sp->glucose_mod.enabled && sp->diabetic.mode) {
           real_t gluc = env.glucose;
           real_t gluc_factor = std::min(1.0,
-              gluc / sp->glucose_prolif_threshold);
+              gluc / sp->glucose_mod.prolif_threshold);
           if (gluc_factor < 0) gluc_factor = 0;
           p *= gluc_factor;
         }
 
+        // Substance P proliferation boost: neuropeptide SP from sensory
+        // nerve terminals activates NK1R on keratinocytes, promoting G1->S
+        // via MAPK/ERK signaling. Denervated diabetic wounds lose this.
+        // Suvas 2017 (doi:10.4049/jimmunol.1601751)
+        if (sp->neuropathy.enabled && sp->substance_p_proliferation > 0) {
+          real_t nerve = env.nerve_density;
+          if (nerve > 1e-10) {
+            p *= (1.0 + sp->substance_p_proliferation * nerve);
+          }
+        }
+
+        // Temperature Q10: wound cooling slows cell cycle progression.
+        // Enzymatic reaction rates follow Arrhenius kinetics; a 5C drop
+        // reduces proliferation by ~30-40% (Q10 ~ 2.0).
+        // McGuiness et al. 2004 (doi:10.12968/jowc.2004.13.9.26702)
+        if (sp->temperature.enabled &&
+            std::abs(sp->temperature.q10_proliferation - 1.0) > 1e-6) {
+          real_t temp_val = env.temperature;
+          real_t temp_c = temp_val * 37.0;
+          p *= std::pow(sp->temperature.q10_proliferation,
+                        (temp_c - 37.0) / 10.0);
+        }
+
         // Diabetic mode: hyperglycemia impairs keratinocyte proliferation
-        if (sp->diabetic_mode) {
-          p *= sp->diabetic_prolif_factor;
+        if (sp->diabetic.mode) {
+          p *= sp->diabetic.prolif_factor;
         }
 
         if (p > ran) {
@@ -173,10 +196,10 @@ struct BasalDivision : public Behavior {
               // Blend random theta with center-directed theta.
               real_t theta_random = random->Uniform(0, 2.0 * M_PI);
               real_t theta;
-              if (sp->wound_enabled && sp->wound_inward_bias > 0) {
+              if (sp->wound.enabled && sp->wound.inward_bias > 0) {
                 Real3 cpos = cell->GetPosition();
-                real_t to_cx = sp->wound_center_x - cpos[0];
-                real_t to_cy = sp->wound_center_y - cpos[1];
+                real_t to_cx = sp->wound.center_x - cpos[0];
+                real_t to_cy = sp->wound.center_y - cpos[1];
                 real_t dist_c = std::sqrt(to_cx * to_cx + to_cy * to_cy);
                 if (dist_c > 1e-6) {
                   real_t theta_center = std::atan2(to_cy, to_cx);
@@ -184,7 +207,7 @@ struct BasalDivision : public Behavior {
                   while (diff > M_PI) diff -= 2.0 * M_PI;
                   while (diff < -M_PI) diff += 2.0 * M_PI;
                   theta = theta_center +
-                          diff * (1.0 - sp->wound_inward_bias);
+                          diff * (1.0 - sp->wound.inward_bias);
                 } else {
                   theta = theta_random;
                 }

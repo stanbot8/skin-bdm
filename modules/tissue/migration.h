@@ -78,14 +78,14 @@ struct Migration : public Behavior {
 
     auto* sim = Simulation::GetActive();
     auto* sp = sim->GetParam()->Get<SimParam>();
-    if (!sp->wound_enabled || !sp->migration_enabled) return;
+    if (!sp->wound.enabled || !sp->migration_enabled) return;
 
     // Only migrate inside wound cylinder
     Real3 pos = cell->GetPosition();
-    real_t dx = pos[0] - sp->wound_center_x;
-    real_t dy = pos[1] - sp->wound_center_y;
+    real_t dx = pos[0] - sp->wound.center_x;
+    real_t dy = pos[1] - sp->wound.center_y;
     real_t dist2 = dx * dx + dy * dy;
-    real_t r = sp->wound_radius;
+    real_t r = sp->wound.radius;
     if (dist2 > r * r) return;
 
     real_t dist = std::sqrt(dist2);
@@ -144,8 +144,8 @@ struct Migration : public Behavior {
       }
 
       // Direction: weighted combination, then normalize.
-      real_t w_vegf = sp->vegf_migration_weight;
-      real_t w_fn   = sp->fibronectin_haptotaxis_weight;
+      real_t w_vegf = sp->angiogenesis.vegf_migration_weight;
+      real_t w_fn   = sp->fibronectin.haptotaxis_weight;
       real_t cx_sum = gx + w_vegf * vx + w_fn * fx;
       real_t cy_sum = gy + w_vegf * vy + w_fn * fy;
       real_t gmag_sum = std::sqrt(cx_sum * cx_sum + cy_sum * cy_sum);
@@ -217,17 +217,17 @@ struct Migration : public Behavior {
     // Diabetic: linear Hill K/(K+I) for gradual, persistent suppression
     // reflecting chronic inflammatory hypersensitivity (Brownlee 2005).
     real_t eff_infl = env.immune_pressure;
-    if (sp->diabetic_mode) {
-      eff_infl *= sp->diabetic_inflammation_sensitivity;
+    if (sp->diabetic.mode) {
+      eff_infl *= sp->diabetic.inflammation_sensitivity;
     }
     real_t infl_factor = 1.0;
-    if (sp->diabetic_mode) {
-      real_t K = sp->diabetic_migration_infl_K;
+    if (sp->diabetic.mode) {
+      real_t K = sp->diabetic.migration_infl_K;
       if (K + eff_infl > 1e-12) {
         infl_factor = K / (K + eff_infl);
       }
     } else {
-      real_t K = sp->inflammation_migration_threshold;
+      real_t K = sp->inflammation.migration_threshold;
       real_t K2 = K * K;
       real_t denom = K2 + eff_infl * eff_infl;
       if (denom > 1e-12) {
@@ -241,24 +241,24 @@ struct Migration : public Behavior {
     {
       real_t alkalinity = env.ph;
       if (alkalinity > 0) {
-        speed *= 1.0 - sp->ph_migration_suppression *
+        speed *= 1.0 - sp->ph.migration_suppression *
                         std::min(static_cast<real_t>(1.0), alkalinity);
       }
     }
 
     // Temperature Q10: wound cooling reduces migration speed
     // Q10 ~ 2.0 for keratinocyte crawling (Kanokwan & Bhattacharya 2012)
-    if (sp->temperature_enabled &&
-        std::abs(sp->temperature_q10_migration - 1.0) > 1e-6) {
+    if (sp->temperature.enabled &&
+        std::abs(sp->temperature.q10_migration - 1.0) > 1e-6) {
       real_t temp_val = env.temperature;
       real_t temp_c = temp_val * 37.0;  // denormalize to Celsius
-      speed *= std::pow(sp->temperature_q10_migration,
+      speed *= std::pow(sp->temperature.q10_migration,
                         (temp_c - 37.0) / 10.0);
     }
 
     // Diabetic mode: impaired keratinocyte crawling
-    if (sp->diabetic_mode) {
-      speed *= sp->diabetic_migration_factor;
+    if (sp->diabetic.mode) {
+      speed *= sp->diabetic.migration_factor;
     }
 
     cell->SetTractorForce({dir_x * speed, dir_y * speed, 0});
