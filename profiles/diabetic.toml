@@ -43,6 +43,16 @@ vegf_factor = 0.4                     # HIF-1alpha impairment (Thangarajah et al
 ph_recovery_factor = 0.5             # impaired acid buffering (Schneider et al. 2007)
 no_factor = 0.6                       # impaired iNOS expression ~40% reduced (Witte et al. 2002, doi:10.1046/j.1365-2168.2002.02263.x)
 
+[skin.lymphatic]
+diabetic_lymphatic_factor = 0.4       # impaired lymphangiogenesis (Asai et al. 2012, doi:10.1016/j.ajpath.2012.08.023)
+
+[skin.bioelectric]
+diabetic_voltage_factor = 0.6         # impaired endogenous wound currents (Reid & Zhao 2014, doi:10.1089/wound.2013.0442)
+
+[skin.temperature]
+q10_migration = 2.0                   # activate Q10 for neuropathic cold extremities (McGuiness et al. 2004, doi:10.12968/jowc.2004.13.9.26702)
+q10_proliferation = 2.0               # cold wound bed slows cell cycle (Arrhenius kinetics; Q10~2 for enzymatic rates)
+
 [skin.perfusion]
 basal = 0.7                           # microangiopathy, -22% capillary density (Dinh & Veves 2005, doi:10.1177/1534734605280130)
 angio_rate = 0.002                    # impaired VEGF/FGF (Brem et al. 2006, doi:10.1097/01.prs.0000225459.93750.29)
