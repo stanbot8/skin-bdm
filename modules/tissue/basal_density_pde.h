@@ -83,7 +83,8 @@ struct BasalDensityOp : public StandaloneOperationImpl {
   void operator()() override {
     auto* sim = Simulation::GetActive();
     auto* sp = sim->GetParam()->Get<SimParam>();
-    if (!sp->basal_density_enabled || !sp->wound_enabled) return;
+    if (!sp->basal_density_enabled || !sp->wound.enabled) return;
+    PerfTimer timer(sp->debug_perf);
 
     // Sub-cycling: density changes slowly (logistic timescale >> dt).
     uint64_t step = GetGlobalStep(sim);
@@ -146,6 +147,7 @@ struct BasalDensityOp : public StandaloneOperationImpl {
         dens_grid->ChangeConcentrationBy(idx, new_rho - rho);
       }
     }
+    timer.Print("basal_density");
   }
 };
 

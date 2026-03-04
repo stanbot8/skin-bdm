@@ -18,12 +18,13 @@
 #include "core/field_names.h"
 #include "infra/sim_param.h"
 #include "infra/util.h"
+#include "core/pde.h"
 
 namespace bdm {
 namespace skibidy {
 
 // Packed per-voxel snapshot of all fields that agent behaviors read.
-// 13 doubles x 8 bytes = 104 bytes/voxel. At 1000 voxels = 101.6 KB (fits L2).
+// 16 doubles x 8 bytes = 128 bytes/voxel. At 1000 voxels = 125 KB (fits L2).
 struct VoxelEnv {
   real_t o2;
   real_t kgf;
@@ -38,6 +39,9 @@ struct VoxelEnv {
   real_t inflammation;
   real_t tgf_beta;
   real_t biofilm;
+  real_t nerve_density;
+  real_t nitric_oxide;
+  real_t lactate;
 };
 
 // Global fused environment cache.
@@ -67,7 +71,7 @@ struct VoxelEnvCache {
     // Fall back to any available grid for tests that register only a subset.
     ref_grid = rm->GetDiffusionGrid(fields::kOxygenId);
     if (!ref_grid) {
-      for (int id = 0; id <= fields::kBasalDensityId && !ref_grid; ++id) {
+      for (int id = 0; id <= fields::kOpsinId && !ref_grid; ++id) {
         ref_grid = rm->GetDiffusionGrid(id);
       }
     }
@@ -88,21 +92,30 @@ struct VoxelEnvCache {
     auto* ca_grid     = rm->GetDiffusionGrid(fields::kCalciumId);
     auto* ip_grid     = rm->GetDiffusionGrid(fields::kImmunePressureId);
     auto* strat_grid  = rm->GetDiffusionGrid(fields::kStratumId);
-    auto* gluc_grid   = (sp->glucose_enabled && sp->diabetic_mode)
+    auto* gluc_grid   = (sp->glucose_mod.enabled && sp->diabetic.mode)
                           ? rm->GetDiffusionGrid(fields::kGlucoseId)
                           : nullptr;
     auto* ph_grid     = rm->GetDiffusionGrid(fields::kPHId);
-    auto* temp_grid   = sp->temperature_enabled
+    auto* temp_grid   = sp->temperature.enabled
                           ? rm->GetDiffusionGrid(fields::kTemperatureId)
                           : nullptr;
-    auto* infl_grid   = sp->split_inflammation_enabled
+    auto* infl_grid   = sp->inflammation.split_inflammation_enabled
                           ? rm->GetDiffusionGrid(fields::kProInflammatoryId)
                           : rm->GetDiffusionGrid(fields::kInflammationId);
-    auto* tgf_grid    = sp->fibroblast_enabled
+    auto* tgf_grid    = sp->fibroblast.enabled
                           ? rm->GetDiffusionGrid(fields::kTGFBetaId)
                           : nullptr;
-    auto* bio_grid    = sp->biofilm_enabled
+    auto* bio_grid    = sp->biofilm.enabled
                           ? rm->GetDiffusionGrid(fields::kBiofilmId)
+                          : nullptr;
+    auto* nerve_grid  = sp->neuropathy.enabled
+                          ? rm->GetDiffusionGrid(fields::kNerveId)
+                          : nullptr;
+    auto* no_grid     = sp->nitric_oxide.enabled
+                          ? rm->GetDiffusionGrid(fields::kNitricOxideId)
+                          : nullptr;
+    auto* lac_grid    = sp->lactate.enabled
+                          ? rm->GetDiffusionGrid(fields::kLactateId)
                           : nullptr;
 
     // Multi-resolution: structural grids (pH, biofilm) may use coarser
@@ -144,6 +157,9 @@ struct VoxelEnvCache {
       v.inflammation    = infl_grid  ? infl_grid->GetConcentration(i)  : 0;
       v.tgf_beta        = tgf_grid   ? tgf_grid->GetConcentration(i)  : 0;
       v.biofilm         = bio_grid   ? coarse_get(bio_grid, i)         : 0;
+      v.nerve_density   = nerve_grid ? coarse_get(nerve_grid, i)      : 0;
+      v.nitric_oxide    = no_grid    ? no_grid->GetConcentration(i)   : 0;
+      v.lactate         = lac_grid   ? lac_grid->GetConcentration(i)  : 0;
       v.ecm_quality     = g_ecm_quality
                             ? g_ecm_quality->GetConcentration(i) : 0;
     }
@@ -158,7 +174,11 @@ struct VoxelEnvFillOp : public StandaloneOperationImpl {
   BDM_OP_HEADER(VoxelEnvFillOp);
 
   void operator()() override {
-    g_voxel_env.Fill(Simulation::GetActive());
+    auto* sim = Simulation::GetActive();
+    auto* sp = sim->GetParam()->Get<SimParam>();
+    PerfTimer timer(sp->debug_perf);
+    g_voxel_env.Fill(sim);
+    timer.Print("voxel_env");
   }
 };
 
