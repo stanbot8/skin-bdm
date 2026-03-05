@@ -1,0 +1,15 @@
+# Module: scab -- protective wound crust (dried fibrin/platelet/exudate layer)
+# Eming et al. 2007 (doi:10.1038/sj.jid.5700701)
+# Singer & Clark 1999 (doi:10.1056/NEJM199909023411006)
+# Scab forms rapidly at wound surface from coagulation cascade products.
+# Provides mechanical protection but impedes moist wound healing.
+# Degrades as keratinocytes re-epithelialize underneath.
+[skin.scab]
+enabled = false                        # master switch
+wound_seed = 1.0                       # initial scab density in epidermal wound
+decay = 0.0008                         # baseline turnover (shedding, t1/2 ~87h ~ 3.6 days)
+mmp_degradation = 0.001                # MMP-mediated scab breakdown
+reepith_rate = 0.005                   # degradation proportional to barrier (re-epithelialization undermining)
+moisture_softening = 0.002             # moisture accelerates scab softening (wet wound healing)
+evaporation_shield = 0.5               # scab reduces surface water loss (0 = none, 1 = full shield)
+migration_penalty = 0.15               # scab impedes keratinocyte migration speed (0 = none, 1 = full block)

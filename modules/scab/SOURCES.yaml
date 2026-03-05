@@ -1,0 +1,36 @@
+# Literature sources for scab module
+scab:
+  description: Scab (eschar/wound crust) formation, mechanical protection, and interaction with moist wound healing
+  sources:
+  - id: winter1962
+    authors: Winter GD
+    year: 1962
+    title: Formation of the Scab and the Rate of Epithelization of Superficial Wounds in the Skin of the Young Domestic Pig
+    journal: Nature 193:293-294
+    doi: 10.1038/193293a0
+    notes: >
+      Landmark study demonstrating that moist wound environments promote faster
+      re-epithelialization compared to dry, scab-covered wounds. Established the
+      foundational principle that scab impedes keratinocyte migration. Supports
+      the migration_penalty and moisture_softening parameters.
+  - id: singerclark1999
+    authors: Singer AJ, Clark RAF
+    year: 1999
+    title: Cutaneous Wound Healing
+    journal: N Engl J Med 341(10):738-746
+    doi: 10.1056/NEJM199909023411006
+    notes: >
+      Comprehensive review of wound healing phases including hemostasis, inflammation,
+      proliferation, and remodeling. Describes scab as a dried fibrin and platelet
+      matrix that protects the wound surface but slows epithelial migration underneath.
+      Supports wound_seed, decay, and reepith_rate parameters.
+  - id: martin1997
+    authors: Martin P
+    year: 1997
+    title: "Wound Healing: Aiming for Perfect Skin Regeneration"
+    journal: Science 276(5309):75-81
+    doi: 10.1126/science.276.5309.75
+    notes: >
+      Review covering the cellular and molecular mechanisms of wound repair,
+      including re-epithelialization dynamics and the role of MMP activity in
+      scab dissolution. Supports mmp_degradation and evaporation_shield parameters.
