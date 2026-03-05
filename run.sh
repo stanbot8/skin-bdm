@@ -123,8 +123,16 @@ else
 fi
 
 if [ -z "$BDMSYS" ]; then
-  echo "ERROR: BioDynaMo not sourced. Run: source <path>/bin/thisbdm.sh"
+  echo "ERROR: BioDynaMo not sourced. Run: source ~/biodynamo/build/bin/thisbdm.sh"
   exit 1
+fi
+
+# Detect BDM version change and force rebuild
+BDM_STAMP="build/.bdm_source"
+CURRENT_BDM="$(cd "$BDMSYS/.." && git rev-parse HEAD 2>/dev/null || echo unknown)"
+if [ -f "$BDM_STAMP" ] && [ "$(cat "$BDM_STAMP")" != "$CURRENT_BDM" ]; then
+  echo "BDM source changed, forcing rebuild..."
+  rm -rf build
 fi
 cd "$(dirname "$0")"
 
@@ -214,6 +222,7 @@ if [ ! -f "$BINARY" ] || [ -n "$(find src/ CMakeLists.txt -newer "$BINARY" 2>/de
     echo "Build failed."
     exit 1
   fi
+  echo "$CURRENT_BDM" > "$BDM_STAMP"
   cd ..
 else
   echo "Binary up to date, skipping build."
