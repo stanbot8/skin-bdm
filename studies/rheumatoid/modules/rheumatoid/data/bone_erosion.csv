@@ -1,0 +1,27 @@
+# Subchondral bone integrity, absolute scale (1.0 = healthy, 0.0 = fully eroded)
+# Schett & Gravallese 2012 (doi:10.1038/nrrheum.2012.153)
+# Bone erosion lags cartilage: requires osteoclast differentiation via RANKL
+# (IL-6/STAT3 driven) and direct TNF stimulation of osteoclast precursors.
+# Focal erosions appear at pannus-bone interface after cytokine peak.
+day,bone_integrity
+0,1.00
+1,1.00
+2,1.00
+3,0.99
+4,0.98
+5,0.97
+6,0.96
+7,0.95
+8,0.94
+9,0.93
+10,0.92
+12,0.90
+14,0.88
+16,0.86
+18,0.84
+20,0.82
+22,0.81
+24,0.80
+26,0.79
+28,0.78
+30,0.77

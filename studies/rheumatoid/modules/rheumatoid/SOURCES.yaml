@@ -1,0 +1,173 @@
+tnf_alpha_kinetics:
+  description: TNF-alpha synovial concentration kinetics, peak-normalized
+  consensus: data/tnf_alpha_kinetics.csv
+  columns:
+  - day
+  - tnf_alpha_normalized
+  units:
+    day: days
+    tnf_alpha_normalized: fraction of peak TNF-alpha concentration
+  normalization: peak-normalized (1.0 = maximum synovial TNF at day 7)
+  notes: >
+    Consensus curve for TNF-alpha in RA synovial tissue during wound healing
+    with autoimmune flare. Rapid rise from sigmoid-gated autoimmune FLS/T-cell
+    production plus wound-triggered immune cell contributions. Sustained
+    elevation (no resolution) reflects chronic RA pathology.
+  sources:
+  - id: feldmann2003
+    authors: Feldmann M, Maini RN
+    year: 2003
+    title: TNF defined as a therapeutic target for rheumatoid arthritis and other autoimmune diseases
+    journal: Nat Med 9(10):1245-1250
+    doi: 10.1038/nm939
+  - id: mcinneschett2011
+    authors: McInnes IB, Schett G
+    year: 2011
+    title: The pathogenesis of rheumatoid arthritis
+    journal: N Engl J Med 365(23):2205-2219
+    doi: 10.1056/NEJMra1004965
+
+il6_kinetics:
+  description: IL-6 synovial concentration kinetics, peak-normalized
+  consensus: data/il6_kinetics.csv
+  columns:
+  - day
+  - il6_normalized
+  units:
+    day: days
+    il6_normalized: fraction of peak IL-6 concentration
+  normalization: peak-normalized (1.0 = maximum synovial IL-6 at day 8)
+  notes: >
+    Consensus curve for IL-6 in RA synovial tissue. Slightly delayed relative
+    to TNF-alpha because IL-6 is partly TNF-induced via NF-kB cascade.
+    JAK/STAT3 amplification sustains IL-6 in chronic RA.
+  sources:
+  - id: kishimoto2005
+    authors: Kishimoto T
+    year: 2005
+    title: "Interleukin-6: from basic science to medicine, 40 years in immunology"
+    journal: Annu Rev Immunol 23:1-21
+    doi: 10.1146/annurev.immunol.23.021704.115806
+  - id: mcinneschett2011
+    authors: McInnes IB, Schett G
+    year: 2011
+    title: The pathogenesis of rheumatoid arthritis
+    journal: N Engl J Med 365(23):2205-2219
+    doi: 10.1056/NEJMra1004965
+
+cartilage_erosion:
+  description: Cartilage integrity during RA flare, absolute scale
+  consensus: data/cartilage_erosion.csv
+  columns:
+  - day
+  - cartilage_integrity
+  units:
+    day: days
+    cartilage_integrity: fraction of initial integrity (1.0 = healthy)
+  normalization: none (absolute scale, 1.0 = full integrity)
+  notes: >
+    Consensus curve for cartilage degradation in untreated moderate RA.
+    Three combined erosion mechanisms: MMP proteolysis, direct TNF osteoclast
+    activation, and IL-6/RANKL osteoclast bone erosion. Approximately 42%
+    loss by day 30 in untreated moderate RA.
+  sources:
+  - id: mcinneschett2011
+    authors: McInnes IB, Schett G
+    year: 2011
+    title: The pathogenesis of rheumatoid arthritis
+    journal: N Engl J Med 365(23):2205-2219
+    doi: 10.1056/NEJMra1004965
+  - id: firestein2003
+    authors: Firestein GS
+    year: 2003
+    title: Evolving concepts of rheumatoid arthritis
+    journal: Nature 423(6937):356-361
+    doi: 10.1038/nature01661
+  - id: smolen2018
+    authors: Smolen JS, Aletaha D, Barton A, Burmester GR, Emery P, Firestein GS, Kavanaugh A, McInnes IB, Solomon DH, Strand V, Yamamoto K
+    year: 2018
+    title: Rheumatoid arthritis
+    journal: Nat Rev Dis Primers 4:18001
+    doi: 10.1038/nrdp.2018.1
+
+rheumatoid:
+  description: Rheumatoid arthritis synovial inflammation, cartilage erosion, and cytokine networks
+  sources:
+  - id: smolen2018
+    authors: Smolen JS, Aletaha D, Barton A, Burmester GR, Emery P, Firestein GS, Kavanaugh A, McInnes IB, Solomon DH, Strand V, Yamamoto K
+    year: 2018
+    title: Rheumatoid arthritis
+    journal: Nat Rev Dis Primers 4:18001
+    doi: 10.1038/nrdp.2018.1
+    notes: >
+      Comprehensive review of RA epidemiology, pathogenesis, and treatment.
+      Covers synovial hyperplasia, pannus formation, cartilage/bone erosion,
+      and the role of TNF-alpha, IL-6, and T/B cell interactions. Supports
+      overall module design and parameter ranges.
+  - id: firestein2003
+    authors: Firestein GS
+    year: 2003
+    title: Evolving concepts of rheumatoid arthritis
+    journal: Nature 423(6937):356-361
+    doi: 10.1038/nature01661
+    notes: >
+      Seminal review of RA as a complex autoimmune disease involving
+      fibroblast-like synoviocytes (FLS), macrophage activation, and
+      cytokine networks. Supports autoimmune_source, pannus_fibroblast_boost,
+      m1_prolongation, and FLS hyperplasia parameters.
+  - id: feldmann2003
+    authors: Feldmann M, Maini RN
+    year: 2003
+    title: TNF defined as a therapeutic target for rheumatoid arthritis and other autoimmune diseases
+    journal: Nat Med 9(10):1245-1250
+    doi: 10.1038/nm939
+    notes: >
+      Describes the central role of TNF-alpha in RA pathogenesis and
+      the development of anti-TNF biologics. Supports tnf_m1_rate,
+      tnf_inflammation_coupling, tnf_mmp_boost, and anti_tnf_clearance
+      parameters.
+  - id: mcinneschett2011
+    authors: McInnes IB, Schett G
+    year: 2011
+    title: The pathogenesis of rheumatoid arthritis
+    journal: N Engl J Med 365(23):2205-2219
+    doi: 10.1056/NEJMra1004965
+    notes: >
+      Comprehensive NEJM review of RA pathogenesis covering synovial
+      inflammation, cytokine networks (TNF, IL-6, IL-1), adaptive immunity
+      (Th1/Th17), and joint destruction via MMP and RANKL/osteoclast
+      pathways. Supports IL-6 downstream effects and cartilage degradation
+      model with combined MMP, TNF, and IL-6/RANKL erosion pathways.
+  - id: kishimoto2005
+    authors: Kishimoto T
+    year: 2005
+    title: "Interleukin-6: from basic science to medicine, 40 years in immunology"
+    journal: Annu Rev Immunol 23:1-21
+    doi: 10.1146/annurev.immunol.23.021704.115806
+    notes: >
+      Definitive review of IL-6 biology by its discoverer. Covers IL-6
+      signal transduction via IL-6R/gp130/JAK/STAT3, acute phase response,
+      B cell differentiation, and Th17 polarization. Supports IL-6 PDE
+      diffusion/decay parameters and downstream coupling constants.
+  - id: tanaka2013
+    authors: Tanaka Y, Yamaoka K
+    year: 2013
+    title: JAK inhibitor tofacitinib for treating rheumatoid arthritis, from basic to clinical
+    journal: Mod Rheumatol 23(3):415-424
+    doi: 10.1007/s10165-012-0799-2
+    notes: >
+      Review of JAK/STAT signaling in RA and the mechanism of tofacitinib
+      (JAK1/JAK3 inhibitor). Covers suppression of IL-6/IFN-gamma/IL-2
+      signaling, T cell proliferation inhibition, and FLS pathology
+      reduction. Supports JAK inhibitor treatment parameters.
+  - id: schettgravallese2012
+    authors: Schett G, Gravallese E
+    year: 2012
+    title: "Bone erosion in rheumatoid arthritis: mechanisms, diagnosis and treatment"
+    journal: Nat Rev Rheumatol 8(11):656-664
+    doi: 10.1038/nrrheum.2012.153
+    notes: >
+      Review of bone erosion mechanisms in RA including RANKL/osteoclast
+      activation by TNF-alpha and IL-6/STAT3, focal erosions at the
+      pannus-bone interface, and bone remodeling. Supports bone PDE,
+      bone_rankl_erosion, and bone_tnf_erosion parameters.

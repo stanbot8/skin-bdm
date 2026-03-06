@@ -1,0 +1,11 @@
+# Study: rheumatoid -- RA-driven tissue inflammation and cartilage erosion
+
+[skin]
+duration_days = 30
+
+[skin.wound]
+enabled = true
+trigger_h = 0
+
+[skin.ra]
+enabled = true

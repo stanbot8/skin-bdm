@@ -1,0 +1,4 @@
+[project]
+name = "rheumatoid"
+description = "RA-driven tissue inflammation and cartilage erosion"
+category = "autoimmune"

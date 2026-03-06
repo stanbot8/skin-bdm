@@ -1,0 +1,26 @@
+# Cartilage integrity, absolute scale (1.0 = healthy, 0.0 = fully eroded)
+# Consensus from McInnes & Schett 2011, Smolen 2018, Firestein 2003
+# Three erosion pathways: MMP proteolysis, direct TNF osteoclast, IL-6/RANKL
+# Progressive loss accelerating with cytokine peak, then steady erosion rate
+day,cartilage_integrity
+0,1.00
+1,1.00
+2,0.99
+3,0.97
+4,0.94
+5,0.91
+6,0.88
+7,0.85
+8,0.82
+9,0.80
+10,0.78
+12,0.74
+14,0.71
+16,0.68
+18,0.66
+20,0.64
+22,0.62
+24,0.61
+26,0.60
+28,0.59
+30,0.58
