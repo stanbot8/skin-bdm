@@ -1,0 +1,16 @@
+# Treatment: tocilizumab (anti-IL-6 receptor antibody)
+# Literature: Kishimoto 2005 (doi:10.1146/annurev.immunol.23.021704.115806),
+#             Smolen et al. 2018 (doi:10.1038/nrdp.2018.1)
+# Mechanism: humanized monoclonal antibody blocking IL-6R/gp130 signal
+# transduction, suppressing JAK/STAT3 signaling, acute phase response,
+# B cell differentiation, and RANKL-mediated osteoclast activation.
+# Clinical: 8 mg/kg IV q4w or 162mg SC qw/q2w.
+[skin.ra]
+anti_il6r_clearance = 0.04              # 0.0 -> 0.04: IL-6R blockade
+il6_inflammation_coupling = 0.0008      # 0.002 -> 0.0008: suppressed JAK/STAT3
+il6_cartilage_boost = 0.00005           # 0.00015 -> 0.00005: reduced RANKL cartilage erosion
+drug_onset_h = 48                       # IV infusion: ~2 day onset to peak serum level
+bone_rankl_erosion = 0.00003            # 0.00008 -> 0.00003: reduced RANKL/osteoclast via IL-6R block
+
+[skin.immune]
+macrophage_m1_duration_h = 80           # 96 -> 80: partial M1 normalization

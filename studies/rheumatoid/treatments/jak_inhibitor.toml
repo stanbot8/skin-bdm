@@ -1,0 +1,27 @@
+# Treatment: JAK inhibitor (tofacitinib/baricitinib)
+# Literature: Smolen et al. 2018 (doi:10.1038/nrdp.2018.1),
+#             Tanaka & Yamaoka 2013 (doi:10.1007/s10165-012-0799-2)
+# Mechanism: small molecule inhibitor of Janus kinases (JAK1/JAK3 for
+# tofacitinib, JAK1/JAK2 for baricitinib). Blocks JAK/STAT signaling
+# downstream of multiple cytokine receptors (IL-6, IL-2, IL-15, IL-21,
+# IFN-gamma). Distinct from biologics: oral administration, broad
+# intracellular signaling suppression rather than single cytokine target.
+# Clinical: tofacitinib 5mg PO BID, baricitinib 2mg PO QD.
+[skin.ra]
+# JAK inhibitors block IL-6 signaling at the receptor level (like tocilizumab)
+# but also suppress IFN-gamma/IL-2/IL-15 pathways that drive T cell activation.
+il6_inflammation_coupling = 0.0006       # 0.002 -> 0.0006: JAK/STAT3 blockade (stronger than tocilizumab)
+il6_cartilage_boost = 0.00004            # 0.00015 -> 0.00004: reduced RANKL (JAK/STAT dependent)
+autoimmune_source = 0.0006               # 0.001 -> 0.0006: T cell suppression via JAK3 (IL-2/IL-15 block)
+il6_autoimmune_source = 0.0008           # 0.0015 -> 0.0008: reduced IL-6 autoimmune production
+tnf_inflammation_coupling = 0.002        # 0.003 -> 0.002: partial NF-kB reduction (indirect, via less IFN-gamma)
+pannus_fibroblast_boost = 1.5            # 2.0 -> 1.5: reduced FLS hyperplasia (JAK/STAT in FLS)
+m1_prolongation = 1.5                    # 2.0 -> 1.5: partial M1 normalization (IFN-gamma block)
+drug_onset_h = 12                        # oral: rapid absorption, ~12h to peak plasma (fastest onset)
+tcell_proliferation = 0.0003             # 0.001 -> 0.0003: strong T cell suppression (JAK3/IL-2 block)
+tcell_recruitment = 0.0003              # 0.001 -> 0.0003: reduced T cell extravasation
+bone_rankl_erosion = 0.00003            # 0.00008 -> 0.00003: RANKL suppression (JAK/STAT dependent)
+
+[skin.immune]
+macrophage_m1_duration_h = 72            # 96 -> 72: reduced M1 persistence (IFN-gamma/STAT1 block)
+macrophage_spawn_taper = 0.0003          # 0.0 -> 0.0003: slight recruitment taper restored

@@ -1,0 +1,18 @@
+# Treatment: anti-TNF biologic (infliximab/adalimumab/etanercept)
+# Literature: Feldmann & Maini 2003 (doi:10.1038/nm939),
+#             Smolen et al. 2018 (doi:10.1038/nrdp.2018.1)
+# Mechanism: monoclonal antibody neutralization of soluble and membrane-bound
+# TNF-alpha, disrupting the NF-kB inflammatory cascade. Reduces downstream
+# MMP transcription, VEGF-driven pannus angiogenesis, and osteoclast activation.
+# Clinical: infliximab 3-5 mg/kg IV q8w, adalimumab 40mg SC q2w, etanercept 50mg SC qw.
+[skin.ra]
+anti_tnf_clearance = 0.05               # 0.0 -> 0.05: antibody-mediated TNF neutralization
+tnf_inflammation_coupling = 0.001       # 0.003 -> 0.001: reduced NF-kB activation
+tnf_mmp_boost = 0.001                   # 0.003 -> 0.001: lower MMP transcription
+tnf_vegf_boost = 0.001                  # 0.002 -> 0.001: pannus regression
+m1_prolongation = 1.4                   # 2.0 -> 1.4: partial M1 duration normalization
+drug_onset_h = 48                       # IV infusion: ~2 day onset to peak serum level
+bone_tnf_erosion = 0.00002              # 0.00004 -> 0.00002: reduced TNF-driven osteoclast activation
+
+[skin.immune]
+macrophage_m1_duration_h = 72           # 96 -> 72: reduced M1 persistence
