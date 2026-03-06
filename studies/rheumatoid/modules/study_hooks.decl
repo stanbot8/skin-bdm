@@ -1,0 +1,9 @@
+// Study hooks for rheumatoid arthritis.
+// Each study owns a study_hooks.h that lists its module hooks.
+// The build system auto-discovers these and generates study_hooks_gen.h.
+
+#include "rheumatoid/source_hook.h"
+#include "rheumatoid/post_hook.h"
+
+STUDY_SOURCE_HOOK(RASourceHook)
+STUDY_POST_HOOK(RAPostHook)

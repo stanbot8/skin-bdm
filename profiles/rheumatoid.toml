@@ -1,0 +1,66 @@
+# Profile: rheumatoid -- rheumatoid arthritis synovial inflammation
+# Sources: Smolen et al. 2018, Firestein 2003, Feldmann & Maini 2003,
+#          McInnes & Schett 2011, Kishimoto 2005
+
+[skin.ra]
+enabled = true
+tnf_diffusion = 0.04
+tnf_decay = 0.05                       # stronger cytokine clearance (prevents runaway)
+il6_diffusion = 0.05
+il6_decay = 0.04                       # stronger IL-6 clearance
+autoimmune_source = 0.0015             # baseline FLS/T-cell TNF (stronger autoimmune drive)
+il6_autoimmune_source = 0.002          # baseline FLS/T-cell IL-6
+tnf_m1_rate = 0.0015                   # M1 macrophage TNF contribution
+tnf_neutrophil_rate = 0.0008           # neutrophil TNF contribution
+il6_m1_rate = 0.0015                   # M1 macrophage IL-6
+flare_delay = 150                      # faster flare onset (~0.6 days; 200 was too delayed)
+flare_steepness = 0.04                 # sharper onset for day 6-7 TNF peak
+tnf_inflammation_coupling = 0.003      # TNF -> inflammation (weakened to prevent spiral)
+tnf_mmp_boost = 0.002                  # TNF -> proMMP transcription
+tnf_vegf_boost = 0.002                 # TNF -> VEGF (angiogenesis)
+tnf_il6_induction = 0.0015             # TNF -> IL-6 cross-induction (stronger coupling)
+il6_inflammation_coupling = 0.002      # IL-6 -> inflammation (damped)
+il6_cartilage_boost = 0.000025         # IL-6/RANKL cartilage erosion
+cartilage_basal = 1.0
+cartilage_mmp_degradation = 0.00007    # MMP-mediated cartilage proteolysis (calibrated for 0.58 at d30)
+cartilage_tnf_degradation = 0.00003    # direct TNF osteoclast cartilage erosion
+pannus_fibroblast_boost = 2.0
+m1_prolongation = 2.0
+synovial_basal = 0.1
+synovial_growth_rate = 0.002           # faster pannus growth (drives erosion amplification)
+synovial_carrying_capacity = 1.0
+synovial_cytokine_boost = 0.4          # pannus amplification of cytokines (stronger feedback)
+synovial_erosion_boost = 0.3           # pannus proximity amplifies cartilage/bone erosion
+tcell_diffusion = 0.01
+tcell_decay = 0.008                    # faster T-cell turnover
+tcell_recruitment = 0.001              # slower recruitment
+tcell_proliferation = 0.001            # slower clonal expansion
+tcell_carrying_capacity = 1.0
+tcell_cytokine_weight = 0.3            # weaker T-cell cytokine modulation
+bone_basal = 1.0
+bone_rankl_erosion = 0.00001           # IL-6/RANKL bone erosion (calibrated for 0.77 at d30)
+bone_tnf_erosion = 0.000007            # direct TNF bone erosion
+bone_depth_z = -6.0
+treatment_delay_h = 0
+drug_onset_h = 0
+anti_tnf_clearance = 0.0
+anti_il6r_clearance = 0.0
+
+# RA affects the entire joint volume (no focal wound cylinder)
+[skin.wound]
+radius = 50.0
+
+# RA immune dysregulation: sustained M1 polarization, impaired resolution
+[skin.immune]
+macrophage_m1_duration_h = 96          # M1 phase 2x longer (Th1/Th17 cytokine milieu)
+macrophage_spawn_taper = 0.0           # chronic recruitment (no taper; autoimmune drive)
+
+# RA fibroblast hyperplasia: FLS are invasive pannus-forming cells
+[skin.fibroblast]
+density_factor = 2.0                   # FLS hyperplasia doubles fibroblast seeding
+activation_delay_h = 5                 # rapid activation (constitutively primed FLS)
+
+# RA drives chronic MMP overexpression
+[skin.mmp]
+m1_rate = 0.004                        # elevated MMP-9 from synovial M1 macrophages
+fibroblast_rate = 0.002                # elevated MMP-1/3/13 from FLS
