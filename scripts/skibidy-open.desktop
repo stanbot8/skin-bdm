@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=SkiBiDy Dashboard
+Comment=Open skin simulation study in SkiBiDy Dashboard
+Exec=python3 SCRIPT_PATH/dashboard.py %f
+Icon=applications-science
+Terminal=false
+MimeType=application/x-skibidy;
+Categories=Science;Education;
