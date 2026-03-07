@@ -1,0 +1,15 @@
+source,Nwomeh BC et al. (1998)
+doi,10.1046/j.1524-475X.1998.60206.x
+figure,Fig 1 and 2 - MMP-1 and MMP-8 activity in acute wounds
+wound_type,open dermal wound (human)
+notes,"MMP-8 dominates early (100-200x more abundant than MMP-1); MMP-1 peaks later at day 7. Combined activity normalized."
+day,mmp_normalized
+0,0.10
+1,0.45
+2,0.70
+3,0.90
+5,1.00
+7,0.75
+10,0.40
+14,0.15
+21,0.08

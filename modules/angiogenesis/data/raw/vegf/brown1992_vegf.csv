@@ -1,0 +1,12 @@
+source,Brown LF et al. (1992)
+doi,10.1084/jem.176.5.1375
+figure,Fig 4 - VEGF mRNA expression in wound edge keratinocytes
+wound_type,incisional wound (human)
+notes,"VEGF mRNA expression by in situ hybridization; peak day 2-7 in wound edge keratinocytes"
+day,vegf_normalized
+0,0.05
+1,0.30
+2,0.60
+5,1.00
+7,0.75
+14,0.20
