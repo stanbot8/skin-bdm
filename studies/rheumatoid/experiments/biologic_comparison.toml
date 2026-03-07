@@ -1,0 +1,55 @@
+# Experiment: Biologic Comparison
+#
+# Compare untreated RA against five treatment regimens:
+# anti-TNF monotherapy, tocilizumab monotherapy, methotrexate alone,
+# JAK inhibitor (tofacitinib), and triple combination therapy. Measures
+# wound closure, cartilage preservation, and inflammatory resolution
+# across 30 days.
+
+[experiment]
+name = "Biologic Comparison"
+description = "Head-to-head comparison of RA treatment strategies"
+profile = "rheumatoid"
+study = "rheumatoid"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Untreated RA baseline
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Untreated RA"
+
+# ---------------------------------------------------------------------------
+# Anti-TNF monotherapy (infliximab/adalimumab/etanercept)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Anti-TNF"
+treatments = ["anti_tnf"]
+
+# ---------------------------------------------------------------------------
+# Tocilizumab monotherapy (anti-IL-6R)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Tocilizumab"
+treatments = ["tocilizumab"]
+
+# ---------------------------------------------------------------------------
+# Methotrexate monotherapy (conventional DMARD)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Methotrexate"
+treatments = ["methotrexate"]
+
+# ---------------------------------------------------------------------------
+# JAK inhibitor (tofacitinib/baricitinib)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "JAK Inhibitor"
+treatments = ["jak_inhibitor"]
+
+# ---------------------------------------------------------------------------
+# Triple combination (anti-TNF + tocilizumab + methotrexate)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Triple Combination"
+treatments = ["ra_combination"]

@@ -1,0 +1,22 @@
+# Treatment: methotrexate (conventional DMARD)
+# Literature: Smolen et al. 2018 (doi:10.1038/nrdp.2018.1),
+#             McInnes & Schett 2011 (doi:10.1056/NEJMra1004965)
+# Mechanism: folate antagonist with broad immunosuppressive effects.
+# Inhibits purine synthesis in proliferating immune cells, reduces
+# pro-inflammatory cytokine production, and promotes adenosine release
+# (anti-inflammatory). First-line DMARD for RA.
+# Clinical: 7.5-25 mg/week oral or SC, onset 4-8 weeks.
+[skin.ra]
+autoimmune_source = 0.0005              # 0.001 -> 0.0005: reduced FLS/T cell activation
+il6_autoimmune_source = 0.0008          # 0.0015 -> 0.0008: reduced chronic IL-6
+tnf_inflammation_coupling = 0.002       # 0.003 -> 0.002: lower NF-kB amplification
+il6_inflammation_coupling = 0.001       # 0.002 -> 0.001: lower JAK/STAT3 amplification
+tnf_mmp_boost = 0.002                   # 0.003 -> 0.002: moderate MMP reduction
+pannus_fibroblast_boost = 1.5           # 2.0 -> 1.5: reduced FLS hyperplasia
+drug_onset_h = 240                      # slow DMARD: 10 day onset (clinical 4-8 weeks, accelerated for 30d sim)
+tcell_proliferation = 0.0005            # 0.001 -> 0.0005: purine synthesis inhibition blocks T cell clonal expansion
+tcell_recruitment = 0.0005              # 0.001 -> 0.0005: reduced immune cell extravasation
+
+[skin.immune]
+macrophage_m1_duration_h = 84           # 96 -> 84: modest M1 normalization
+macrophage_spawn_taper = 0.0005         # 0.0 -> 0.0005: slight recruitment taper restored

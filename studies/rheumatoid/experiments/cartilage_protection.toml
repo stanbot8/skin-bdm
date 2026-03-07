@@ -1,0 +1,73 @@
+# Experiment: Cartilage and Bone Protection Strategies
+#
+# Focus on cartilage and bone preservation as co-primary endpoints.
+# Compare how different intervention strategies protect tissue integrity
+# against the erosion pathways: MMP proteolysis, TNF-mediated osteoclast
+# activation, IL-6/RANKL bone resorption, and pannus invasion.
+
+[experiment]
+name = "Cartilage and Bone Protection"
+description = "Cartilage and bone preservation across treatment strategies"
+profile = "rheumatoid"
+study = "rheumatoid"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Untreated (all erosion pathways active)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Untreated"
+
+# ---------------------------------------------------------------------------
+# MMP-targeted (doxycycline as MMP inhibitor)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "MMP Inhibition (Doxycycline)"
+[experiment.configs.overrides]
+"skin.ra.cartilage_mmp_degradation" = 0.0002   # 0.0005 -> 0.0002: sub-antimicrobial doxy
+"skin.ra.tnf_mmp_boost" = 0.001                # 0.003 -> 0.001: less MMP transcription
+"skin.mmp.m1_rate" = 0.001                     # 0.003 -> 0.001: direct MMP suppression
+
+# ---------------------------------------------------------------------------
+# TNF-targeted (anti-TNF biologic)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "TNF Targeted (Anti-TNF)"
+treatments = ["anti_tnf"]
+
+# ---------------------------------------------------------------------------
+# IL-6/RANKL-targeted (tocilizumab)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "IL-6/RANKL Targeted (Tocilizumab)"
+treatments = ["tocilizumab"]
+
+# ---------------------------------------------------------------------------
+# JAK inhibitor (broad signaling suppression)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "JAK Inhibitor (Tofacitinib)"
+treatments = ["jak_inhibitor"]
+
+# ---------------------------------------------------------------------------
+# Dual blockade (anti-TNF + tocilizumab, no methotrexate)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Dual Cytokine Blockade"
+[experiment.configs.overrides]
+"skin.ra.anti_tnf_clearance" = 0.05
+"skin.ra.anti_il6r_clearance" = 0.04
+"skin.ra.tnf_inflammation_coupling" = 0.001
+"skin.ra.il6_inflammation_coupling" = 0.0005
+"skin.ra.tnf_mmp_boost" = 0.001
+"skin.ra.il6_cartilage_boost" = 0.00003
+"skin.ra.m1_prolongation" = 1.3
+"skin.ra.bone_rankl_erosion" = 0.00002
+"skin.ra.bone_tnf_erosion" = 0.00001
+
+# ---------------------------------------------------------------------------
+# Triple combination (full suppression)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Triple Combination"
+treatments = ["ra_combination"]

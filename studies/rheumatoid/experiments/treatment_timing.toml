@@ -1,0 +1,89 @@
+# Experiment: RA Treatment Timing
+#
+# Tests the clinical window of opportunity hypothesis: early aggressive
+# therapy before pannus establishment yields better cartilage and bone outcomes.
+# Uses the drug PK system (treatment_delay_h + drug_onset_h) for delayed onset.
+#
+# Day 0  = immediate treatment
+# Day 7  = 168h delay
+# Day 14 = 336h delay
+# Day 21 = 504h delay
+
+[experiment]
+name = "Treatment Timing"
+description = "Impact of treatment delay on RA wound outcomes across three drug classes"
+profile = "rheumatoid"
+study = "rheumatoid"
+runs_per_config = 5
+
+# ===== ANTI-TNF =====
+
+[[experiment.configs]]
+label = "Anti-TNF Day 0"
+treatments = ["anti_tnf"]
+
+[[experiment.configs]]
+label = "Anti-TNF Day 7"
+treatments = ["anti_tnf"]
+[experiment.configs.overrides]
+"skin.ra.treatment_delay_h" = 168
+
+[[experiment.configs]]
+label = "Anti-TNF Day 14"
+treatments = ["anti_tnf"]
+[experiment.configs.overrides]
+"skin.ra.treatment_delay_h" = 336
+
+[[experiment.configs]]
+label = "Anti-TNF Day 21"
+treatments = ["anti_tnf"]
+[experiment.configs.overrides]
+"skin.ra.treatment_delay_h" = 504
+
+# ===== TOCILIZUMAB =====
+
+[[experiment.configs]]
+label = "Tocilizumab Day 0"
+treatments = ["tocilizumab"]
+
+[[experiment.configs]]
+label = "Tocilizumab Day 7"
+treatments = ["tocilizumab"]
+[experiment.configs.overrides]
+"skin.ra.treatment_delay_h" = 168
+
+[[experiment.configs]]
+label = "Tocilizumab Day 14"
+treatments = ["tocilizumab"]
+[experiment.configs.overrides]
+"skin.ra.treatment_delay_h" = 336
+
+[[experiment.configs]]
+label = "Tocilizumab Day 21"
+treatments = ["tocilizumab"]
+[experiment.configs.overrides]
+"skin.ra.treatment_delay_h" = 504
+
+# ===== JAK INHIBITOR =====
+
+[[experiment.configs]]
+label = "JAK Inhibitor Day 0"
+treatments = ["jak_inhibitor"]
+
+[[experiment.configs]]
+label = "JAK Inhibitor Day 7"
+treatments = ["jak_inhibitor"]
+[experiment.configs.overrides]
+"skin.ra.treatment_delay_h" = 168
+
+[[experiment.configs]]
+label = "JAK Inhibitor Day 14"
+treatments = ["jak_inhibitor"]
+[experiment.configs.overrides]
+"skin.ra.treatment_delay_h" = 336
+
+[[experiment.configs]]
+label = "JAK Inhibitor Day 21"
+treatments = ["jak_inhibitor"]
+[experiment.configs.overrides]
+"skin.ra.treatment_delay_h" = 504

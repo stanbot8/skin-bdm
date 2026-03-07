@@ -1,0 +1,49 @@
+# Experiment: RA Remission Protocol
+#
+# Rheumatoid arthritis cure (drug-free remission) requires suppressing
+# autoimmune activation to the point where the immune system does not
+# re-flare after treatment withdrawal. Tests aggressive early triple
+# therapy (anti-TNF + tocilizumab + methotrexate) vs monotherapies,
+# evaluating structural preservation (cartilage and bone).
+
+[experiment]
+name = "Cure Protocol"
+description = "Aggressive combination therapy targeting RA drug-free remission"
+profile = "rheumatoid"
+study = "rheumatoid"
+runs_per_config = 5
+
+# ---------------------------------------------------------------------------
+# Untreated RA baseline
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Untreated"
+
+# ---------------------------------------------------------------------------
+# Monotherapy: anti-TNF (adalimumab/infliximab)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Anti-TNF Mono"
+treatments = ["anti_tnf"]
+
+# ---------------------------------------------------------------------------
+# Dual therapy: anti-TNF + methotrexate (clinical standard of care)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Anti-TNF + MTX"
+treatments = ["anti_tnf", "methotrexate"]
+
+# ---------------------------------------------------------------------------
+# Triple therapy: anti-TNF + tocilizumab + MTX (aggressive remission target)
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Triple Therapy"
+treatments = ["ra_combination"]
+
+# ---------------------------------------------------------------------------
+# Triple therapy + JAK inhibitor (maximum immunosuppression)
+# Models theoretical maximum cytokine blockade
+# ---------------------------------------------------------------------------
+[[experiment.configs]]
+label = "Triple + JAKi"
+treatments = ["ra_combination", "jak_inhibitor"]

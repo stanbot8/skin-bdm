@@ -1,0 +1,29 @@
+# Treatment: triple therapy (anti-TNF + tocilizumab + methotrexate)
+# Literature: Smolen et al. 2018 (doi:10.1038/nrdp.2018.1),
+#             McInnes & Schett 2011 (doi:10.1056/NEJMra1004965)
+# Mechanism: combined TNF neutralization, IL-6R blockade, and folate
+# antagonism targets all three arms of the inflammatory cascade
+# simultaneously. Clinical combination regimens typically pair one
+# biologic with methotrexate (dual TNF/IL-6R blockade is not standard
+# practice due to infection risk, but modeled here for mechanistic study).
+[skin.ra]
+anti_tnf_clearance = 0.05               # anti-TNF biologic
+anti_il6r_clearance = 0.04              # tocilizumab
+autoimmune_source = 0.0003              # 0.001 -> 0.0003: strongly suppressed autoimmune
+il6_autoimmune_source = 0.0004          # 0.0015 -> 0.0004: strongly suppressed IL-6
+tnf_inflammation_coupling = 0.001       # 0.003 -> 0.001: combination NF-kB suppression
+il6_inflammation_coupling = 0.0005      # 0.002 -> 0.0005: combination JAK/STAT3 suppression
+tnf_mmp_boost = 0.001                   # 0.003 -> 0.001: strong MMP reduction
+tnf_vegf_boost = 0.0005                 # 0.002 -> 0.0005: pannus regression
+il6_cartilage_boost = 0.00003           # 0.00015 -> 0.00003: strong RANKL suppression
+pannus_fibroblast_boost = 1.2           # 2.0 -> 1.2: near-normal FLS
+m1_prolongation = 1.2                   # 2.0 -> 1.2: near-normal M1 duration
+drug_onset_h = 48                       # biologics dominate onset (methotrexate slower but additive)
+tcell_proliferation = 0.0003            # 0.001 -> 0.0003: strong T cell suppression (MTX + biologics)
+tcell_recruitment = 0.0003              # 0.001 -> 0.0003: strong extravasation block
+bone_rankl_erosion = 0.00002            # 0.00008 -> 0.00002: strong RANKL suppression
+bone_tnf_erosion = 0.00001              # 0.00004 -> 0.00001: strong TNF osteoclast block
+
+[skin.immune]
+macrophage_m1_duration_h = 60           # 96 -> 60: near-normal M1 duration
+macrophage_spawn_taper = 0.001          # 0.0 -> 0.001: recruitment taper restored
