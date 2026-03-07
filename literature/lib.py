@@ -123,6 +123,7 @@ _FILE_MODULE_MAP = {
     "tumor_doubling_time.csv": "tumor",
     "tumor_growth_rate.csv": "tumor",
     "tumor_proliferation_index.csv": "tumor",
+    "ph_kinetics.csv": "ph",
 }
 
 
@@ -178,7 +179,7 @@ SIM_KW = dict(color=SIM_COLOR, linewidth=2, label="Simulation")
 # ---------------------------------------------------------------------------
 
 def detect_modules(sim):
-    """Return (has_wound, has_fibroblast, has_tumor, has_microenv) booleans."""
+    """Return (has_wound, has_fibroblast, has_tumor, has_microenv, has_ph) booleans."""
     has_wound = ("wound_closure_pct" in sim
                  and max(sim["wound_closure_pct"]) > 0)
     has_fibroblast = (has_wound and "n_myofibroblasts" in sim
@@ -190,7 +191,10 @@ def detect_modules(sim):
     has_microenv = (has_wound
                     and "mean_tgfb_wound" in sim
                     and max(sim["mean_tgfb_wound"]) > 0)
-    return has_wound, has_fibroblast, has_tumor, has_microenv
+    has_ph = (has_wound
+              and "mean_ph_wound" in sim
+              and max(sim["mean_ph_wound"]) > 0)
+    return has_wound, has_fibroblast, has_tumor, has_microenv, has_ph
 
 
 # ---------------------------------------------------------------------------
@@ -407,6 +411,26 @@ def validate_microenvironment(sim, sim_days, condition="normal"):
         ref_mmp_at_sim=ref_mmp_at_sim, mmp_peak=mmp_peak,
         tgfb_rmse=tgfb_rmse, vegf_rmse=vegf_rmse,
         fn_rmse=fn_rmse, mmp_rmse=mmp_rmse,
+    )
+
+
+def validate_ph(sim, sim_days):
+    """Compute wound pH (alkalinity) validation metrics. Returns result dict.
+
+    pH is modeled as normalized alkalinity: 1.0 = fresh wound (pH 7.4),
+    0.0 = healed acidic skin (pH 5.5). Reference: Schneider et al. 2007.
+    """
+    ref_ph = load_csv(_ref_path("ph_kinetics.csv"))
+
+    sim_ph = sim["mean_ph_wound"]
+    ref_ph_at_sim = interpolate(
+        ref_ph["day"], ref_ph["ph_alkalinity_normalized"], sim_days)
+    ph_rmse = compute_rmse(sim_ph, ref_ph_at_sim)
+
+    return dict(
+        sim_ph=sim_ph, ref_ph=ref_ph,
+        ref_ph_at_sim=ref_ph_at_sim,
+        ph_rmse=ph_rmse,
     )
 
 
@@ -629,11 +653,28 @@ def plot_microenvironment_panels(r, sim_days, axes):
         a.set_xlabel("Time (days)")
 
 
+def plot_ph_panel(r, sim_days, ax):
+    """Draw wound pH (alkalinity) panel into a single axes."""
+    ax.plot(sim_days, r["sim_ph"], **SIM_KW)
+    ax.plot(r["ref_ph"]["day"], r["ref_ph"]["ph_alkalinity_normalized"], **REF_KW)
+    ax.set_ylabel("Wound alkalinity (normalized)")
+    ax.set_title("Wound pH Recovery")
+    ax.set_ylim(-0.05, 1.15)
+    ax.set_xlim(0, 30)
+    ax.legend(fontsize=8)
+    ax.grid(True, alpha=0.3)
+    ax.text(0.98, 0.85, f"RMSE = {r['ph_rmse'] * 100:.1f}%",
+            transform=ax.transAxes, ha="right", va="top",
+            fontsize=8, color="gray")
+    ax.set_xlabel("Time (days)")
+
+
 # ---------------------------------------------------------------------------
 # Print summary
 # ---------------------------------------------------------------------------
 
-def print_summary(wound=None, fibroblast=None, tumor=None, microenv=None):
+def print_summary(wound=None, fibroblast=None, tumor=None, microenv=None,
+                  ph=None):
     """Print one unified validation summary block.
 
     Only shows modules that produced results. Disabled modules are
@@ -664,6 +705,8 @@ def print_summary(wound=None, fibroblast=None, tumor=None, microenv=None):
         print(f"  VEGF                RMSE = {m['vegf_rmse'] * 100:.2f} %")
         print(f"  Fibronectin         RMSE = {m['fn_rmse'] * 100:.2f} %")
         print(f"  MMP                 RMSE = {m['mmp_rmse'] * 100:.2f} %")
+    if ph:
+        print(f"  Wound pH            RMSE = {ph['ph_rmse'] * 100:.2f} %")
     if tumor:
         t = tumor
         print(f"  Tumor span          {t['sim_span']:.0f}d  Td: Obs={t['observed_doubling']:.0f}d Ref={t['bcc_doubling_days']:.0f}d")

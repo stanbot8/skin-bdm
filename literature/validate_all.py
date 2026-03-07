@@ -21,9 +21,9 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.dirname(__file__))
 from lib import (load_csv, plots_dir, detect_condition, detect_modules,
                  validate_wound, validate_fibroblast, validate_tumor,
-                 validate_microenvironment, plot_wound_panels,
+                 validate_microenvironment, validate_ph, plot_wound_panels,
                  plot_fibroblast_panels, plot_tumor_panels,
-                 plot_microenvironment_panels, print_summary)
+                 plot_microenvironment_panels, plot_ph_panel, print_summary)
 from check_sources import run_checks as check_sources
 
 
@@ -62,7 +62,7 @@ def main():
 
     sim = load_csv(sim_path)
     sim_days = [h / 24.0 for h in sim["time_h"]]
-    has_wound, has_fibroblast, has_tumor, has_microenv = detect_modules(sim)
+    has_wound, has_fibroblast, has_tumor, has_microenv, has_ph = detect_modules(sim)
 
     if not has_wound and not has_tumor:
         print("No wound or tumor data found in metrics. Nothing to validate.")
@@ -72,11 +72,12 @@ def main():
     wound_r = validate_wound(sim, sim_days, condition) if has_wound else None
     fibro_r = validate_fibroblast(sim, sim_days) if has_fibroblast else None
     micro_r = validate_microenvironment(sim, sim_days, condition) if has_microenv else None
+    ph_r = validate_ph(sim, sim_days) if has_ph else None
     tumor_r = validate_tumor(sim, sim_days) if has_tumor else None
 
     # --- Print once ---
     print_summary(wound=wound_r, fibroblast=fibro_r, tumor=tumor_r,
-                  microenv=micro_r)
+                  microenv=micro_r, ph=ph_r)
 
     out_dir = plots_dir(sim_path)
     os.makedirs(out_dir, exist_ok=True)
@@ -100,8 +101,12 @@ def main():
         plt.close(fig)
 
     if micro_r:
-        fig, axes = plt.subplots(2, 2, figsize=(12, 8))
-        plot_microenvironment_panels(micro_r, sim_days, axes)
+        mr = 3 if ph_r else 2
+        fig, axes = plt.subplots(mr, 2, figsize=(12, 4 * mr))
+        plot_microenvironment_panels(micro_r, sim_days, axes[:2])
+        if ph_r:
+            plot_ph_panel(ph_r, sim_days, axes[2, 0])
+            axes[2, 1].set_visible(False)
         fig.suptitle("Microenvironment Validation", fontsize=14, fontweight="bold")
         fig.tight_layout(rect=[0, 0, 1, 0.96])
         fig.savefig(os.path.join(out_dir, "microenvironment_validation.png"), dpi=150)
@@ -123,6 +128,8 @@ def main():
         nrows += 2  # fibroblast now has 3 panels across 2 rows
     if has_microenv:
         nrows += 2
+    if has_ph:
+        nrows += 1
     if has_tumor:
         nrows += 1
 
@@ -144,6 +151,10 @@ def main():
         if micro_r:
             plot_microenvironment_panels(micro_r, sim_days, axes[row:row+2])
             row += 2
+        if ph_r:
+            plot_ph_panel(ph_r, sim_days, axes[row, 0])
+            axes[row, 1].set_visible(False)
+            row += 1
         if tumor_r:
             plot_tumor_panels(tumor_r, sim_days, axes[row])
             row += 1
