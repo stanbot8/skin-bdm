@@ -86,7 +86,7 @@ Available treatments: anti-inflammatory, HBO, NPWT, doxycycline, growth factor (
 
 ## Validation
 
-Validated against published literature across 11 observables, backed by 191 DOI-linked source papers in per-module `SOURCES.yaml` files. Run `python3 literature/validate_all.py` for the RMSE dashboard or `python3 batch/batch.py -n 10 --study wound --validate` for a 10-run consensus with literature comparison.
+Validated against published literature across 12 observables, backed by 191 DOI-linked source papers in per-module `SOURCES.yaml` files. Run `python3 literature/validate_all.py` for the RMSE dashboard or `python3 batch/batch.py -n 10 --study wound --validate` for a 10-run consensus with literature comparison.
 
 ## Documentation
 
