@@ -79,7 +79,7 @@ Each module is self-contained in `modules/` with its own `config.toml`, source f
 
 ## Validation
 
-The validation framework lives in [`literature/`](../literature/) with its own [README](../literature/README.md). Reference data is collocated with each module under `modules/<module>/data/`, with citations in each module's `SOURCES.yaml` (191 DOI-linked papers total).
+The validation framework lives in [`literature/`](../literature/) with its own [README](../literature/README.md). Reference data is collocated with each module under `modules/<module>/data/`, with citations in each module's `SOURCES.yaml`.
 
 ### Metrics columns
 

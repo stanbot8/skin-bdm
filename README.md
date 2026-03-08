@@ -1,12 +1,12 @@
 # Skin BioDynaMo (SkiBiDy)
 
-**SkiBiDy** is a hybrid agent-continuum simulation of skin tissue biology built on [BioDynaMo](https://biodynamo.org). It models wound healing, immune response, fibroblast and collagen dynamics, scar formation, vascular perfusion, hemostasis, cellular senescence, cutaneous innervation, tumor growth, diabetic impairment, and therapeutic interventions, all from mechanistic first principles backed by 186 DOI-linked source papers.
+**SkiBiDy** is a hybrid agent-continuum simulation of skin tissue biology built on [BioDynaMo](https://biodynamo.org). It models wound healing, immune response, fibroblast and collagen dynamics, scar formation, vascular perfusion, hemostasis, cellular senescence, cutaneous innervation, tumor growth, diabetic impairment, and therapeutic interventions, all from mechanistic first principles backed by DOI-linked source papers across 24 modules.
 
 ![Wound healing simulation](docs/skibidy.gif?v=2)
 
 ## How it works
 
-Healthy skin runs as a composite field coupling 33 PDEs with no agents. When an event occurs (wound, infection, tumor), cells spawn from local field state, interact with the fields, and dissolve back once stable. This is the **UWYN** (Use What You Need) paradigm: the simulation only creates agents where the biology demands cellular resolution.
+Healthy skin runs as a composite field coupling 33 diffusion grids with no agents. When an event occurs (wound, infection, tumor), cells spawn from local field state, interact with the fields, and dissolve back once stable. This is the **UWYN** (Use What You Need) paradigm: the simulation only creates agents where the biology demands cellular resolution.
 
 ```
 Corneum    [continuum]  barrier, desquamation
@@ -86,7 +86,12 @@ Available treatments: anti-inflammatory, HBO, NPWT, doxycycline, growth factor (
 
 ## Validation
 
-Validated against published literature across 12 observables, backed by 191 DOI-linked source papers in per-module `SOURCES.yaml` files. Run `python3 literature/validate_all.py` for the RMSE dashboard or `python3 batch/batch.py -n 10 --study wound --validate` for a 10-run consensus with literature comparison.
+Validated against published literature across 12 observables with per-module `SOURCES.yaml` files providing DOI-linked citations. Four optional mechanistic toggles (gradient-driven recruitment, efferocytosis M1 to M2, constitutive + TGF-beta collagen, HIF-1alpha VEGF) can replace parametric models for biophysical fidelity testing.
+
+```bash
+python3 batch/batch.py -n 10 --study wound --validate          # parametric (default)
+python3 batch/batch.py -n 10 --study mech-test --validate      # mechanistic toggles
+```
 
 ## Documentation
 

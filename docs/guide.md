@@ -47,6 +47,8 @@ Each module directory in `modules/` contains a `config.toml` owning one TOML sub
 | `lactate/` | `[skin.lactate]` | HIF-1a VEGF boost, collagen synthesis |
 | `nitric_oxide/` | `[skin.nitric_oxide]` | Vasodilation, antimicrobial, anti-fibrotic |
 | `ph/` | `[skin.ph]` | Wound bed pH gradient, acid mantle |
+| `senescence/` | `[skin.senescence]` | DNA damage accumulation, SASP output |
+| `neuropathy/` | `[skin.neuropathy]` | Nerve density, neuropeptide signaling |
 
 Key names within modules drop their redundant prefix since the section provides context. For example, `wound_enabled` becomes `enabled` under `[skin.wound]`, and `diabetic_m1_duration_factor` becomes `m1_duration_factor` under `[skin.diabetic]`.
 
@@ -190,6 +192,8 @@ python3 literature/compare_tumor.py         # tumor growth + Ki-67
 | Biofilm | Implemented | Bacterial colonization, immune clearance, PAMP-driven inflammation |
 | Skin cancer (advanced) | Planned | Immune evasion, invasion/metastasis |
 | Pathogen response | Planned | Viral/bacterial agents (HSV, HPV, HIV), immune activation |
-| Aging | Planned | Stem cell exhaustion, senescence, epidermal thinning |
+| Senescence | Implemented | SASP-driven inflammation, MMP, TGF-beta output |
+| Neuropathy | Implemented | Cutaneous innervation, Wallerian degeneration, neuropeptide signaling |
+| Aging | Planned | Stem cell exhaustion, epidermal thinning |
 | Hair follicle | Planned | Bulge stem cells, dermal papilla signaling |
 | Skincare | Planned | Topical substance penetration, retinoid effects |

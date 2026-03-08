@@ -8,7 +8,7 @@ Technical architecture of Skibidy, a hybrid agent-continuum skin tissue simulati
 
 Skibidy uses a hybrid agent-continuum architecture:
 
-- **Continuum at rest**: healthy skin is represented by 29 diffusion fields (Calcium, KGF, O2, Water, Vascular, Inflammation, ImmunePressure, ProInflammatory, AntiInflammatory, Stratum, Scar, Dermis, Elastin, Hyaluronan, TGF-beta, Collagen, MMP, TIMP, Fibronectin, VEGF, Biofilm, Tumor, Fibrin, pH, Temperature, Glucose, Lactate, NitricOxide, BasalDensity). No agents exist during homeostasis.
+- **Continuum at rest**: healthy skin is represented by 33 diffusion fields (Calcium, KGF, O2, Water, Vascular, Inflammation, ImmunePressure, ProInflammatory, AntiInflammatory, Stratum, Scar, Dermis, Elastin, Hyaluronan, TGF-beta, Collagen, MMP, TIMP, Fibronectin, VEGF, Biofilm, Tumor, Fibrin, pH, Temperature, Glucose, Lactate, NitricOxide, BasalDensity, Senescence, Nerve, ProMMP, ActiveMMP). No agents exist during homeostasis.
 - **Event-driven agents**: when something happens (wound, infection, tumor), agents spawn to model the cellular response. Keratinocytes bootstrap from local field state at spawn time; immune cells arrive at configured post-wound delays and drive the inflammation field.
 - **Per-cell handoff**: stable cornified cells dissolve back into the continuum field individually.
 - **LOD toggles** per volume via `agents_enabled`: event modules escalate resolution at points of interest.
@@ -83,6 +83,21 @@ Several system-level behaviors emerge from local cell rules:
 - **Scar formation**: `WriteScarValue` checks local collagen concentration when a keratinocyte dissolves. High collagen (above `scar_collagen_threshold`) produces scar tissue (stratum+5); low collagen produces normal stratum. This makes scar an emergent outcome of the fibroblast/collagen cascade.
 - **Wound closure rate**: emerges from the interplay of O2 availability, water hydration, inflammation suppression, KGF growth factor signaling, and mechanical crowding.
 - **ECM remodeling balance**: net collagen accumulation emerges from the MMP/TIMP balance, TGF-beta signaling, and fibroblast activation state, rather than from a single degradation rate.
+
+## Mechanistic toggles
+
+Four optional mechanistic replacements can be enabled independently via boolean flags in their respective module configs. All default to `false`, preserving the parametric (calibrated) behavior. When enabled, they replace simplified rate models with biophysically grounded alternatives:
+
+| Toggle | Module | Replaces | Mechanistic model |
+|--------|--------|----------|-------------------|
+| `mech_immune_recruitment` | immune | threshold + rate + taper recruitment | Chemokine gradient magnitude with Michaelis-Menten saturation |
+| `mech_m1_m2_transition` | immune | Cytokine-threshold M1 to M2 | Efferocytosis engulfment count with timer ceiling fallback |
+| `mech_collagen_deposition` | fibroblast | Constant collagen rate | Constitutive basal + TGF-beta receptor occupancy (Michaelis-Menten) |
+| `mech_vegf_production` | angiogenesis | Flat M2 VEGF rate | HIF-1alpha stabilization under hypoxia |
+
+The `mech-test` study preset (`studies/mech-test/preset.toml`) enables M1 to M2, collagen, and VEGF toggles for validation testing. Gradient-driven recruitment is implemented but excluded from the test preset pending further calibration.
+
+All mechanistic modes share infrastructure with their parametric counterparts (e.g., the ICAM-1 adhesion taper is shared by both recruitment modes; the M1 duration ceiling is shared by both M1 to M2 modes).
 
 ## How to add a module
 

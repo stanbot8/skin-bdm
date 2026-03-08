@@ -30,6 +30,14 @@ Agent-based immune cells with two types (Neutrophil, Macrophage) and macrophage 
 
 **Chemotaxis:** When enabled, immune cells follow the inflammation gradient via BioDynaMo's DiffusionGrid::GetGradient(). Falls back to geometric wound-center migration when gradient is flat.
 
+### Mechanistic toggles
+
+Two optional mechanistic replacements can be enabled for testing. Both default to `false` (parametric behavior unchanged).
+
+**Gradient-driven recruitment** (`mech_immune_recruitment`): Replaces the threshold + rate + taper recruitment model with chemokine gradient magnitude driving monocyte extravasation via Michaelis-Menten saturation: `prob = scale * G/(K+G) * saturation * taper`. The endothelial adhesion taper (ICAM-1 decline) is shared by both modes.
+
+**Efferocytosis-count M1 to M2** (`mech_m1_m2_transition`): Replaces cytokine-threshold M1 to M2 with engulfment-count driven transition. M1 macrophages accumulate an engulfment counter via TryEfferocytosis; once the quota is met (default 1), each step has a `mech_m2_transition_rate` probability of transitioning to M2 (PS receptor signaling via MerTK/Tim-4 reprogramming PPARgamma/LXR). The timer ceiling (`macrophage_m1_duration_h`) remains as fallback for macrophages that never encounter neutrophils, representing alternative M2 signals (IL-4, IL-10, glucocorticoids).
+
 ## Parameters
 From modules/immune/config.toml:
 | Parameter | Default | Units | Description | Source |
@@ -61,6 +69,12 @@ From modules/immune/config.toml:
 | `chemotaxis_speed_scale` | 1.0 | - | Gradient speed scaling | Calibrated |
 | `neutrophil_cytokine_taper` | 0.004 | - | Exponential decay constant | Calibrated |
 | `m1_cytokine_taper` | 0.003 | - | Exponential decay constant | Calibrated |
+| `mech_immune_recruitment` | false | bool | Gradient-driven recruitment (test mode) | Convention |
+| `mech_recruit_gradient_scale` | 0.12 | - | Gradient to probability scaling | Calibrated |
+| `mech_recruit_saturation_k` | 0.005 | a.u. | Half-saturation for gradient | Calibrated |
+| `mech_m1_m2_transition` | false | bool | Efferocytosis-count M1 to M2 (test mode) | Convention |
+| `mech_efferocytosis_quota` | 1 | count | Engulfments to trigger M2 program | Ravichandran 2010 ([DOI](https://doi.org/10.1084/jem.20101157)) |
+| `mech_m2_transition_rate` | 0.25 | per step | Transition probability once quota met | Calibrated |
 
 ## Coupling
 ### Reads

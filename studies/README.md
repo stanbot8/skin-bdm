@@ -120,9 +120,20 @@ Areas with published mechanistic data that could extend the model.
 | Oxygen therapy (topical) | Direct O2 application vs HBO | Gordillo 2007 | Low |
 | pH treatment | Acidic dressings shift enzyme optimum | Schneider 2007 | Medium |
 | HA treatment | Exogenous hyaluronan scaffolds | Tolg 2014, Voigt 2012 | Medium |
-| Cellular senescence | SASP-driven chronic inflammation | Demaria 2014, Wilkinson 2019 | High |
+| Cellular senescence | Implemented (senescence module) | Demaria 2014, Wilkinson 2019 | Done |
 | Oxidative stress | ROS-mediated tissue damage | Schafer 2008, Sen 2009 | High |
 | Basement membrane | Laminin/collagen IV reassembly | Rousselle 2019 | High |
+
+## Mechanistic test study
+
+The `mech-test` study enables mechanistic toggles for validation testing. These replace simplified parametric models with biophysically grounded alternatives (Michaelis-Menten kinetics, HIF-1alpha stabilization, efferocytosis counting).
+
+```bash
+# 10-run consensus with mechanistic toggles
+python3 batch/batch.py -n 10 --skin normal --study mech-test --validate
+```
+
+Enabled toggles: M1 to M2 efferocytosis count, constitutive + TGF-beta collagen, HIF-1alpha VEGF. See [docs/architecture.md](../docs/architecture.md#mechanistic-toggles) for details.
 
 ## Validation pipeline
 

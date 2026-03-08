@@ -43,6 +43,8 @@ The merge script (`scripts/config/merge_config.py`) combines layers 1 and 2 into
 | [Lactate](../modules/lactate/README.md#parameters) | `modules/lactate/config.toml` | Hypoxia production, VEGF boost, perfusion clearance |
 | [Nitric Oxide](../modules/nitric_oxide/README.md#parameters) | `modules/nitric_oxide/config.toml` | iNOS/eNOS production, vasodilation, antimicrobial |
 | [pH](../modules/ph/README.md#parameters) | `modules/ph/config.toml` | Wound bed pH, acid mantle, enzyme activity |
+| [Senescence](../modules/senescence/README.md#parameters) | `modules/senescence/config.toml` | DNA damage, SASP output (inflammation, MMP, TGF-beta) |
+| [Neuropathy](../modules/neuropathy/README.md#parameters) | `modules/neuropathy/config.toml` | Nerve density, Wallerian degeneration, neuropeptide signaling |
 
 ## Simulation settings
 
@@ -58,6 +60,19 @@ These parameters live in `bdm.core.toml` under `[skin]` and control simulation i
 | `subcycle_slow` | 10 | PDE sub-cycling for slow fields (water, hyaluronan, vascular) |
 | `subcycle_medium` | 5 | PDE sub-cycling for medium fields (inflammation, TGF-beta, MMP, VEGF) |
 | `hot_reload` | false | Watch bdm.toml for runtime parameter changes |
+
+## Mechanistic toggles
+
+Optional biophysical replacements for simplified parametric models. All default to `false`.
+
+| Toggle | Config section | Description |
+|--------|---------------|-------------|
+| `mech_immune_recruitment` | `skin.immune` | Gradient-driven monocyte extravasation (Michaelis-Menten) |
+| `mech_m1_m2_transition` | `skin.immune` | Efferocytosis engulfment count drives M1 to M2 |
+| `mech_collagen_deposition` | `skin.fibroblast` | Constitutive basal + TGF-beta receptor occupancy collagen |
+| `mech_vegf_production` | `skin.angiogenesis` | HIF-1alpha stabilization drives VEGF production |
+
+See each module's README for parameter details. Enable via `studies/mech-test/preset.toml` for testing.
 
 ## Debug flags
 
