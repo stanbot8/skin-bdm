@@ -1,0 +1,16 @@
+# Burn wound closure kinetics (deep partial thickness)
+# Slower re-epithelialization than punch biopsy due to larger area,
+# deeper injury, and eschar barrier. 60-day timeline.
+# Sources: Jackson 1953 (three-zone model), Declercq 2012
+day,closure_pct
+0,0
+3,2
+7,8
+10,15
+14,25
+21,45
+28,60
+35,75
+42,85
+49,92
+56,96

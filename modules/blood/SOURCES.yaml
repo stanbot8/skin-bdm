@@ -1,0 +1,47 @@
+# Literature sources for blood module
+blood:
+  description: Hemorrhage, coagulation cascade, blood volume effects on wound healing
+  sources:
+  - id: versteeg2013
+    authors: Versteeg HH, Heemskerk JWM, Levi M, Reitsma PH
+    year: 2013
+    title: New Fundamentals in Hemostasis
+    journal: Physiol Rev 93(1):327-358
+    doi: 10.1152/physrev.00016.2011
+    notes: >
+      Comprehensive review of the coagulation cascade covering intrinsic and
+      extrinsic pathway convergence on thrombin generation, platelet aggregation,
+      and fibrin clot formation. Supports intrinsic_rate, extrinsic_rate,
+      thrombin_rate, and thrombin_fibrin_coupling parameters.
+  - id: guodipietro2010
+    authors: Guo S, DiPietro LA
+    year: 2010
+    title: Factors Affecting Wound Healing
+    journal: J Dent Res 89(3):219-229
+    doi: 10.1177/0022034509359125
+    notes: >
+      Review of systemic and local factors that impair wound healing, including
+      anemia, hemorrhagic shock, and platelet dysfunction. Supports
+      shock_threshold, anemia_threshold, and volume_recovery_rate parameters.
+  - id: hopf1997
+    authors: Hopf HW, Hunt TK, West JM, Blomquist P, Goodson WH, Jensen JA, Jonsson K, Paty PB, Rabkin JM, Upton RA, von Smitten K, Whitney JD
+    year: 1997
+    title: Wound Tissue Oxygen Tension Predicts the Risk of Wound Infection in Surgical Patients
+    journal: Arch Surg 132(9):997-1004
+    doi: 10.1001/archsurg.1997.01430330063010
+    notes: >
+      Clinical study demonstrating that tissue oxygen tension is a predictor
+      of wound infection risk. Supports the hemoglobin and oxygen delivery
+      subsystem, specifically the anemia_o2_penalty and the coupling between
+      blood volume, perfusion, and infection susceptibility.
+  - id: singerclark1999
+    authors: Singer AJ, Clark RAF
+    year: 1999
+    title: Cutaneous Wound Healing
+    journal: N Engl J Med 341(10):738-746
+    doi: 10.1056/NEJM199909023411006
+    notes: >
+      Comprehensive review of cutaneous wound healing covering the hemostasis
+      phase, platelet plug formation, and the transition from coagulation to
+      inflammation via platelet cytokine release. Supports platelet_aggregation_rate
+      and platelet_cytokine_coupling parameters.
