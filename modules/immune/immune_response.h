@@ -77,9 +77,6 @@ struct ImmuneResponse : public StandaloneOperationImpl {
       real_t query_z = sp->immune_cell_diameter / 2.0;
       Real3 center = {sp->wound_center_x, sp->wound_center_y, query_z};
       Real3 qpos = ClampToBounds(center, sim->GetParam());
-      real_t infl = GetNetInflammation(sim, qpos);
-      real_t excess = std::max(static_cast<real_t>(0),
-                               infl - sp->macrophage_spawn_threshold);
 
       // Carrying capacity: limited adhesion sites at wound margin
       int n_mac = CountMacrophages(sim);
@@ -87,7 +84,8 @@ struct ImmuneResponse : public StandaloneOperationImpl {
       real_t saturation = std::max(static_cast<real_t>(0),
                                    1.0 - static_cast<real_t>(n_mac) / capacity);
 
-      // Chemokine gradient decay: monocyte recruitment diminishes as wound matures
+      // Endothelial adhesion taper: ICAM-1/VCAM-1 upregulation peaks early
+      // then declines as wound matures (shared by both recruitment modes)
       real_t recruit_taper = 1.0;
       if (sp->macrophage_spawn_taper > 0) {
         real_t wound_age_h = wound_age * sim->GetParam()->simulation_time_step;
@@ -98,13 +96,40 @@ struct ImmuneResponse : public StandaloneOperationImpl {
         recruit_taper = std::exp(-eff_taper * wound_age_h);
       }
 
-      real_t prob = sp->macrophage_spawn_rate * excess * saturation * recruit_taper;
+      real_t prob = 0;
+      if (sp->mech_immune_recruitment) {
+        // Mechanistic: chemokine gradient magnitude drives recruitment
+        // probability via Michaelis-Menten saturation. Replaces threshold
+        // and spawn_rate with a gradient-responsive mechanism.
+        auto* rm = sim->GetResourceManager();
+        DiffusionGrid* grad_grid = sp->split_inflammation_enabled
+            ? rm->GetDiffusionGrid(fields::kProInflammatoryId)
+            : rm->GetDiffusionGrid(fields::kInflammationId);
+        Real3 gradient = {0, 0, 0};
+        grad_grid->GetGradient(qpos, &gradient, false);
+        real_t grad_mag = std::sqrt(gradient[0] * gradient[0] +
+                                    gradient[1] * gradient[1] +
+                                    gradient[2] * gradient[2]);
+        // Michaelis-Menten: prob = scale * G / (K + G) * saturation * taper
+        prob = sp->mech_recruit_gradient_scale *
+               grad_mag / (sp->mech_recruit_saturation_k + grad_mag) *
+               saturation * recruit_taper;
+      } else {
+        // Parametric: threshold + rate + taper
+        real_t infl = GetNetInflammation(sim, qpos);
+        real_t excess = std::max(static_cast<real_t>(0),
+                                 infl - sp->macrophage_spawn_threshold);
+        prob = sp->macrophage_spawn_rate * excess * saturation * recruit_taper;
+      }
+
       if (prob > 0 && sim->GetRandom()->Uniform(0, 1) < prob) {
         SpawnCells(sim, sp, kMacrophage, 1);
         mac_total_spawned_++;
         if (sp->debug_immune) {
           std::cout << "[immune] macrophage #" << mac_total_spawned_
-                    << " infl=" << infl << " sat=" << saturation << std::endl;
+                    << " sat=" << saturation
+                    << (sp->mech_immune_recruitment ? " [mech]" : " [param]")
+                    << std::endl;
         }
       }
     }

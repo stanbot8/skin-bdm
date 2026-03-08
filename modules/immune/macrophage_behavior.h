@@ -77,25 +77,30 @@ struct MacrophageBehavior : public Behavior {
 
     // M1 -> M2 state transition
     if (cell->GetState() == kM1Active) {
-      // Efferocytosis: engulf dying neutrophils for early M2 transition
+      // Efferocytosis: engulf dying neutrophils
       if (sp->efferocytosis_enabled) {
         TryEfferocytosis(cell, sim, sp);
       }
 
       if (cell->GetState() == kM1Active) {
+        // Biofilm gate: persistent biofilm blocks M1->M2
+        Real3 qpos = ClampToBounds(cell->GetPosition(), sim->GetParam());
+        bool biofilm_blocked = false;
+        if (sp->biofilm_enabled) {
+          auto* bg = sim->GetResourceManager()->GetDiffusionGrid(
+              fields::kBiofilmId);
+          if (bg->GetValue(qpos) > sp->biofilm_m1_block_threshold) {
+            biofilm_blocked = true;
+          }
+        }
+
+        // Effective M1 duration (shared by both modes as ceiling)
         int eff_m1_duration = sp->macrophage_m1_duration;
         if (sp->diabetic_mode) {
           eff_m1_duration = static_cast<int>(
               sp->macrophage_m1_duration * sp->diabetic_m1_duration_factor);
         }
-
-        // Cytokine-driven: transition when local inflammation drops
-        Real3 qpos = ClampToBounds(cell->GetPosition(), sim->GetParam());
-
-        // AGE-RAGE prolongation: accumulated AGEs bind RAGE on macrophages,
-        // sustaining NF-kB and M1 polarization. Raises the effective M1
-        // duration and inflammation threshold for transition.
-        // Chavakis et al. 2004 (doi:10.1016/j.micinf.2004.08.004)
+        // AGE-RAGE prolongation
         if (sp->diabetic_mode && sp->glucose_enabled &&
             sp->age_m1_prolongation > 0) {
           auto* age_grid = sim->GetResourceManager()->GetDiffusionGrid(
@@ -107,25 +112,32 @@ struct MacrophageBehavior : public Behavior {
           }
         }
 
-        real_t infl = GetNetInflammation(sim, qpos);
-        bool cytokine_trigger =
-            (cell->GetStateAge() > sp->m1_transition_min_age &&
-             infl < sp->m1_transition_threshold);
-
-        // Timer ceiling fallback
-        bool timer_trigger = (cell->GetStateAge() > eff_m1_duration);
-
-        // Biofilm gate: persistent biofilm blocks M1->M2
-        bool biofilm_blocked = false;
-        if (sp->biofilm_enabled) {
-          auto* bg = sim->GetResourceManager()->GetDiffusionGrid(
-              fields::kBiofilmId);
-          if (bg->GetValue(qpos) > sp->biofilm_m1_block_threshold) {
-            biofilm_blocked = true;
+        bool should_transition = false;
+        if (sp->mech_m1_m2_transition) {
+          // Mechanistic: efferocytosis-count driven with timer ceiling.
+          // Engulfing apoptotic neutrophils is the primary M2 signal
+          // (PS receptor -> NR4A1 -> anti-inflammatory program). Once
+          // quota is met, transition fires stochastically. Timer ceiling
+          // models alternative M2 signals (IL-4, IL-10, glucocorticoids).
+          if (cell->GetEngulfCount() >= sp->mech_efferocytosis_quota) {
+            should_transition =
+                (sim->GetRandom()->Uniform(0, 1) < sp->mech_m2_transition_rate);
           }
+          // Timer ceiling fallback (alternative M2 polarization signals)
+          if (cell->GetStateAge() > eff_m1_duration) {
+            should_transition = true;
+          }
+        } else {
+          // Parametric: cytokine threshold + timer ceiling
+          real_t infl = GetNetInflammation(sim, qpos);
+          bool cytokine_trigger =
+              (cell->GetStateAge() > sp->m1_transition_min_age &&
+               infl < sp->m1_transition_threshold);
+          bool timer_trigger = (cell->GetStateAge() > eff_m1_duration);
+          should_transition = (cytokine_trigger || timer_trigger);
         }
 
-        if ((cytokine_trigger || timer_trigger) && !biofilm_blocked) {
+        if (should_transition && !biofilm_blocked) {
           cell->SetState(kM2Resolving);
         }
       }
@@ -207,7 +219,12 @@ struct MacrophageBehavior : public Behavior {
     ctxt->ForEachNeighbor(detect, *cell, r2);
 
     if (engulfed) {
-      cell->SetState(kM2Resolving);
+      cell->IncrementEngulfCount();
+      if (!sp->mech_m1_m2_transition) {
+        // Parametric mode: immediate M2 transition on first engulfment
+        cell->SetState(kM2Resolving);
+      }
+      // Mechanistic mode: count accumulates, transition handled above
     }
   }
 };

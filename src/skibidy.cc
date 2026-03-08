@@ -183,6 +183,14 @@ void bdm::skibidy::SimParam::LoadConfig(const skibidy::TomlConfig& config) {
   BDM_ASSIGN_CONFIG_VALUE(chemotaxis_enabled, "skin.immune.chemotaxis_enabled");
   BDM_ASSIGN_CONFIG_VALUE(chemotaxis_speed_scale, "skin.immune.chemotaxis_speed_scale");
 
+  // Mechanistic immune replacements
+  BDM_ASSIGN_CONFIG_VALUE(mech_immune_recruitment, "skin.immune.mech_immune_recruitment");
+  BDM_ASSIGN_CONFIG_VALUE(mech_recruit_gradient_scale, "skin.immune.mech_recruit_gradient_scale");
+  BDM_ASSIGN_CONFIG_VALUE(mech_recruit_saturation_k, "skin.immune.mech_recruit_saturation_k");
+  BDM_ASSIGN_CONFIG_VALUE(mech_m1_m2_transition, "skin.immune.mech_m1_m2_transition");
+  BDM_ASSIGN_CONFIG_VALUE(mech_efferocytosis_quota, "skin.immune.mech_efferocytosis_quota");
+  BDM_ASSIGN_CONFIG_VALUE(mech_m2_transition_rate, "skin.immune.mech_m2_transition_rate");
+
   // Biofilm dynamics (modules/biofilm.toml -> [skin.biofilm])
   BDM_ASSIGN_CONFIG_VALUE(biofilm_enabled, "skin.biofilm.enabled");
   BDM_ASSIGN_CONFIG_VALUE(biofilm_growth_rate, "skin.biofilm.growth_rate");
@@ -205,6 +213,11 @@ void bdm::skibidy::SimParam::LoadConfig(const skibidy::TomlConfig& config) {
   BDM_ASSIGN_CONFIG_VALUE(m2_vegf_rate, "skin.angiogenesis.m2_vegf_rate");
   BDM_ASSIGN_CONFIG_VALUE(vegf_production_taper, "skin.angiogenesis.vegf_production_taper");
   BDM_ASSIGN_CONFIG_VALUE(vegf_receptor_clearance, "skin.angiogenesis.vegf_receptor_clearance");
+
+  // Mechanistic VEGF replacement
+  BDM_ASSIGN_CONFIG_VALUE(mech_vegf_production, "skin.angiogenesis.mech_vegf_production");
+  BDM_ASSIGN_CONFIG_VALUE(mech_hif_o2_threshold, "skin.angiogenesis.mech_hif_o2_threshold");
+  BDM_ASSIGN_CONFIG_VALUE(mech_hif_vegf_rate, "skin.angiogenesis.mech_hif_vegf_rate");
 
   // Diabetic modifiers (modules/diabetic.toml -> [skin.diabetic])
   BDM_ASSIGN_CONFIG_VALUE(diabetic_mode, "skin.diabetic.mode");
@@ -270,6 +283,12 @@ void bdm::skibidy::SimParam::LoadConfig(const skibidy::TomlConfig& config) {
   BDM_ASSIGN_CONFIG_VALUE(lymphatic_sigmoid_k, "skin.fibroblast.lymphatic_sigmoid_k");
   BDM_ASSIGN_CONFIG_VALUE(perfusion_clearance_rate, "skin.fibroblast.perfusion_clearance_rate");
   BDM_ASSIGN_CONFIG_VALUE(collagen_o2_half_max, "skin.fibroblast.collagen_o2_half_max");
+
+  // Mechanistic collagen replacement
+  BDM_ASSIGN_CONFIG_VALUE(mech_collagen_deposition, "skin.fibroblast.mech_collagen_deposition");
+  BDM_ASSIGN_CONFIG_VALUE(mech_collagen_tgfb_km, "skin.fibroblast.mech_collagen_tgfb_km");
+  BDM_ASSIGN_CONFIG_VALUE(mech_collagen_vmax, "skin.fibroblast.mech_collagen_vmax");
+  BDM_ASSIGN_CONFIG_VALUE(mech_collagen_basal, "skin.fibroblast.mech_collagen_basal");
 
   // Tumor module (modules/tumor.toml -> [skin.tumor])
   BDM_ASSIGN_CONFIG_VALUE(tumor_enabled, "skin.tumor.enabled");

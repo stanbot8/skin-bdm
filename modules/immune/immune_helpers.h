@@ -129,7 +129,21 @@ inline void ProduceVEGF(const Real3& qpos, Simulation* sim,
                         const SimParam* sp) {
   if (!sp->angiogenesis_enabled) return;
   ScaledGrid sg(sim->GetResourceManager()->GetDiffusionGrid(fields::kVEGFId), sp);
-  real_t rate = sp->m2_vegf_rate;
+  real_t rate;
+  if (sp->mech_vegf_production) {
+    // Mechanistic: HIF-1alpha stabilization under hypoxia. O2 below
+    // threshold stabilizes HIF-1a, which transactivates VEGF promoter.
+    // Rate = max_rate * max(0, 1 - O2/threshold)
+    auto* o2_grid = sim->GetResourceManager()->GetDiffusionGrid(fields::kOxygenId);
+    real_t o2 = o2_grid ? std::max(static_cast<real_t>(0), o2_grid->GetValue(qpos))
+                        : 1.0;
+    real_t hypoxia_signal = std::max(static_cast<real_t>(0),
+        1.0 - o2 / sp->mech_hif_o2_threshold);
+    rate = sp->mech_hif_vegf_rate * hypoxia_signal;
+  } else {
+    // Parametric: flat rate per M2 macrophage
+    rate = sp->m2_vegf_rate;
+  }
   if (sp->diabetic_mode) {
     rate *= sp->diabetic_vegf_factor;
   }

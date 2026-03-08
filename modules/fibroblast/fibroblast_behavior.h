@@ -154,20 +154,26 @@ struct FibroblastBehavior : public Behavior {
     }
 
     // --- Collagen deposition (myofibroblasts only) ---
-    // Myofibroblasts constitutively synthesize type I/III collagen.
-    // TGF-beta drives the differentiation (gated by threshold), not the
-    // synthesis rate -- once a cell IS a myofibroblast, it deposits at a
-    // constant rate (Murphy et al. 2012).
     // Collagen is non-diffusing (structural ECM) -- no ScaledGrid.
     if (cell->GetFibroblastState() == kMyofibroblast) {
       auto* col_grid = rm->GetDiffusionGrid(fields::kCollagenId);
       size_t col_idx = col_grid->GetBoxIndex(qpos);
-      real_t deposit = sp->collagen_deposition_rate;
+      real_t deposit;
+      if (sp->mech_collagen_deposition) {
+        // Mechanistic: constitutive + TGF-b-responsive collagen synthesis.
+        // Basal: epigenetically locked myofibroblast program (constitutive).
+        // Responsive: Michaelis-Menten TGF-b receptor occupancy modulation.
+        deposit = sp->mech_collagen_basal +
+                  sp->mech_collagen_vmax *
+                  local_tgfb / (sp->mech_collagen_tgfb_km + local_tgfb);
+      } else {
+        // Parametric: constant rate (Murphy et al. 2012)
+        deposit = sp->collagen_deposition_rate;
+      }
       if (sp->diabetic_mode) {
         deposit *= sp->diabetic_collagen_factor;
       }
-      // Lactate boost: wound lactate stimulates collagen synthesis ~2x
-      // (Hunt et al. 2007, doi:10.1089/ten.2007.0115)
+      // Lactate boost (Hunt et al. 2007, doi:10.1089/ten.2007.0115)
       if (sp->lactate_enabled) {
         auto* lac_grid = rm->GetDiffusionGrid(fields::kLactateId);
         if (lac_grid) {
@@ -175,8 +181,7 @@ struct FibroblastBehavior : public Behavior {
           deposit *= (1.0 + sp->lactate_collagen_boost * lac);
         }
       }
-      // NO suppression: anti-fibrotic effect reduces excessive deposition
-      // (Schaffer et al. 1996, doi:10.1016/S0022-4804(96)80068-5)
+      // NO suppression (Schaffer et al. 1996, doi:10.1016/S0022-4804(96)80068-5)
       if (sp->nitric_oxide_enabled) {
         auto* no_grid = rm->GetDiffusionGrid(fields::kNitricOxideId);
         if (no_grid) {
@@ -184,10 +189,7 @@ struct FibroblastBehavior : public Behavior {
           deposit *= std::max(0.0, 1.0 - sp->no_collagen_suppression * no_val);
         }
       }
-      // O2-dependent hydroxylation: prolyl-4-hydroxylase requires molecular
-      // oxygen as co-substrate for collagen triple helix stability. Hypoxic
-      // wound bed produces less stable collagen until revascularization.
-      // (Myllyharju 2003, doi:10.1016/S0945-053X(03)00098-X)
+      // O2-dependent hydroxylation (Myllyharju 2003)
       if (sp->collagen_o2_half_max > 0) {
         auto* o2_grid = rm->GetDiffusionGrid(fields::kOxygenId);
         if (o2_grid) {

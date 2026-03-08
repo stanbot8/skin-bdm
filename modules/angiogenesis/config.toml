@@ -13,3 +13,8 @@ angio_vegf_rate = 0.01                # perfusion recovery per unit VEGF per ste
 m2_vegf_rate = 0.001                  # VEGF produced by M2 macrophages per step (Jetten et al. 2014)
 vegf_production_taper = 0.001          # PHD2/3 desensitization: exp(-k*wound_age) on VEGF production (Berra et al. 2003, doi:10.1093/emboj/cdg392)
 vegf_receptor_clearance = 0.005       # VEGFR-2 internalization per vascular density (Ferrara et al. 2003, doi:10.1038/nm0603-669)
+
+# Mechanistic replacements (test mode: all false = parametric default)
+mech_vegf_production = false          # HIF-1alpha stabilization replaces flat m2_vegf_rate
+mech_hif_o2_threshold = 0.3          # O2 below this stabilizes HIF-1alpha
+mech_hif_vegf_rate = 0.003           # max VEGF production at zero O2

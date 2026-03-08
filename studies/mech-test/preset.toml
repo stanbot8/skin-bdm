@@ -1,0 +1,24 @@
+# Preset: mech-test -- wound healing with all mechanistic toggles on
+
+[skin]
+duration_days = 30
+
+[skin.wound]
+enabled = true
+trigger_h = 0
+
+[skin.ph]
+enabled = true
+
+[skin.fibroblast]
+enabled = true
+mech_collagen_deposition = true
+
+[skin.hemostasis]
+enabled = true
+
+[skin.immune]
+mech_m1_m2_transition = true
+
+[skin.angiogenesis]
+mech_vegf_production = true

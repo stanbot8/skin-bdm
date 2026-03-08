@@ -184,6 +184,21 @@ struct SimParam : public ParamGroup {
   real_t immune_resolution_rate = 0.005;     // inflammation consumed by M2 per step
   real_t immune_migration_speed = 1.5;       // tractor force magnitude
 
+  // Mechanistic replacements (test mode: false = parametric, true = mechanistic)
+  bool mech_immune_recruitment = false;     // gradient-driven recruitment replaces spawn_rate/threshold/taper
+  real_t mech_recruit_gradient_scale = 0.12; // gradient magnitude -> recruitment probability scaling
+  real_t mech_recruit_saturation_k = 0.005;  // half-saturation for chemokine gradient (Michaelis-Menten)
+  bool mech_m1_m2_transition = false;        // efferocytosis-count driven M1->M2 with timer ceiling
+  int mech_efferocytosis_quota = 1;          // single engulfment triggers M2 program (PS receptor)
+  real_t mech_m2_transition_rate = 0.25;     // probability per step of transition once quota met
+  bool mech_collagen_deposition = false;     // TGF-beta receptor occupancy replaces flat rate
+  real_t mech_collagen_tgfb_km = 0.035;      // TGF-beta half-max for collagen synthesis (Michaelis-Menten)
+  real_t mech_collagen_vmax = 0.00025;         // TGF-b-responsive component Vmax
+  real_t mech_collagen_basal = 0.00035;        // constitutive myofibroblast collagen rate (epigenetically locked)
+  bool mech_vegf_production = false;         // HIF-1alpha stabilization replaces flat m2_vegf_rate
+  real_t mech_hif_o2_threshold = 0.3;        // O2 below this stabilizes HIF-1alpha
+  real_t mech_hif_vegf_rate = 0.003;         // max VEGF production at zero O2
+
   // Split pro/anti-inflammatory fields (Extension 4)
   bool split_inflammation_enabled = false;     // use separate pro/anti fields
   real_t anti_inflammation_diffusion = 0.05;   // anti-inflammatory diffusion coeff

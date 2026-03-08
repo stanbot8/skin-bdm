@@ -42,5 +42,11 @@ lymphatic_onset_h = 168              # hours post-wound before lymphangiogenesis
 lymphatic_sigmoid_k = 0.04           # sigmoid steepness for lymphatic maturation curve
 perfusion_clearance_rate = 0.003     # venous washout of TGF-beta scaled by vascular density (Bramhall et al. 1999)
 
+# Mechanistic replacements (test mode: all false = parametric default)
+mech_collagen_deposition = false    # TGF-beta receptor occupancy replaces flat rate
+mech_collagen_tgfb_km = 0.035        # TGF-beta half-max for collagen synthesis (Michaelis-Menten)
+mech_collagen_vmax = 0.00025         # TGF-b-responsive component Vmax
+mech_collagen_basal = 0.00035        # constitutive myofibroblast collagen rate (epigenetically locked)
+
 # O2-dependent collagen hydroxylation
 collagen_o2_half_max = 0.15          # O2 for half-max prolyl hydroxylation (Myllyharju 2003, doi:10.1016/s0945-053x(03)00006-4)

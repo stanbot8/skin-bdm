@@ -31,6 +31,14 @@ efferocytosis_age_fraction = 0.8  # PS exposure in aging neutrophils (Savill et 
 chemotaxis_enabled = true      # follow inflammation gradient
 chemotaxis_speed_scale = 1.0   # gradient speed scaling factor
 
+# Mechanistic replacements (test mode: all false = parametric default)
+mech_immune_recruitment = false     # gradient-driven recruitment replaces spawn_rate/threshold/taper
+mech_recruit_gradient_scale = 0.12   # gradient magnitude -> recruitment probability scaling
+mech_recruit_saturation_k = 0.005   # half-saturation for chemokine gradient (Michaelis-Menten)
+mech_m1_m2_transition = false       # efferocytosis-count driven M1->M2 replaces threshold/timer
+mech_efferocytosis_quota = 1        # single engulfment triggers M2 program (PS receptor; Ravichandran 2010)
+mech_m2_transition_rate = 0.25      # per-step probability of transition once quota met
+
 # Cytokine taper rates (exponential decay constants for age-dependent production)
 neutrophil_cytokine_taper = 0.004  # exp(-k*age); fast taper for sharp day-2 peak then decline
 m1_cytokine_taper = 0.003         # exp(-k*state_age); M1 cytokine output declines with age
