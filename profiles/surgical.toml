@@ -1,0 +1,30 @@
+# Profile: surgical -- clean incisional wound (primary closure)
+# Sources: Mangram et al. 1999 (CDC guideline), Leaper et al. 2004,
+#          Gottrup et al. 2005, Anderson et al. 2014
+
+[skin]
+aging_factor = 1.0
+stem_fraction = 0.35                 # good stem cell access at approximated wound margins
+
+[skin.diabetic]
+# Incisional wounds have approximated edges: rapid primary closure
+prolif_factor = 1.5                  # strong proliferative burst from edge tension
+migration_factor = 2.0               # very rapid migration (sutured edges minimize gap)
+# Normal fibroblast function
+fibroblast_activation_factor = 1.0
+collagen_factor = 1.0
+fibroblast_lifespan_factor = 1.0
+# Clean surgical field: minimal inflammatory load
+neutrophil_factor = 0.5              # sterile field, minimal contamination
+m1_duration_factor = 0.6             # very rapid resolution (clean, sutured field)
+resolution_factor = 1.4              # enhanced resolution
+baseline_inflammation = 0.0
+
+[skin.wound]
+# Incisional wound: edges held together by sutures
+radius = 6.0                        # small incisional wound
+inward_bias = 0.6                   # sutures actively pull edges together
+
+[skin.perfusion]
+basal = 1.0
+angio_rate = 0.007                   # good perfusion in healthy surgical patient

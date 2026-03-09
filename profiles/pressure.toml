@@ -1,0 +1,49 @@
+# Profile: pressure -- immobilized elderly patient with pressure ulcer risk
+# Sources: Gefen 2007, Coleman et al. 2013, Loerakker et al. 2011,
+#          Oomens et al. 2015, Berlowitz & Brienza 2007
+
+# Aged skin: thinner epidermis, reduced collagen density, fewer stem cells
+[skin]
+aging_factor = 0.7
+stem_fraction = 0.06                 # very few stem cells in aged ischemic skin
+
+[skin.wound]
+radius = 16.0                       # sacral ulcers are large (10+ cm diameter)
+inward_bias = 0.2                   # minimal contraction in ischemic tissue
+
+[skin.diabetic]
+# Severely impaired keratinocyte function (aged, malnourished, ischemic)
+prolif_factor = 0.6                  # impaired but functional once perfusion recovers
+migration_factor = 0.5               # slow in ischemic tissue
+m1_duration_factor = 1.8             # prolonged M1 from ischemia-reperfusion cycling
+resolution_factor = 0.5              # impaired resolution (chronic inflammation)
+# Reduced fibroblast activity (senescent, nutrient-deprived)
+collagen_factor = 0.5
+fibroblast_lifespan_factor = 0.7
+# Low-grade chronic inflammation from immobility and tissue damage
+baseline_inflammation = 0.0008
+
+[skin.fibroblast]
+activation_delay_h = 20             # delayed activation in nutrient-deprived tissue
+density_factor = 0.5                 # low fibroblast density in aged skin
+
+# Immunosenescence: prolonged M1 phase, impaired resolution
+[skin.immune]
+macrophage_m1_duration_h = 96        # 4 days M1 phase (immunosenescence)
+macrophage_spawn_taper = 0.0003
+
+# Compromised perfusion (immobility, peripheral vascular disease)
+[skin.perfusion]
+basal = 0.55                         # severely compromised baseline perfusion
+angio_rate = 0.003                   # angiogenesis impaired in elderly
+
+# Pressure-specific parameters for sustained sacral load (supine patient)
+[skin.pressure]
+enabled = true
+compression_threshold = 0.3
+ischemia_rate = 0.015                # slightly reduced (0.02 too aggressive for 68% closure)
+reperfusion_ros_burst = 0.12         # moderate ROS burst (0.15 adds too much secondary damage)
+tissue_damage_rate = 0.003
+moisture_damage_rate = 0.001
+shear_factor = 1.5
+reposition_interval_h = 4           # basic nursing care: repositioned every 4h
