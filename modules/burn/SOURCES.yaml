@@ -1,0 +1,50 @@
+# Literature sources for burn module
+burn:
+  description: Thermal injury zones (Jackson's burn wound model), eschar formation, and burn wound progression
+  sources:
+  - id: jackson1953
+    authors: Jackson DM
+    year: 1953
+    title: The Diagnosis of the Depth of Burning
+    journal: Br J Surg 40(164):588-596
+    doi: 10.1002/bjs.18004016413
+    notes: >
+      Original description of the three concentric zones of thermal injury:
+      coagulation (irreversible necrosis), stasis (potentially salvageable with
+      impaired perfusion), and hyperemia (viable with inflammatory response).
+      Foundational reference for coagulation_necrosis, stasis_initial_viability,
+      stasis_deterioration_rate, and hyperemia_inflammation_boost parameters.
+  - id: singerclark1999
+    authors: Singer AJ, Clark RAF
+    year: 1999
+    title: Cutaneous Wound Healing
+    journal: N Engl J Med 341(10):738-746
+    doi: 10.1056/NEJM199909023411006
+    notes: >
+      Comprehensive review including burn wound pathophysiology, the role of
+      inflammation in burn progression, and re-epithelialization from surviving
+      epidermal appendages. Supports depth_fraction classification and
+      infection_susceptibility parameters.
+  - id: herndon2012
+    authors: Herndon DN (ed.)
+    year: 2012
+    title: Total Burn Care
+    journal: Elsevier (4th ed.)
+    isbn: 978-1-4377-2786-9
+    notes: >
+      Standard clinical reference for burn management covering burn depth
+      classification, fluid resuscitation (Parkland formula), eschar formation
+      and debridement, transepidermal water loss, and contracture prevention.
+      Supports eschar_rate, tewl_multiplier, fluid_loss_rate, and
+      contracture_rate parameters.
+  - id: guodipietro2010
+    authors: Guo S, DiPietro LA
+    year: 2010
+    title: Factors Affecting Wound Healing
+    journal: J Dent Res 89(3):219-229
+    doi: 10.1177/0022034509359125
+    notes: >
+      Review of factors affecting wound healing including thermal injury,
+      infection risk in compromised tissue, and systemic effects of burn
+      injury on healing capacity. Supports infection_susceptibility and
+      the coupling between burn severity and healing impairment.

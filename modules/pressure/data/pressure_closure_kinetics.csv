@@ -1,0 +1,14 @@
+# Pressure ulcer closure kinetics (Stage II/III)
+# Very slow healing due to persistent ischemia, poor perfusion,
+# and repeated mechanical insult. 42-day timeline.
+# Sources: NPUAP 2019, Thomas 1997
+day,closure_pct
+0,0
+3,1
+7,5
+10,10
+14,18
+21,30
+28,45
+35,58
+42,68

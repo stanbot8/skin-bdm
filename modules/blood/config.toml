@@ -1,0 +1,75 @@
+# Module: blood -- hemorrhage, coagulation cascade, and blood volume
+# Sources: Versteeg et al. 2013, Guo & DiPietro 2010, Parkman et al. 2011
+#
+# Models three coupled systems:
+#   1. Hemorrhage: blood loss rate from wound surface, depth and vascularity dependent
+#   2. Coagulation cascade: intrinsic/extrinsic pathways converging on thrombin generation
+#   3. Blood volume: systemic effect of volume loss on perfusion and oxygen delivery
+#
+# Couples to: hemostasis (fibrin), perfusion (O2 delivery), inflammation (platelet cytokines),
+#             burn (fluid loss), immune (neutrophil delivery depends on blood flow)
+
+[skin.blood]
+enabled = false
+
+# Hemorrhage
+# Blood loss rate from wound (normalized, 0 = no bleeding, 1 = maximal arterial)
+# Scales with wound depth and local vascularity
+bleed_rate = 0.02
+# Depth factor: deeper wounds bleed more (multiplier per depth unit)
+depth_bleed_factor = 1.5
+# Vascularity coupling: bleed_rate *= local perfusion field value
+vascularity_coupling = true
+
+# Coagulation cascade
+# Intrinsic pathway activation rate (contact activation, factor XII)
+intrinsic_rate = 0.01
+# Extrinsic pathway activation rate (tissue factor exposure from injury)
+extrinsic_rate = 0.05
+# Thrombin generation rate from converged pathways
+thrombin_rate = 0.03
+# Thrombin to fibrin conversion coupling (feeds into hemostasis module)
+thrombin_fibrin_coupling = 0.02
+# Platelet aggregation rate at wound site
+platelet_aggregation_rate = 0.04
+# Platelet cytokine release (PDGF, TGF-beta) coupling to inflammation
+platelet_cytokine_coupling = 0.001
+
+# Clot maturation: time for provisional clot to stabilize (hours)
+clot_maturation_h = 4.0
+# Fibrinolysis onset delay (hours after clot formation)
+fibrinolysis_delay_h = 48.0
+
+# Blood volume and systemic effects
+# Normal blood volume = 1.0 (normalized)
+initial_volume = 1.0
+# Volume loss rate from hemorrhage (fraction per hour at bleed_rate=1.0)
+volume_loss_rate = 0.01
+# Volume recovery rate from fluid resuscitation and physiological compensation
+volume_recovery_rate = 0.005
+# Critical volume threshold: below this, perfusion drops sharply (hemorrhagic shock)
+shock_threshold = 0.6
+# Perfusion penalty below shock threshold (multiplicative)
+shock_perfusion_penalty = 0.3
+
+# Hemoglobin and oxygen delivery
+# Hemoglobin level (normalized, 1.0 = 14 g/dL)
+hemoglobin = 1.0
+# Anemia threshold: below this, O2 delivery is impaired
+anemia_threshold = 0.7
+# O2 delivery scaling: perfusion_effective = perfusion * hemoglobin_factor
+# When hemoglobin < anemia_threshold, factor drops below 1.0
+anemia_o2_penalty = 0.5
+
+# Anticoagulant therapy effects
+# 0 = no anticoagulation, 1.0 = therapeutic (e.g. warfarin INR 2-3)
+anticoagulant_level = 0.0
+# Anticoagulant effect on coagulation rates (multiplicative reduction)
+anticoag_coag_penalty = 0.4
+# Anticoagulant effect on bleed rate (multiplicative increase)
+anticoag_bleed_boost = 1.8
+
+# Platelet count effect (normalized, 1.0 = 250k/uL)
+platelet_count = 1.0
+# Thrombocytopenia threshold: below this, clotting is impaired
+thrombocytopenia_threshold = 0.4

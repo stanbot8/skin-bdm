@@ -1,0 +1,60 @@
+# Literature sources for pressure module
+pressure:
+  description: Pressure ulcer ischemia-reperfusion injury, tissue damage mechanics, and staging
+  sources:
+  - id: gefen2007
+    authors: Gefen A
+    year: 2007
+    title: "Pressure ulcers and deep tissue injury: a bioengineering perspective"
+    journal: J Wound Care 16(8):336-342
+    doi: 10.12968/jowc.2007.16.8.27854
+    notes: >
+      Bioengineering analysis of pressure ulcer formation covering mechanical
+      load distribution, capillary closing pressure, and the role of sustained
+      compression in tissue ischemia. Supports compression_threshold,
+      ischemia_rate, and shear_factor parameters.
+  - id: kosiak1959
+    authors: Kosiak M
+    year: 1959
+    title: Etiology and Pathology of Ischemic Ulcers
+    journal: Arch Phys Med Rehabil 40:62-69
+    notes: >
+      Landmark experimental study establishing the inverse pressure-time
+      relationship for tissue necrosis. Demonstrated that high pressures
+      cause damage in shorter periods while lower pressures require prolonged
+      exposure. Foundational reference for tissue_damage_rate and the
+      stage progression threshold model.
+  - id: stekelenburg2008
+    authors: Stekelenburg A, Strijkers GJ, Parusel H, Bader DL, Nicolay K, Oomens CW
+    year: 2008
+    title: "Deep Tissue Injury: How Deep is Our Understanding?"
+    journal: Arch Phys Med Rehabil 89(7):1410-1413
+    doi: 10.1016/j.apmr.2008.01.012
+    notes: >
+      Review of deep tissue injury mechanisms including muscle layer damage
+      preceding skin breakdown, the role of sustained deformation, and
+      ischemia-reperfusion injury. Supports stage progression thresholds
+      and the reperfusion_ros_burst parameter.
+  - id: stekelenburg2006
+    authors: Stekelenburg A, Oomens CW, Strijkers GJ, Nicolay K, Bader DL
+    year: 2006
+    title: Compression-induced deep tissue injury examined with magnetic resonance imaging and histology
+    journal: J Appl Physiol 100(6):1946-1954
+    doi: 10.1152/japplphysiol.00889.2005
+    notes: >
+      Experimental study using MRI to visualize compression-induced tissue
+      damage in real time. Demonstrated that skeletal muscle is more susceptible
+      to compression damage than skin, supporting the concept that deep tissue
+      injury initiates at the bone-muscle interface. Supports tissue_damage_rate
+      and the staging model for progressive tissue breakdown.
+  - id: npuap2019
+    authors: European Pressure Ulcer Advisory Panel, National Pressure Injury Advisory Panel, Pan Pacific Pressure Injury Alliance
+    year: 2019
+    title: "Prevention and Treatment of Pressure Ulcers/Injuries: Clinical Practice Guideline"
+    journal: EPUAP/NPIAP/PPPIA (3rd ed.)
+    notes: >
+      International evidence-based clinical practice guideline for pressure
+      injury prevention and treatment. Defines the staging system (Stage I
+      through IV and unstageable), repositioning protocols, moisture management,
+      and risk assessment. Supports stage_1 through stage_4 thresholds,
+      reposition_interval_h, and moisture_damage_rate parameters.

@@ -1,0 +1,39 @@
+# Module: burn -- thermal injury (Jackson's burn wound model, 1953)
+# Three concentric zones of thermal damage with distinct fates
+
+[skin.burn]
+enabled = false
+
+# Zone of coagulation: irreversible cell death fraction
+coagulation_necrosis = 0.95
+
+# Zone of stasis: initial viability (salvageable)
+stasis_initial_viability = 0.5
+
+# Zone of stasis: ischemic deterioration rate (h^-1)
+# Without treatment, stasis zone converts to coagulation over 24 to 48h
+stasis_deterioration_rate = 0.02
+
+# Zone of hyperemia: mild inflammatory enhancement
+hyperemia_inflammation_boost = 0.3
+
+# Depth classification
+# Superficial (epidermal only): depth_fraction < 0.3
+# Partial thickness: 0.3 <= depth_fraction < 0.7
+# Full thickness: depth_fraction >= 0.7
+depth_fraction = 0.5
+
+# Eschar formation rate from necrotic tissue
+eschar_rate = 0.01
+
+# Transepidermal water loss multiplier (barrier destroyed)
+tewl_multiplier = 5.0
+
+# Fluid loss rate through burn surface (ml/h equivalent, normalized)
+fluid_loss_rate = 0.05
+
+# Infection susceptibility multiplier (barrier breach)
+infection_susceptibility = 3.0
+
+# Contracture risk: excessive scar contraction tendency
+contracture_rate = 0.002

@@ -1,0 +1,41 @@
+# Module: pressure -- ischemia-reperfusion injury from sustained mechanical load
+# Gefen 2007, Loerakker et al. 2011, Oomens et al. 2015
+# Pressure ulcers develop when sustained load exceeds capillary closing
+# pressure (~32 mmHg), causing tissue ischemia. Reperfusion after pressure
+# release generates a reactive oxygen species (ROS) burst that damages
+# surviving cells and amplifies inflammation.
+[skin.pressure]
+enabled = false                        # master switch
+
+# Compression threshold (normalized, 0 to 1 scale)
+# Below this value, tissue perfusion is maintained
+compression_threshold = 0.3
+
+# Ischemia rate: how fast oxygen drops under compression
+ischemia_rate = 0.02
+
+# Reperfusion ROS burst magnitude when pressure is released
+reperfusion_ros_burst = 0.15
+
+# Tissue damage rate from sustained ischemia
+tissue_damage_rate = 0.003
+
+# Moisture damage coefficient (incontinence, perspiration)
+moisture_damage_rate = 0.001
+
+# Shear stress multiplier (amplifies pressure damage)
+shear_factor = 1.5
+
+# Pressure cycling: hours on/off for repositioning protocols
+# 0 = constant pressure (worst case)
+reposition_interval_h = 0
+
+# Stage progression thresholds (cumulative damage fraction)
+# Stage I: non-blanchable erythema (reversible)
+stage_1_threshold = 0.15
+# Stage II: partial thickness loss (epidermis/dermis)
+stage_2_threshold = 0.35
+# Stage III: full thickness loss (into subcutaneous)
+stage_3_threshold = 0.60
+# Stage IV: full thickness with exposed bone/tendon
+stage_4_threshold = 0.85
