@@ -1,0 +1,28 @@
+# Profile: tumor -- cutaneous malignancy with local microenvironment disruption
+# Hypoxic, acidic, immunosuppressive, angiogenic tumor microenvironment
+
+[skin]
+aging_factor = 1.0
+stem_fraction = 0.12
+
+[skin.diabetic]
+prolif_factor = 0.8
+migration_factor = 0.7
+# Cancer-associated fibroblasts: hyperactivated
+fibroblast_activation_factor = 1.8
+collagen_factor = 1.5
+fibroblast_lifespan_factor = 1.3
+# Tumor immune evasion
+neutrophil_factor = 0.6
+m1_duration_factor = 0.5
+resolution_factor = 0.8
+# Chronic low-grade tumor inflammation
+baseline_inflammation = 0.001
+
+[skin.perfusion]
+# Tumor angiogenesis: high VEGF but chaotic vasculature
+basal = 0.7
+angio_rate = 0.008
+
+[skin.tumor]
+enabled = true

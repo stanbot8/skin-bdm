@@ -1,0 +1,24 @@
+# Profile: tumor_wound -- wound healing in presence of cutaneous tumor
+# Combined tumor + wound scenario: tumor present at wound site
+
+[skin]
+aging_factor = 1.0
+stem_fraction = 0.10
+
+[skin.diabetic]
+prolif_factor = 0.7
+migration_factor = 0.6
+fibroblast_activation_factor = 1.5
+collagen_factor = 1.2
+fibroblast_lifespan_factor = 1.1
+neutrophil_factor = 0.7
+m1_duration_factor = 0.6
+resolution_factor = 0.7
+baseline_inflammation = 0.0015
+
+[skin.perfusion]
+basal = 0.75
+angio_rate = 0.006
+
+[skin.tumor]
+enabled = true

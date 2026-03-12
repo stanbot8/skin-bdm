@@ -1,0 +1,42 @@
+# Profile: burn -- acute thermal injury with barrier destruction
+# Sources: Jackson 1953 (three-zone model), Jeschke et al. 2020
+
+[skin.burn]
+enabled = true
+
+# Depth classification (default partial thickness)
+depth_fraction = 0.5
+stasis_deterioration_rate = 0.004    # partial thickness: stasis zone partially salvageable
+tewl_multiplier = 5.0
+fluid_loss_rate = 0.04               # slightly less fluid loss (partial barrier from eschar)
+
+[skin.diabetic]
+# Keratinocyte response: partial thickness burns heal by re-epithelialization
+# from wound margins and surviving dermal appendages (hair follicles, sweat glands)
+prolif_factor = 1.6                  # strong proliferative burst from surviving appendages
+migration_factor = 1.1               # near-normal migration once eschar clears
+# Fibroblast response (hypertrophic scar risk)
+fibroblast_activation_factor = 1.5   # aggressive activation (Gauglitz et al. 2011)
+collagen_factor = 1.3                # elevated collagen deposition
+fibroblast_lifespan_factor = 1.2     # prolonged activity
+# Immune response
+neutrophil_factor = 2.0              # large initial influx (Church et al. 2006)
+m1_duration_factor = 1.3             # M1 phase slightly prolonged
+resolution_factor = 0.85             # resolution functional
+# Chronic baseline inflammation
+baseline_inflammation = 0.0008       # systemic inflammatory response (SIRS component)
+
+[skin.perfusion]
+basal = 0.9                          # hyperemia zone has supranormal perfusion
+angio_rate = 0.007                   # hyperemia zone drives strong angiogenesis
+
+[skin]
+aging_factor = 1.0
+stem_fraction = 0.25                 # dermal appendages and hair follicle stem cells
+
+[skin.wound]
+inward_bias = 0.35                   # slightly stronger than default for burn margins
+
+[skin.temperature]
+q10_migration = 2.0                  # thermal damage affects enzymatic kinetics
+q10_proliferation = 2.0
