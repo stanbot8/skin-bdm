@@ -72,7 +72,7 @@ struct ROSPostHook {
 
     // NF-kB activation: ROS amplifies pro-inflammatory signaling
     if (infl_grid && sp_->ros.inflammation_amplification > 0) {
-      real_t gate = std::max(static_cast<real_t>(0),
+      real_t gate = std::max(real_t{0},
                              static_cast<real_t>(1) - snap.stratum);
       if (gate > 1e-10) {
         infl_grid->ChangeConcentrationBy(snap.idx,

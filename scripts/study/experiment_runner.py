@@ -40,15 +40,8 @@ from batch.lib import (
 sys.path.insert(0, os.path.join(REPO, "literature"))
 from cure_criteria import evaluate_cure, print_cure_assessment
 
-try:
-    import tomllib
-except ModuleNotFoundError:
-    try:
-        import tomli as tomllib
-    except ModuleNotFoundError:
-        import pip._vendor.tomli as tomllib
-
-
+from batch.lib import get_tomllib
+tomllib = get_tomllib()
 # ---------------------------------------------------------------------------
 # Experiment loading
 # ---------------------------------------------------------------------------

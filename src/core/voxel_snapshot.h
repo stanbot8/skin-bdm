@@ -37,6 +37,9 @@ struct VoxelSnapshot {
   real_t o2;           // oxygen concentration
   real_t ph;           // pH alkalinity (structural grid, coarse-indexed)
 
+  // Timestep
+  real_t dt;           // simulation_time_step (hours per step)
+
   // Multi-resolution structural grid mapping
   size_t coarse_si;    // structural grid index for this fine voxel
   real_t coarse_w;     // volume correction factor for structural writes
@@ -62,6 +65,7 @@ struct SnapshotFiller {
   real_t coarse_w = 1.0;
   bool post_wound = false;
   uint64_t wound_age = 0;
+  real_t dt = 0.1;
 
   // Material layer
   const MaterialRegistry* mat_reg = nullptr;
@@ -82,13 +86,13 @@ struct SnapshotFiller {
     coarse = c;
     coarse_w = cw;
 
-    auto* sp = reg.Params();
-    uint64_t wound_step = static_cast<uint64_t>(sp->wound.trigger_step);
-    post_wound = (reg.Step() > wound_step);
-    wound_age = post_wound ? reg.Step() - wound_step : 0;
+    post_wound = reg.PostWound();
+    wound_age = reg.WoundAge();
+    dt = reg.Dt();
 
-    z_epi_top = sp->volume_z_cornified;
-    z_derm_bottom = sp->dermal_z_reticular;
+    auto* sp_ = reg.Params();
+    z_epi_top = sp_->volume_z_cornified;
+    z_derm_bottom = sp_->dermal_z_reticular;
 
     mat_reg = &reg.Materials();
   }
@@ -118,6 +122,7 @@ struct SnapshotFiller {
     s.coarse_si = CoarseSI(idx);
     s.coarse_w = coarse_w;
     s.ph = ph_g ? ph_g->GetConcentration(s.coarse_si) : 0;
+    s.dt = dt;
     s.stratum = 0;
     s.barrier = 0;
     s.material_id = ClassifyMaterial(s.z);
@@ -139,6 +144,7 @@ struct SnapshotFiller {
     s.coarse_si = CoarseSI(idx);
     s.coarse_w = coarse_w;
     s.ph = ph_g ? ph_g->GetConcentration(s.coarse_si) : 0;
+    s.dt = dt;
     s.material_id = material::kSkinEpidermis;  // epi loop is always epidermis
     s.mat = mat_reg ? &mat_reg->Get(s.material_id) : nullptr;
   }

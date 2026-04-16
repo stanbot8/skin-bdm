@@ -32,21 +32,10 @@ import sys
 import matplotlib
 matplotlib.use("Agg")  # headless rendering
 import matplotlib.pyplot as plt
+from batch.lib import load_csv
 
 
-def load_csv(path):
-    with open(path) as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-    data = {}
-    for key in rows[0]:
-        try:
-            data[key] = [float(r[key]) for r in rows]
-        except ValueError:
-            data[key] = [r[key] for r in rows]
-    return data
-
-
+# load_csv imported from batch.lib (canonical version)
 def plot_wound_closure(data, out_dir):
     fig, ax = plt.subplots(figsize=(8, 4))
     days = [h / 24.0 for h in data["time_h"]]

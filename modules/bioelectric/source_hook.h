@@ -28,8 +28,7 @@ struct BioelectricSourceHook {
 
   // Epidermal wound: TEP source from intact epithelium. Fully self-contained.
   inline void ApplyEpiWound(const VoxelSnapshot& snap, SignalBoard& sig) {
-    real_t epi_gate = std::max(static_cast<real_t>(0),
-                               std::min(static_cast<real_t>(1), snap.stratum));
+    real_t epi_gate = std::clamp(snap.stratum, real_t{0}, real_t{1});
     real_t source_rate = sp_->voltage_epithelial_source * epi_gate;
     if (sp_->diabetic.mode) {
       source_rate *= sp_->diabetic.voltage_factor;

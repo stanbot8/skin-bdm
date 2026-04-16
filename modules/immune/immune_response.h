@@ -83,7 +83,7 @@ struct ImmuneResponse : public StandaloneOperationImpl {
       // Carrying capacity: limited adhesion sites at wound margin
       int n_mac = CountMacrophages(sim);
       int capacity = ComputePerimeterSlots(sp);
-      real_t saturation = std::max(static_cast<real_t>(0),
+      real_t saturation = std::max(real_t{0},
                                    1.0 - static_cast<real_t>(n_mac) / capacity);
 
       // Endothelial adhesion taper: ICAM-1/VCAM-1 upregulation peaks early
@@ -119,7 +119,7 @@ struct ImmuneResponse : public StandaloneOperationImpl {
       } else {
         // Parametric: threshold + rate + taper
         real_t infl = GetNetInflammation(sim, qpos);
-        real_t excess = std::max(static_cast<real_t>(0),
+        real_t excess = std::max(real_t{0},
                                  infl - sp->immune.macrophage_spawn_threshold);
         prob = sp->immune.macrophage_spawn_rate * excess * saturation * recruit_taper;
       }

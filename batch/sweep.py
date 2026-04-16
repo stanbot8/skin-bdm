@@ -23,15 +23,8 @@ from datetime import datetime
 
 from batch import lib
 
-try:
-    import tomllib
-except ImportError:
-    try:
-        import tomli as tomllib
-    except ImportError:
-        tomllib = None
-
-
+from batch.lib import get_tomllib
+tomllib = get_tomllib()
 def parse_toml(path):
     """Parse TOML sweep config. Falls back to manual parsing if no tomllib."""
     if tomllib:

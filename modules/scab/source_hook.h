@@ -22,13 +22,11 @@ struct ScabDecayHook {
   DiffusionGrid* mmp_grid = nullptr;
   DiffusionGrid* water_grid = nullptr;
   const SimParam* sp_ = nullptr;
+  const GridRegistry* reg_ = nullptr;
   bool active = false;
-  bool coarse_ = false;
-  real_t coarse_w_ = 1.0;
-  std::vector<size_t> coarse_map_;
-
   inline void Init(const GridRegistry& reg, SignalBoard& sig) {
     sp_ = reg.Params();
+    reg_ = &reg;
     active = sp_->scab.enabled;
     if (!active) return;
     scab_grid = reg.Get(fields::kScabId);
@@ -36,39 +34,19 @@ struct ScabDecayHook {
     stratum_grid = reg.Get(fields::kStratumId);
     if (sp_->mmp.enabled) mmp_grid = reg.Get(fields::kMMPId);
     water_grid = reg.Get(fields::kWaterId);
-
-    coarse_ = sp_->grid_resolution_structural > 0 &&
-              sp_->grid_resolution_structural != sp_->grid_resolution;
-    if (coarse_) {
-      real_t rf = static_cast<real_t>(sp_->grid_resolution);
-      real_t rc = static_cast<real_t>(sp_->grid_resolution_structural);
-      coarse_w_ = (rc * rc * rc) / (rf * rf * rf);
-      if (stratum_grid) {
-        GridContext ctx(stratum_grid, sp_);
-        coarse_map_.resize(ctx.n);
-        for (size_t i = 0; i < ctx.n; i++) {
-          Real3 pos = {ctx.X(i), ctx.Y(i), ctx.Z(i)};
-          coarse_map_[i] = scab_grid->GetBoxIndex(pos);
-        }
-      }
-    }
-  }
-
-  size_t CSI(size_t fine) const {
-    return coarse_ ? coarse_map_[fine] : fine;
   }
 
   // Self-contained iteration: scab decay over epidermal wound voxels.
   inline void ApplyDecay(const GridContext::WoundMaskData& mask, real_t dt) {
     if (!active) return;
-    real_t cw = coarse_ ? coarse_w_ : 1.0;
+    real_t cw = reg_->CoarseWeight();
     real_t base_decay = sp_->scab.decay * dt;
     real_t reepith = sp_->scab.reepith_rate * dt;
     real_t mmp_deg = sp_->scab.mmp_degradation * dt;
     real_t moist = sp_->scab.moisture_softening * dt;
 
     for (size_t idx : mask.epi_wound) {
-      size_t si = CSI(idx);
+      size_t si = reg_->CoarseIndex(idx);
       real_t v = scab_grid->GetConcentration(si);
       if (v <= 1e-10) continue;
 
@@ -77,9 +55,7 @@ struct ScabDecayHook {
       // Re-epithelialization undermining: barrier goes 0 (void) to 1 (healed)
       if (stratum_grid) {
         real_t stratum = stratum_grid->GetConcentration(idx);
-        real_t barrier = std::max(static_cast<real_t>(0),
-                                   std::min(static_cast<real_t>(1),
-                                            (stratum + 1) / 4));
+        real_t barrier = std::clamp((stratum + 1) / 4, real_t{0}, real_t{1});
         loss += reepith * barrier;
       }
 

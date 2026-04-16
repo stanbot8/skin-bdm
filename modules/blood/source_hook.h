@@ -96,7 +96,7 @@ struct BloodSourceHook {
       bleed *= snap.vasc;
     }
     // Volume loss from hemorrhage
-    real_t dt = 0.1;  // simulation timestep in hours
+    real_t dt = snap.dt;
     blood_volume_ -= bleed * sp_->blood.volume_loss_rate * dt;
     // Volume recovery (physiological compensation)
     if (blood_volume_ < sp_->blood.initial_volume) {

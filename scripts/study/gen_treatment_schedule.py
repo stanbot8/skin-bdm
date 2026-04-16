@@ -30,14 +30,8 @@ import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-try:
-    import tomllib
-except ModuleNotFoundError:
-    try:
-        import tomli as tomllib
-    except ModuleNotFoundError:
-        import pip._vendor.tomli as tomllib
-
+from batch.lib import get_tomllib
+tomllib = get_tomllib()
 ALL_TREATMENTS = [
     "npwt", "hbo", "growth_factor", "doxycycline",
     "anti_inflammatory", "msc", "moisture", "combination", "senolytic",

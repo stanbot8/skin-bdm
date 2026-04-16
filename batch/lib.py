@@ -255,6 +255,22 @@ def get_metrics_path():
 
 
 # ---------------------------------------------------------------------------
+def get_tomllib():
+    """Import tomllib (3.11+), falling back to tomli or pip's vendored copy."""
+    try:
+        import tomllib
+        return tomllib
+    except ImportError:
+        pass
+    try:
+        import tomli as tomllib
+        return tomllib
+    except ImportError:
+        pass
+    import pip._vendor.tomli as tomllib
+    return tomllib
+
+
 # CSV loading and aggregation
 # ---------------------------------------------------------------------------
 

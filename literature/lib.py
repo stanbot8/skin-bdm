@@ -8,6 +8,7 @@ and the individual compare_*.py wrappers.
 import csv
 import math
 import os
+from batch.lib import load_csv
 
 
 # ---------------------------------------------------------------------------
@@ -22,24 +23,7 @@ def plots_dir(csv_path):
     return os.path.join(os.path.dirname(os.path.abspath(csv_path)), "plots")
 
 
-def load_csv(path):
-    """Load a CSV file into a dict of lists, skipping comment lines."""
-    with open(path) as f:
-        reader = csv.DictReader(
-            (row for row in f if not row.startswith("#"))
-        )
-        rows = list(reader)
-    if not rows:
-        return {}
-    data = {}
-    for key in rows[0]:
-        try:
-            data[key] = [float(r[key]) for r in rows]
-        except ValueError:
-            data[key] = [r[key] for r in rows]
-    return data
-
-
+# load_csv imported from batch.lib (canonical version)
 def interpolate(x_ref, y_ref, x_query):
     """Linear interpolation of (x_ref, y_ref) at x_query points."""
     result = []

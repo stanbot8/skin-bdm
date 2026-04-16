@@ -56,7 +56,7 @@ struct NeuropathySourceHook {
     // TGF-beta scar barrier: inhibits neurite extension
     if (tgfb_grid) {
       real_t local_tgfb = tgfb_grid->GetConcentration(snap.idx);
-      rate *= std::max(static_cast<real_t>(0),
+      rate *= std::max(real_t{0},
                        1.0 - sp_->nerve_tgfb_inhibit * local_tgfb);
     }
     real_t gain = std::min(nerve_target - nerve_val, rate);

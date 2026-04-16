@@ -49,7 +49,7 @@ struct PhotonSourceHook {
   inline void ApplyDermal(const VoxelSnapshot& snap, SignalBoard& sig) {
     if (!snap.in_wound) return;
 
-    real_t dt = 0.1;
+    real_t dt = snap.dt;
 
     // Beer-Lambert source term: inject photons at surface, attenuate with depth.
     // Surface voxels (z near wound surface) receive irradiance scaled by beam

@@ -62,7 +62,7 @@ struct BurnSourceHook {
 
     int zone = BurnZone(snap.z, sp_->volume_z_cornified);
 
-    real_t dt = 0.1;
+    real_t dt = snap.dt;
 
     if (zone == 0) {
       // Zone of coagulation: perfusion near zero (dead tissue)
@@ -109,7 +109,7 @@ struct BurnSourceHook {
 
   // Epidermal wound: barrier-dependent effects.
   inline void ApplyEpiWound(const VoxelSnapshot& snap, SignalBoard& sig) {
-    real_t dt = 0.1;
+    real_t dt = snap.dt;
 
     // Transepidermal water loss: destroyed barrier loses water at TEWL multiplier
     if (water_grid) {

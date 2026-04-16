@@ -21,16 +21,16 @@ struct ScarPostHook {
   DiffusionGrid* col_grid = nullptr;
   DiffusionGrid* infl_grid = nullptr;
   const SimParam* sp_ = nullptr;
+  const GridRegistry* reg_ = nullptr;
   bool active = false;
   bool do_scar_collagen = false;
   bool do_mechano = false;
-  bool coarse_ = false;
   size_t dermal_z_offset = 0;
   size_t res2 = 0;
-  std::vector<size_t> coarse_map_;
 
   inline void Init(const GridRegistry& reg, SignalBoard& sig) {
     sp_ = reg.Params();
+    reg_ = &reg;
     active = sp_->scar.proportional_enabled;
     if (!active) return;
     scar_grid = reg.Get(fields::kScarId);
@@ -54,17 +54,6 @@ struct ScarPostHook {
           (sp_->dermal_fibroblast_depth - lo) / box_len);
       dz_i = std::max(0, std::min(dz_i, static_cast<int>(res) - 1));
       dermal_z_offset = static_cast<size_t>(dz_i) * res2;
-      // Build coarse map for dermal_fine -> col_grid index mapping
-      coarse_ = sp_->grid_resolution_structural > 0 &&
-                sp_->grid_resolution_structural != sp_->grid_resolution;
-      if (coarse_ && col_grid) {
-        GridContext gctx(ref, sp_);
-        coarse_map_.resize(gctx.n);
-        for (size_t i = 0; i < gctx.n; i++) {
-          Real3 pos = {gctx.X(i), gctx.Y(i), gctx.Z(i)};
-          coarse_map_[i] = col_grid->GetBoxIndex(pos);
-        }
-      }
     } else {
       // Inflammation integral fallback
       infl_grid = reg.InflammationGrid();
@@ -82,7 +71,7 @@ struct ScarPostHook {
     if (do_scar_collagen && col_grid) {
       // Mirror DERMAL collagen to epidermal scar field
       size_t dermal_fine = (snap.idx % res2) + dermal_z_offset;
-      size_t dermal_ci = coarse_ ? coarse_map_[dermal_fine] : dermal_fine;
+      size_t dermal_ci = reg_->CoarseIndex(dermal_fine);
       real_t dermal_col = col_grid->GetConcentration(dermal_ci);
       size_t sc_si = snap.coarse_si;
       real_t sc_cur = scar_grid->GetConcentration(sc_si);

@@ -53,7 +53,7 @@ struct PressureSourceHook {
   inline void ApplyDermal(const VoxelSnapshot& snap, SignalBoard& sig) {
     if (!snap.in_wound) return;
 
-    real_t dt = 0.1;  // hours per step
+    real_t dt = snap.dt;
 
     // Update global pressure state once per timestep (not per voxel)
     auto* sim = Simulation::GetActive();

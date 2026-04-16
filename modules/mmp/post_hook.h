@@ -97,7 +97,7 @@ struct MMPPostHook {
             real_t col_degrade_rate = sp_->mmp.collagen_degradation;
             if (do_age && age_grid) {
               real_t age_val = age_grid->GetConcentration(snap.idx);
-              col_degrade_rate *= std::max(static_cast<real_t>(0),
+              col_degrade_rate *= std::max(real_t{0},
                   1.0 - sp_->age_collagen_crosslink * age_val);
             }
             real_t degrade = std::min(col_val,

@@ -42,7 +42,7 @@ struct MechanoSourceHook {
     // Collagen dominates stiffness; elastin provides compliance
     real_t stiff = std::min(static_cast<real_t>(1.0),
         col_val * 0.8 - el_val * 0.2);
-    stiff = std::max(static_cast<real_t>(0), stiff);
+    stiff = std::max(real_t{0}, stiff);
     real_t stiff_cur = stiffness_grid->GetConcentration(snap.idx);
     real_t stiff_delta = stiff - stiff_cur;
     if (std::abs(stiff_delta) > 1e-10) {

@@ -56,8 +56,8 @@ struct FibroblastPostHook {
       real_t tgfb_val = tgfb_grid->GetConcentration(snap.idx);
       if (tgfb_val > 1e-10) {
         real_t tissue_density = std::max(
-            std::max(static_cast<real_t>(0), snap.stratum),
-            std::max(static_cast<real_t>(0), snap.vasc));
+            std::max(real_t{0}, snap.stratum),
+            std::max(real_t{0}, snap.vasc));
         tissue_density = std::min(static_cast<real_t>(1), tissue_density);
         if (tissue_density > 1e-10) {
           real_t sink = sp_->fibroblast.tgfb_tissue_clearance *

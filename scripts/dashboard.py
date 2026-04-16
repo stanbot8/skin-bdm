@@ -18,6 +18,7 @@ import sys
 import threading
 import urllib.parse
 import webbrowser
+from batch.lib import load_csv
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "literature"))
@@ -33,21 +34,7 @@ ENGINE_STUDIES_DIR = os.path.join(ROOT, "studies")
 # Data helpers
 # ---------------------------------------------------------------------------
 
-def load_csv(path):
-    with open(path) as f:
-        reader = csv.DictReader(row for row in f if not row.startswith("#"))
-        rows = list(reader)
-    if not rows:
-        return {}
-    data = {}
-    for key in rows[0]:
-        try:
-            data[key] = [float(r[key]) for r in rows]
-        except ValueError:
-            data[key] = [r[key] for r in rows]
-    return data
-
-
+# load_csv imported from batch.lib (canonical version)
 def _read_skibidy_meta(study_dir, name):
     """Read .skibidy project file and return metadata dict."""
     proj = os.path.join(study_dir, name + ".skibidy")

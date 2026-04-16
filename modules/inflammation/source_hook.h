@@ -21,22 +21,9 @@ struct WoundInflSourceHook {
 
   inline void Init(const GridRegistry& reg, SignalBoard& sig) {
     sp_ = reg.Params();
-    uint64_t step = reg.Step();
-    uint64_t wound_step = static_cast<uint64_t>(sp_->wound.trigger_step);
-    bool post_wound = (step > wound_step);
-
-    wound_infl_rate = sp_->wound.inflammation_source_rate;
-    active = post_wound && wound_infl_rate > 0;
+    wound_infl_rate = reg.WoundInflRate();
+    active = wound_infl_rate > 0;
     if (!active) return;
-
-    // Temporal taper: DAMPs cleared by macrophage phagocytosis
-    real_t taper = sp_->wound.inflammation_source_taper;
-    if (taper > 0) {
-      uint64_t wound_age = step - wound_step;
-      wound_infl_rate *= std::exp(-taper * static_cast<real_t>(wound_age));
-      if (wound_infl_rate < 1e-10) { active = false; return; }
-    }
-
     infl_grid = reg.InflammationGrid();
     if (!infl_grid) active = false;
   }

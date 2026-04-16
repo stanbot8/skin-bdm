@@ -45,23 +45,18 @@ struct AngioSourceHook {
       if (!no_grid) do_no = false;
     }
 
-    uint64_t wound_step = static_cast<uint64_t>(sp_->wound.trigger_step);
-    uint64_t step = reg.Step();
-    bool post_wound = (step > wound_step);
     sig.vasc_eligible = false;
-    if (post_wound) {
-      uint64_t wound_age = step - wound_step;
+    if (reg.PostWound()) {
       sig.vasc_eligible =
-          (wound_age >= static_cast<uint64_t>(sp_->perfusion.angio_delay));
+          (reg.WoundAge() >= static_cast<uint64_t>(sp_->perfusion.angio_delay));
     }
 
-    sig.do_vegf = sp_->angiogenesis.enabled && post_wound && vegf_grid;
+    sig.do_vegf = sp_->angiogenesis.enabled && reg.PostWound() && vegf_grid;
     sig.vegf_prod_rate = sp_->angiogenesis.vegf_production_rate;
     if (sp_->diabetic.mode) sig.vegf_prod_rate *= sp_->diabetic.vegf_factor;
     if (sig.do_vegf && sp_->angiogenesis.vegf_production_taper > 0) {
-      uint64_t wound_age = step - wound_step;
       sig.vegf_prod_rate *= std::exp(-sp_->angiogenesis.vegf_production_taper *
-                                      static_cast<real_t>(wound_age));
+                                      static_cast<real_t>(reg.WoundAge()));
       if (sig.vegf_prod_rate < 1e-10) sig.do_vegf = false;
     }
     sig.vegf_threshold = sp_->angiogenesis.vegf_hypoxia_threshold;
@@ -101,7 +96,7 @@ struct AngioSourceHook {
       if (ros_grid) {
         real_t ros_val = ros_grid->GetConcentration(snap.idx);
         if (ros_val > 1e-10) {
-          eff_rate *= std::max(static_cast<real_t>(0),
+          eff_rate *= std::max(real_t{0},
               1.0 - sp_->ros.angiogenesis_impairment * ros_val);
         }
       }

@@ -22,6 +22,7 @@ import glob
 import os
 import sys
 from datetime import datetime
+from batch.lib import load_csv
 
 try:
     from openpyxl import Workbook
@@ -95,12 +96,7 @@ RESILIENCE_DISPLAY = [
 
 # -- Helpers -------------------------------------------------------------------
 
-def load_csv(path):
-    """Load a CSV into a list of dicts."""
-    with open(path) as f:
-        return list(csv.DictReader(f))
-
-
+# load_csv imported from batch.lib (canonical version)
 def parse_float(val):
     """Parse a string to float, returning None on failure."""
     if val is None or val == "" or val == "N/A":

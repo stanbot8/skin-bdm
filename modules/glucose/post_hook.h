@@ -46,7 +46,7 @@ struct AGEPostHook {
     // RAGE-mediated NF-kB inflammation
     real_t age_val = age_grid->GetConcentration(snap.idx);
     if (age_val > 1e-10 && infl_grid) {
-      real_t gate = std::max(static_cast<real_t>(0),
+      real_t gate = std::max(real_t{0},
                              static_cast<real_t>(1) - snap.stratum);
       if (gate > 1e-10) {
         infl_grid->ChangeConcentrationBy(snap.idx,

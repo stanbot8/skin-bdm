@@ -207,7 +207,7 @@ struct FibroblastBehavior : public Behavior {
       if (sp->fibroblast.collagen_o2_half_max > 0) {
         auto* o2_grid = rm->GetDiffusionGrid(fields::kOxygenId);
         if (o2_grid) {
-          real_t o2 = std::max(static_cast<real_t>(0), o2_grid->GetValue(qpos));
+          real_t o2 = std::max(real_t{0}, o2_grid->GetValue(qpos));
           deposit *= o2 / (sp->fibroblast.collagen_o2_half_max + o2);
         }
       }
@@ -261,7 +261,7 @@ struct FibroblastBehavior : public Behavior {
       deposit *= tgfb_boost;
       // Carrying capacity saturation
       if (fn_cap > 0 && fn_cur > 0) {
-        deposit *= std::max(static_cast<real_t>(0), 1.0 - fn_cur / fn_cap);
+        deposit *= std::max(real_t{0}, 1.0 - fn_cur / fn_cap);
       }
       // Collagen-dependent suppression: as collagen cross-links mature,
       // fibroblasts shift from FN secretion to collagen synthesis
@@ -269,7 +269,7 @@ struct FibroblastBehavior : public Behavior {
       if (col_fn_switch > 0) {
         auto* col_grid = rm->GetDiffusionGrid(fields::kCollagenId);
         real_t col_local = col_grid->GetConcentration(col_grid->GetBoxIndex(qpos));
-        deposit *= std::max(static_cast<real_t>(0), 1.0 - col_local / col_fn_switch);
+        deposit *= std::max(real_t{0}, 1.0 - col_local / col_fn_switch);
       }
       if (deposit > 1e-10) {
         fn_grid->ChangeConcentrationBy(fn_idx, deposit);
@@ -309,7 +309,7 @@ struct FibroblastBehavior : public Behavior {
       auto* age_grid = rm->GetDiffusionGrid(fields::kAGEId);
       if (age_grid) {
         real_t age_val = age_grid->GetValue(qpos);
-        age_speed_factor = std::max(static_cast<real_t>(0),
+        age_speed_factor = std::max(real_t{0},
             1.0 - sp->age_fibroblast_migration_impair * age_val);
       }
     }
@@ -322,7 +322,7 @@ struct FibroblastBehavior : public Behavior {
       auto* edema_grid = rm->GetDiffusionGrid(fields::kEdemaId);
       if (edema_grid) {
         real_t edema_val = edema_grid->GetValue(qpos);
-        edema_speed_factor = std::max(static_cast<real_t>(0),
+        edema_speed_factor = std::max(real_t{0},
             1.0 - sp->edema_migration_impairment * edema_val);
       }
     }

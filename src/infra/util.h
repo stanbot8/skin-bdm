@@ -59,7 +59,7 @@ inline real_t GetNetInflammation(Simulation* sim, const Real3& qpos) {
     auto* anti_grid = rm->GetDiffusionGrid(fields::kAntiInflammatoryId);
     real_t pro = pro_grid->GetValue(qpos);
     real_t anti = anti_grid->GetValue(qpos);
-    return std::max(static_cast<real_t>(0),
+    return std::max(real_t{0},
                     pro - sp->anti_inflammation_weight * anti);
   } else {
     auto* infl_grid = rm->GetDiffusionGrid(fields::kInflammationId);
