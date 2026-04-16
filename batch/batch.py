@@ -58,31 +58,14 @@ def main():
     print()
 
     # Setup config once
-    lib.merge_config()
-    if args.skin:
-        lib.apply_profile(args.skin)
-    if args.site:
-        lib.apply_site(args.site)
-    if args.study:
-        lib.apply_study(args.study)
-    if args.treatment:
-        lib.apply_treatment(args.treatment, args.study)
+    lib.setup_run(args.skin, args.site, args.study, args.treatment)
     lib.build_if_needed()
 
     # Run simulations
     csv_paths = []
     t_start = time.time()
     for i in range(args.num_runs):
-        # Re-merge config each run (fresh bdm.toml)
-        lib.merge_config()
-        if args.skin:
-            lib.apply_profile(args.skin)
-        if args.site:
-            lib.apply_site(args.site)
-        if args.study:
-            lib.apply_study(args.study)
-        if args.treatment:
-            lib.apply_treatment(args.treatment, args.study)
+        lib.setup_run(args.skin, args.site, args.study, args.treatment)
 
         # Set reproducible seed: base_seed + run_index
         run_seed = (args.seed + i) if args.seed is not None else None

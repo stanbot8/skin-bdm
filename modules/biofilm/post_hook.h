@@ -62,10 +62,8 @@ struct BiofilmPostHook {
 
     // Temperature Q10: warmer wound promotes bacterial growth
     if (temp_grid) {
-      real_t temp_val = temp_grid->GetConcentration(snap.idx);
-      real_t temp_c = temp_val * 37.0;  // denormalize to Celsius
-      eff_growth *= std::pow(sp_->temperature.q10_biofilm,
-                             (temp_c - 37.0) / 10.0);
+      eff_growth *= Q10Factor(temp_grid->GetConcentration(snap.idx),
+                                sp_->temperature.q10_biofilm);
     }
     // Glucose fuels bacterial metabolism
     if (glucose_grid) {

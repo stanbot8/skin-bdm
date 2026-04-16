@@ -34,14 +34,7 @@ from datetime import datetime
 
 from batch import lib
 
-from batch.lib import get_tomllib
-tomllib = get_tomllib()
-def parse_toml(path):
-    if tomllib:
-        with open(path, "rb") as f:
-            return tomllib.load(f)
-    from batch.sweep import _parse_toml_fallback
-    return _parse_toml_fallback(path)
+from batch.lib import parse_toml
 
 
 def load_config(path):

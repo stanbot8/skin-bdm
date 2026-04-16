@@ -77,6 +77,14 @@ inline real_t GetImmunePressure(Simulation* sim, const Real3& qpos) {
   return grid->GetValue(qpos);
 }
 
+// Q10 temperature scaling factor. temp_normalized is the grid value
+// (fraction of 37C), q10 is the scaling coefficient per 10C.
+// Returns the multiplicative rate adjustment.
+inline real_t Q10Factor(real_t temp_normalized, real_t q10) {
+  real_t temp_c = temp_normalized * 37.0;
+  return std::pow(q10, (temp_c - 37.0) / 10.0);
+}
+
 }  // namespace skibidy
 }  // namespace bdm
 

@@ -44,6 +44,10 @@ struct VoxelSnapshot {
   size_t coarse_si;    // structural grid index for this fine voxel
   real_t coarse_w;     // volume correction factor for structural writes
 
+  // How "open" the wound is at this voxel: clamp(1 - stratum, 0, 1).
+  // 1.0 = fully open wound void, 0.0 = fully re-epithelialized.
+  real_t WoundGate() const { return std::max(real_t{0}, real_t{1} - stratum); }
+
   // Material layer
   uint8_t material_id = 0;                    // tissue type at this voxel
   const MaterialProperties* mat = nullptr;    // pointer into MaterialRegistry (never null after fill)

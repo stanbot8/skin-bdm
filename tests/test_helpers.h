@@ -123,25 +123,9 @@ static void SanitizeForUnitTest(SimParam* sp) {
 
 // Same but keeps diabetic_mode true (for DiabeticTest tests)
 static void SanitizeForDiabeticTest(SimParam* sp) {
-  sp->efferocytosis_enabled = false;
-  sp->biofilm.enabled = false;
-  sp->mmp.enabled = false;
-  sp->angiogenesis.enabled = false;
-  sp->fibronectin.enabled = false;
-  sp->fibroblast.enabled = false;
+  SanitizeForUnitTest(sp);
+  sp->diabetic.mode = true;
   sp->inflammation.split_inflammation_enabled = false;
-  sp->elastin.enabled = false;
-  sp->hyaluronan.enabled = false;
-  sp->hemostasis.enabled = false;
-  sp->temperature.enabled = false;
-  sp->glucose_mod.enabled = false;
-  sp->lactate.enabled = false;
-  sp->nitric_oxide.enabled = false;
-  sp->dermis.enabled = false;
-  sp->mechanotransduction.enabled = false;
-  sp->lymphatic.enabled = false;
-  sp->bioelectric.enabled = false;
-  sp->ra.enabled = false;
 }
 
 // Helper: get the readable inflammation grid (pro-infl in split mode)

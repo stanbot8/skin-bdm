@@ -28,8 +28,7 @@ struct FibronectinPostHook {
   inline void ApplyEpiWound(const VoxelSnapshot& snap, SignalBoard& sig) {
     if (snap.stratum >= 1.0) return;
     size_t fn_si = snap.coarse_si;
-    real_t gate = std::max(real_t{0},
-                           static_cast<real_t>(1) - snap.stratum);
+    real_t gate = snap.WoundGate();
     // Carrying capacity limits serum FN
     real_t fn_cap = sp_->fibronectin.carrying_capacity;
     if (fn_cap > 0) {

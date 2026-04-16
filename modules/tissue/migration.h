@@ -250,10 +250,7 @@ struct Migration : public Behavior {
     // Q10 ~ 2.0 for keratinocyte crawling (Kanokwan & Bhattacharya 2012)
     if (sp->temperature.enabled &&
         std::abs(sp->temperature.q10_migration - 1.0) > 1e-6) {
-      real_t temp_val = env.temperature;
-      real_t temp_c = temp_val * 37.0;  // denormalize to Celsius
-      speed *= std::pow(sp->temperature.q10_migration,
-                        (temp_c - 37.0) / 10.0);
+      speed *= Q10Factor(env.temperature, sp->temperature.q10_migration);
     }
 
     // Diabetic mode: impaired keratinocyte crawling

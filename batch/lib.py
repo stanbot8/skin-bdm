@@ -255,6 +255,26 @@ def get_metrics_path():
 
 
 # ---------------------------------------------------------------------------
+def setup_run(skin=None, site=None, study=None, treatment=None):
+    """Merge config + apply profile/site/study/treatment overlays."""
+    merge_config()
+    if skin:
+        apply_profile(skin)
+    if site:
+        apply_site(site)
+    if study:
+        apply_study(study)
+    if treatment:
+        apply_treatment(treatment, study)
+
+
+def parse_toml(path):
+    """Parse a TOML file. Uses tomllib (3.11+) or tomli fallback."""
+    tl = get_tomllib()
+    with open(path, "rb") as f:
+        return tl.load(f)
+
+
 def get_tomllib():
     """Import tomllib (3.11+), falling back to tomli or pip's vendored copy."""
     try:

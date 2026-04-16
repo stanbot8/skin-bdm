@@ -32,8 +32,7 @@ struct DiabeticPostHook {
   }
 
   inline void ApplyEpiWound(const VoxelSnapshot& snap, SignalBoard& sig) {
-    real_t gate = std::max(real_t{0},
-                           static_cast<real_t>(1) - snap.stratum);
+    real_t gate = snap.WoundGate();
     if (gate <= 1e-10) return;
     real_t eff_baseline = sp_->diabetic.baseline_inflammation;
     if (do_glucose_age && glucose_grid) {

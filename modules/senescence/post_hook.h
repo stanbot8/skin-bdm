@@ -49,8 +49,7 @@ struct SenescencePostHook {
     size_t sen_si = snap.coarse_si;
 
     // Accumulation: wound-induced DNA damage
-    real_t wound_gate = std::max(real_t{0},
-                                 static_cast<real_t>(1) - snap.stratum);
+    real_t wound_gate = snap.WoundGate();
     real_t accum = sp_->senescence.wound_rate * wound_gate;
 
     // Accumulation: inflammation-driven (ROS, NF-kB)

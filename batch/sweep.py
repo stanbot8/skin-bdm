@@ -23,15 +23,7 @@ from datetime import datetime
 
 from batch import lib
 
-from batch.lib import get_tomllib
-tomllib = get_tomllib()
-def parse_toml(path):
-    """Parse TOML sweep config. Falls back to manual parsing if no tomllib."""
-    if tomllib:
-        with open(path, "rb") as f:
-            return tomllib.load(f)
-    # Minimal fallback parser for sweep configs
-    return _parse_toml_fallback(path)
+from batch.lib import parse_toml
 
 
 def _parse_toml_fallback(path):

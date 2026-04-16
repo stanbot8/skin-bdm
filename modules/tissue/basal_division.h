@@ -141,10 +141,8 @@ struct BasalDivision : public Behavior {
         // McGuiness et al. 2004 (doi:10.12968/jowc.2004.13.9.26702)
         if (sp->temperature.enabled &&
             std::abs(sp->temperature.q10_proliferation - 1.0) > 1e-6) {
-          real_t temp_val = env.temperature;
-          real_t temp_c = temp_val * 37.0;
-          p *= std::pow(sp->temperature.q10_proliferation,
-                        (temp_c - 37.0) / 10.0);
+          p *= Q10Factor(env.temperature,
+                         sp->temperature.q10_proliferation);
         }
 
         // Diabetic mode: hyperglycemia impairs keratinocyte proliferation

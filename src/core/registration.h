@@ -219,51 +219,30 @@ inline void RegisterFields(Simulation* sim, const SimParam* sp,
   }
   fields.InitAll(sim);
 
-  // --- Performance: skip FTCS solver for decay-only fields (D=0, decay>0) ---
+  // --- Performance: skip FTCS solver for non-diffusing fields ---
+  // Fields with D=0 (structural accumulators, decay-only, or mechanistically
+  // evolved) gain nothing from BDM's FTCS step. Setting timestep to 1e30
+  // effectively disables it.
   auto* rm = sim->GetResourceManager();
-  if (sp->fibronectin.enabled && sp->fibronectin.decay > 0) {
-    rm->GetDiffusionGrid(fields::kFibronectinId)->SetTimeStep(1e30);
-  }
-  if (sp->elastin.enabled && sp->elastin.decay > 0) {
-    rm->GetDiffusionGrid(fields::kElastinId)->SetTimeStep(1e30);
-  }
-  if (sp->hemostasis.enabled) {
-    rm->GetDiffusionGrid(fields::kFibrinId)->SetTimeStep(1e30);
-  }
-  if (sp->scab.enabled) {
-    rm->GetDiffusionGrid(fields::kScabId)->SetTimeStep(1e30);
-  }
-  // BasalDensity: D=0, decay=0 -- evolved by BasalDensityOp (logistic, not FTCS).
-  // Disable BDM's FTCS step entirely so the grid is only touched by the op.
-  if (sp->basal_density_enabled && sp->wound.enabled) {
-    rm->GetDiffusionGrid(fields::kBasalDensityId)->SetTimeStep(1e30);
-  }
-  // AGE: D=0, decay~0 -- structural accumulator, skip FTCS.
-  if (sp->glucose_mod.enabled && sp->diabetic.mode) {
-    rm->GetDiffusionGrid(fields::kAGEId)->SetTimeStep(1e30);
-  }
-  // Senescence: D=0, non-diffusing -- evolved in fused_post (accumulation + SASP).
-  if (sp->senescence.enabled) {
-    rm->GetDiffusionGrid(fields::kSenescenceId)->SetTimeStep(1e30);
-  }
-  // Stiffness: D=0, decay=0 -- derived structural property, computed in fused_source.
-  if (sp->mechanotransduction.enabled) {
-    rm->GetDiffusionGrid(fields::kStiffnessId)->SetTimeStep(1e30);
-  }
-  // Edema: D=0, decay=0 -- evolved mechanistically in fused_source (leak vs drain).
-  if (sp->lymphatic.enabled) {
-    rm->GetDiffusionGrid(fields::kEdemaId)->SetTimeStep(1e30);
-  }
-  // Opsin: D=0 (membrane-bound), evolved by PhotonSourceHook kinetics.
-  if (sp->photon.enabled) {
-    rm->GetDiffusionGrid(fields::kOpsinId)->SetTimeStep(1e30);
-  }
-  // Cartilage + Synovial fluid: D=0, decay=0 -- structural fields, evolved mechanistically.
-  if (sp->ra.enabled) {
-    rm->GetDiffusionGrid(fields::kCartilageId)->SetTimeStep(1e30);
-    rm->GetDiffusionGrid(fields::kSynovialFluidId)->SetTimeStep(1e30);
-    rm->GetDiffusionGrid(fields::kBoneId)->SetTimeStep(1e30);
-  }
+  auto skip_ftcs = [&](bool enabled, int field_id) {
+    if (enabled) rm->GetDiffusionGrid(field_id)->SetTimeStep(1e30);
+  };
+  skip_ftcs(sp->fibronectin.enabled && sp->fibronectin.decay > 0,
+            fields::kFibronectinId);
+  skip_ftcs(sp->elastin.enabled && sp->elastin.decay > 0,
+            fields::kElastinId);
+  skip_ftcs(sp->hemostasis.enabled, fields::kFibrinId);
+  skip_ftcs(sp->scab.enabled, fields::kScabId);
+  skip_ftcs(sp->basal_density_enabled && sp->wound.enabled,
+            fields::kBasalDensityId);
+  skip_ftcs(sp->glucose_mod.enabled && sp->diabetic.mode, fields::kAGEId);
+  skip_ftcs(sp->senescence.enabled, fields::kSenescenceId);
+  skip_ftcs(sp->mechanotransduction.enabled, fields::kStiffnessId);
+  skip_ftcs(sp->lymphatic.enabled, fields::kEdemaId);
+  skip_ftcs(sp->photon.enabled, fields::kOpsinId);
+  skip_ftcs(sp->ra.enabled, fields::kCartilageId);
+  skip_ftcs(sp->ra.enabled, fields::kSynovialFluidId);
+  skip_ftcs(sp->ra.enabled, fields::kBoneId);
 
   // --- PDE sub-cycling: solve slow fields less frequently ---
   real_t dt = sim->GetParam()->simulation_time_step;
@@ -342,48 +321,26 @@ inline void RegisterOperations(Simulation* sim, const SimParam* sp,
                                DerivedField* wound_microenv = nullptr) {
   auto* scheduler = sim->GetScheduler();
 
-  // --- Wound event (fires once at configured step) ---
-  OperationRegistry::GetInstance()->AddOperationImpl(
-      "WoundEvent", OpComputeTarget::kCpu, new WoundEvent(fields));
-  auto* wound_op = NewOperation("WoundEvent");
-  scheduler->ScheduleOp(wound_op, OpType::kPreSchedule);
-
-  // --- Wound resolution (dissolves agents when healed) ---
-  OperationRegistry::GetInstance()->AddOperationImpl(
-      "WoundResolution", OpComputeTarget::kCpu, new WoundResolution());
-  auto* resolve_op = NewOperation("WoundResolution");
-  scheduler->ScheduleOp(resolve_op, OpType::kPostSchedule);
-
-  // --- Immune response (delayed immune cell spawning) ---
-  OperationRegistry::GetInstance()->AddOperationImpl(
-      "ImmuneResponse", OpComputeTarget::kCpu, new ImmuneResponse());
-  auto* immune_op = NewOperation("ImmuneResponse");
-  scheduler->ScheduleOp(immune_op, OpType::kPreSchedule);
-
-  // --- Fibroblast recruitment (delayed spawning at wound margin) ---
-  if (sp->fibroblast.enabled) {
+  // Register + schedule a standalone operation in one call.
+  auto schedule_op = [&](const char* name, StandaloneOperationImpl* impl,
+                         OpType type = OpType::kPreSchedule) {
     OperationRegistry::GetInstance()->AddOperationImpl(
-        "FibroblastRecruitment", OpComputeTarget::kCpu,
-        new FibroblastRecruitment());
-    auto* fibro_op = NewOperation("FibroblastRecruitment");
-    scheduler->ScheduleOp(fibro_op, OpType::kPreSchedule);
-  }
+        name, OpComputeTarget::kCpu, impl);
+    scheduler->ScheduleOp(NewOperation(name), type);
+  };
 
-  // --- Tumor initiation (seeds tumor cluster at configured step) ---
-  if (sp->tumor.enabled) {
-    OperationRegistry::GetInstance()->AddOperationImpl(
-        "TumorInitiation", OpComputeTarget::kCpu, new TumorInitiation());
-    auto* tumor_op = NewOperation("TumorInitiation");
-    scheduler->ScheduleOp(tumor_op, OpType::kPreSchedule);
-  }
+  schedule_op("WoundEvent", new WoundEvent(fields));
+  schedule_op("WoundResolution", new WoundResolution(), OpType::kPostSchedule);
+  schedule_op("ImmuneResponse", new ImmuneResponse());
 
-  // --- PDE source terms: fused single-pass when wound_enabled ---
+  if (sp->fibroblast.enabled)
+    schedule_op("FibroblastRecruitment", new FibroblastRecruitment());
+
+  if (sp->tumor.enabled)
+    schedule_op("TumorInitiation", new TumorInitiation());
+
   if (sp->wound.enabled) {
-    OperationRegistry::GetInstance()->AddOperationImpl(
-        "FusedWoundSourceOp", OpComputeTarget::kCpu,
-        new FusedWoundSourceOp());
-    auto* fused_src = NewOperation("FusedWoundSourceOp");
-    scheduler->ScheduleOp(fused_src, OpType::kPreSchedule);
+    schedule_op("FusedWoundSourceOp", new FusedWoundSourceOp());
 
     bool need_post = sp->biofilm.enabled || sp->scar.proportional_enabled ||
                      sp->diabetic.mode || sp->mmp.enabled ||
@@ -391,66 +348,34 @@ inline void RegisterOperations(Simulation* sim, const SimParam* sp,
                      sp->senescence.enabled || sp->neuropathy.enabled ||
                      sp->ros.enabled || sp->mechanotransduction.enabled ||
                      sp->lymphatic.enabled || sp->ra.enabled;
-    if (need_post) {
-      OperationRegistry::GetInstance()->AddOperationImpl(
-          "FusedWoundPostOp", OpComputeTarget::kCpu, new FusedWoundPostOp());
-      auto* fused_post = NewOperation("FusedWoundPostOp");
-      scheduler->ScheduleOp(fused_post);
-    }
+    if (need_post)
+      schedule_op("FusedWoundPostOp", new FusedWoundPostOp());
   } else {
-    OperationRegistry::GetInstance()->AddOperationImpl(
-        "CompositeFieldOp", OpComputeTarget::kCpu,
-        new CompositeFieldOp(fields));
-    auto* field_op = NewOperation("CompositeFieldOp");
-    scheduler->ScheduleOp(field_op, OpType::kPreSchedule);
+    schedule_op("CompositeFieldOp", new CompositeFieldOp(fields));
   }
 
-  // --- Fused per-voxel environment snapshot (before behavior dispatch) ---
-  OperationRegistry::GetInstance()->AddOperationImpl(
-      "VoxelEnvFillOp", OpComputeTarget::kCpu, new VoxelEnvFillOp());
-  auto* venv_op = NewOperation("VoxelEnvFillOp");
-  scheduler->ScheduleOp(venv_op, OpType::kPreSchedule);
+  schedule_op("VoxelEnvFillOp", new VoxelEnvFillOp());
 
-  // --- Basal density continuum evolution ---
-  if (sp->basal_density_enabled && sp->wound.enabled) {
-    OperationRegistry::GetInstance()->AddOperationImpl(
-        "BasalDensityOp", OpComputeTarget::kCpu, new BasalDensityOp());
-    auto* density_op = NewOperation("BasalDensityOp");
-    scheduler->ScheduleOp(density_op, OpType::kPostSchedule);
-  }
+  if (sp->basal_density_enabled && sp->wound.enabled)
+    schedule_op("BasalDensityOp", new BasalDensityOp(), OpType::kPostSchedule);
 
-  // --- Derived composite fields (computed once per step) ---
   if (ecm_quality && tissue_viability && wound_microenv) {
-    OperationRegistry::GetInstance()->AddOperationImpl(
-        "DerivedFieldsOp", OpComputeTarget::kCpu,
-        new DerivedFieldsOp(ecm_quality, tissue_viability, wound_microenv));
-    auto* derived_op = NewOperation("DerivedFieldsOp");
-    scheduler->ScheduleOp(derived_op, OpType::kPostSchedule);
+    schedule_op("DerivedFieldsOp",
+                new DerivedFieldsOp(ecm_quality, tissue_viability,
+                                    wound_microenv),
+                OpType::kPostSchedule);
   }
 
-  // --- Metrics CSV export ---
-  OperationRegistry::GetInstance()->AddOperationImpl(
-      "MetricsExporter", OpComputeTarget::kCpu, new MetricsExporter());
-  auto* metrics_op = NewOperation("MetricsExporter");
-  scheduler->ScheduleOp(metrics_op, OpType::kPostSchedule);
+  schedule_op("MetricsExporter", new MetricsExporter(), OpType::kPostSchedule);
 
-  // --- Hot-reload: watch bdm.toml for runtime parameter changes ---
   if (sp->hot_reload) {
-    OperationRegistry::GetInstance()->AddOperationImpl(
-        "HotReloadOp", OpComputeTarget::kCpu, new HotReloadOp());
-    auto* reload_op = NewOperation("HotReloadOp");
-    scheduler->ScheduleOp(reload_op, OpType::kPreSchedule);
-    std::cout << "[hot-reload] enabled -- edit bdm.toml while sim runs"
-              << std::endl;
+    schedule_op("HotReloadOp", new HotReloadOp());
+    std::cout << "[hot-reload] enabled" << std::endl;
   }
 
-  // --- Batch diffusion: replace BDM's ContinuumOp with lean scheduler ---
-  // Must be registered AFTER sub-cycling SetTimeStep calls in RegisterFields
-  // so that CategorizeGrids() can read the configured time steps.
-  OperationRegistry::GetInstance()->AddOperationImpl(
-      "BatchDiffusionOp", OpComputeTarget::kCpu, new BatchDiffusionOp());
-  auto* batch_diff = NewOperation("BatchDiffusionOp");
-  scheduler->ScheduleOp(batch_diff, OpType::kSchedule);
+  // Must be registered AFTER sub-cycling SetTimeStep calls so that
+  // CategorizeGrids() reads the configured time steps.
+  schedule_op("BatchDiffusionOp", new BatchDiffusionOp(), OpType::kSchedule);
 
   // Unschedule BDM's default ContinuumOp ("continuum" is not protected).
   auto continuum_ops = scheduler->GetOps("continuum");

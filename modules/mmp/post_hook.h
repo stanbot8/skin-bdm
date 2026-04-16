@@ -80,10 +80,8 @@ struct MMPPostHook {
         // Temperature Q10: enzyme kinetics scale with temperature
         real_t mmp_temp = 1.0;
         if (temp_grid) {
-          real_t temp_val = temp_grid->GetConcentration(snap.idx);
-          real_t temp_c = temp_val * 37.0;
-          mmp_temp = std::pow(sp_->temperature.q10_mmp,
-                              (temp_c - 37.0) / 10.0);
+          mmp_temp = Q10Factor(temp_grid->GetConcentration(snap.idx),
+                                   sp_->temperature.q10_mmp);
         }
         real_t eff_mmp = mmp_val * mmp_ph * mmp_temp;
 
