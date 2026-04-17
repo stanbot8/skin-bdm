@@ -319,8 +319,14 @@ def validate_wound(sim, sim_days, condition="normal"):
     )
 
 
-def validate_fibroblast(sim, sim_days):
-    """Compute fibroblast/collagen validation metrics. Returns result dict."""
+def validate_fibroblast(sim, sim_days, condition="normal"):
+    """Compute fibroblast/collagen validation metrics. Returns result dict.
+
+    Reference data is only available for normal wounds. Returns None for
+    non-normal conditions so callers don't report bogus RMSE.
+    """
+    if condition != "normal":
+        return None
     ref_myofib = load_csv(_ref_path("myofibroblast_kinetics.csv"))
     ref_collagen = load_csv(_ref_path("collagen_deposition.csv"))
     ref_fibro = load_csv(_ref_path("fibroblast_kinetics.csv"))
@@ -430,14 +436,19 @@ def validate_microenvironment(sim, sim_days, condition="normal"):
     MMP (sustained elevation; Lobmann et al. 2002) and TGF-b (delayed peak;
     Mirza & Koh 2011).
     """
+    # Diabetic-specific references only exist for TGF-b and MMP; VEGF and
+    # fibronectin have no diabetic reference data so we skip them for
+    # non-normal conditions to avoid bogus RMSE against mismatched curves.
     if condition == "diabetic":
         ref_tgfb = load_csv(_ref_path("diabetic_tgfb_kinetics.csv"))
         ref_mmp = load_csv(_ref_path("diabetic_mmp_kinetics.csv"))
     else:
         ref_tgfb = load_csv(_ref_path("tgfb_kinetics.csv"))
         ref_mmp = load_csv(_ref_path("mmp_kinetics.csv"))
-    ref_vegf = load_csv(_ref_path("vegf_kinetics.csv"))
-    ref_fn = load_csv(_ref_path("fibronectin_kinetics.csv"))
+    has_vegf_ref = (condition == "normal")
+    has_fn_ref = (condition == "normal")
+    ref_vegf = load_csv(_ref_path("vegf_kinetics.csv")) if has_vegf_ref else None
+    ref_fn = load_csv(_ref_path("fibronectin_kinetics.csv")) if has_fn_ref else None
 
     sim_tgfb, tgfb_peak = peak_normalize(sim["mean_tgfb_wound"])
     ref_tgfb_at_sim = interpolate(
@@ -445,14 +456,20 @@ def validate_microenvironment(sim, sim_days, condition="normal"):
     tgfb_rmse = compute_rmse(sim_tgfb, ref_tgfb_at_sim)
 
     sim_vegf, vegf_peak = peak_normalize(sim["mean_vegf_wound"])
-    ref_vegf_at_sim = interpolate(
-        ref_vegf["day"], ref_vegf["vegf_normalized"], sim_days)
-    vegf_rmse = compute_rmse(sim_vegf, ref_vegf_at_sim)
+    if has_vegf_ref:
+        ref_vegf_at_sim = interpolate(
+            ref_vegf["day"], ref_vegf["vegf_normalized"], sim_days)
+        vegf_rmse = compute_rmse(sim_vegf, ref_vegf_at_sim)
+    else:
+        ref_vegf_at_sim, vegf_rmse = None, None
 
     sim_fn, fn_peak = peak_normalize(sim["mean_fibronectin_wound"])
-    ref_fn_at_sim = interpolate(
-        ref_fn["day"], ref_fn["fibronectin_normalized"], sim_days)
-    fn_rmse = compute_rmse(sim_fn, ref_fn_at_sim)
+    if has_fn_ref:
+        ref_fn_at_sim = interpolate(
+            ref_fn["day"], ref_fn["fibronectin_normalized"], sim_days)
+        fn_rmse = compute_rmse(sim_fn, ref_fn_at_sim)
+    else:
+        ref_fn_at_sim, fn_rmse = None, None
 
     sim_mmp, mmp_peak = peak_normalize(sim["mean_mmp_wound"])
     ref_mmp_at_sim = interpolate(
@@ -972,8 +989,10 @@ def print_summary(wound=None, fibroblast=None, tumor=None, microenv=None,
     if microenv:
         m = microenv
         print(f"  TGF-b               RMSE = {m['tgfb_rmse'] * 100:.2f} %")
-        print(f"  VEGF                RMSE = {m['vegf_rmse'] * 100:.2f} %")
-        print(f"  Fibronectin         RMSE = {m['fn_rmse'] * 100:.2f} %")
+        if m.get('vegf_rmse') is not None:
+            print(f"  VEGF                RMSE = {m['vegf_rmse'] * 100:.2f} %")
+        if m.get('fn_rmse') is not None:
+            print(f"  Fibronectin         RMSE = {m['fn_rmse'] * 100:.2f} %")
         print(f"  MMP                 RMSE = {m['mmp_rmse'] * 100:.2f} %")
     if ph:
         print(f"  Wound pH            RMSE = {ph['ph_rmse'] * 100:.2f} %")
@@ -1017,8 +1036,9 @@ def print_summary(wound=None, fibroblast=None, tumor=None, microenv=None,
     if microenv:
         for name, key in [("TGF-b", "tgfb_rmse"), ("VEGF", "vegf_rmse"),
                           ("Fibronectin", "fn_rmse"), ("MMP", "mmp_rmse")]:
-            if microenv[key] * 100 > threshold:
-                failures.append((name, microenv[key] * 100))
+            v = microenv.get(key)
+            if v is not None and v * 100 > threshold:
+                failures.append((name, v * 100))
     if ph and ph["ph_rmse"] * 100 > threshold:
         failures.append(("pH", ph["ph_rmse"] * 100))
 
