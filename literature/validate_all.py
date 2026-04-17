@@ -88,7 +88,10 @@ def main():
     wound_r = validate_wound(sim, sim_days, condition) if has_wound else None
     fibro_r = validate_fibroblast(sim, sim_days) if has_fibroblast else None
     micro_r = validate_microenvironment(sim, sim_days, condition) if has_microenv else None
-    ph_r = validate_ph(sim, sim_days) if has_ph else None
+    # pH reference only exists for normal wounds (Schneider 2007).
+    # Diabetic/burn/pressure/surgical have different pH kinetics that are
+    # not represented in the project's reference data; skip pH for those.
+    ph_r = validate_ph(sim, sim_days) if (has_ph and condition == "normal") else None
     tumor_r = validate_tumor(sim, sim_days) if has_tumor else None
     ra_r = validate_ra(sim, sim_days) if has_ra else None
 
