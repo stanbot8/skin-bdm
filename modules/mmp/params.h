@@ -15,10 +15,10 @@ struct MmpParams {
   real_t m1_rate = 0.003;  // MMP-9 from M1 macrophages per step
   real_t neutrophil_rate = 0.002;  // MMP-8 from neutrophils per step (Nwomeh 1998)
 
-  // Neutrophil degranulation: pre-formed MMP-9 released directly into the
-  // active pool on arrival (bypasses pro-MMP activation). Secondary granules
-  // contain pre-processed gelatinase B (Kolaczkowska & Kubes 2013).
-  real_t neutrophil_degranulation = 0.05;  // one-time burst per neutrophil
+  // Neutrophil MMP-9 degranulation (Kolaczkowska & Kubes 2013).
+  // Disabled by default: 3-replicate validation showed regression without
+  // calibration (mean MMP RMSE +2.48% across seeds 42/43/44).
+  real_t neutrophil_degranulation = 0.0;  // one-time burst per neutrophil
   int degranulation_window = 20;  // steps (~2h) after spawn to release granule
   real_t fibroblast_rate = 0.0002;  // MMP-1/3 from activated fibroblasts per step (Nagase et al. 1999)
   real_t keratinocyte_rate = 0.0;  // MMP-1 from wound-edge keratinocytes (disabled; Pilcher et al. 1997)
