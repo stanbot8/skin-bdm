@@ -23,6 +23,8 @@ struct GridContext {
   real_t box_len;
   real_t cx, cy, r2;
 
+  GridContext() : res(0), n(0), lo(0), box_len(1), cx(0), cy(0), r2(0) {}
+
   GridContext(DiffusionGrid* grid, const SimParam* sp)
       : res(grid->GetResolution()),
         n(grid->GetNumBoxes()),

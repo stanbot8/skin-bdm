@@ -23,12 +23,13 @@ struct WoundIterationContext {
   SignalBoard sig;
 
   GridContext::WoundMaskData mask;
+  GridContext ctx;
   SnapshotFiller filler;
 
   void Prepare(Simulation* sim, const SimParam* sp) {
     reg.Fill(sim);
 
-    GridContext ctx(reg.Get(fields::kStratumId), sp);
+    ctx = GridContext(reg.Get(fields::kStratumId), sp);
     if (mask.mask.empty()) {
       real_t z_max = sp->volume_z_cornified + ctx.box_len;
       mask = GridContext::ComputeWoundMask(ctx, z_max, sp);
