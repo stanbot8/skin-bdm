@@ -1,9 +1,7 @@
 #ifndef FIBROBLAST_POST_HOOK_H_
 #define FIBROBLAST_POST_HOOK_H_
 
-#include "core/grid_registry.h"
-#include "core/voxel_snapshot.h"
-#include "core/signal_board.h"
+#include "core/hook_api.h"
 
 namespace bdm {
 namespace skibidy {
@@ -58,7 +56,7 @@ struct FibroblastPostHook {
         real_t tissue_density = std::max(
             std::max(real_t{0}, snap.stratum),
             std::max(real_t{0}, snap.vasc));
-        tissue_density = std::min(static_cast<real_t>(1), tissue_density);
+        tissue_density = std::min(real_t{1}, tissue_density);
         if (tissue_density > 1e-10) {
           real_t sink = sp_->fibroblast.tgfb_tissue_clearance *
               tissue_density * tgfb_val;

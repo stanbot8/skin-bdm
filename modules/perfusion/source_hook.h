@@ -2,9 +2,7 @@
 #define PERFUSION_SOURCE_HOOK_H_
 
 #include "tissue/calcium.h"
-#include "core/grid_registry.h"
-#include "core/voxel_snapshot.h"
-#include "core/signal_board.h"
+#include "core/hook_api.h"
 
 namespace bdm {
 namespace skibidy {

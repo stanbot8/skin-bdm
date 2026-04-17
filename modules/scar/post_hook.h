@@ -1,9 +1,7 @@
 #ifndef SCAR_POST_HOOK_H_
 #define SCAR_POST_HOOK_H_
 
-#include "core/grid_registry.h"
-#include "core/voxel_snapshot.h"
-#include "core/signal_board.h"
+#include "core/hook_api.h"
 
 namespace bdm {
 namespace skibidy {

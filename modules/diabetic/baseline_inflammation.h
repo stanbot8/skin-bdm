@@ -47,8 +47,7 @@ struct BaselineInflammationOp : public StandaloneOperationImpl {
 
       // Gated by stratum: re-epithelialized tissue seals the AGE/RAGE source.
       real_t sv = stratum_grid->GetConcentration(idx);
-      real_t gate = std::max(real_t{0},
-                             static_cast<real_t>(1) - sv);
+      real_t gate = std::max(real_t{0}, real_t{1} - sv);
       if (gate > 1e-10) {
         infl_grid->ChangeConcentrationBy(idx, gate * rate);
       }
