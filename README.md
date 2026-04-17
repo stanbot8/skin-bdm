@@ -6,7 +6,7 @@
 
 ## How it works
 
-Healthy skin runs as a composite field coupling 41 diffusion grids with no agents. When an event occurs (wound, infection, tumor), cells spawn from local field state, interact with the fields, and dissolve back once stable. This is the **UWYN** (Use What You Need) paradigm: the simulation only creates agents where the biology demands cellular resolution.
+Healthy skin runs as a composite field coupling 47 diffusion grids with no agents. When an event occurs (wound, infection, tumor), cells spawn from local field state, interact with the fields, and dissolve back once stable. This is the **UWYN** (Use What You Need) paradigm: the simulation only creates agents where the biology demands cellular resolution.
 
 ```
 Corneum    [continuum]  barrier, desquamation
@@ -26,7 +26,7 @@ source <path_to_biodynamo>/bin/thisbdm.sh
 ./run.sh --study=diabetic-wound              # chronic diabetic ulcer
 ./run.sh --study=tumor                       # basal cell carcinoma growth
 ./run.sh --compare                           # normal vs diabetic side-by-side
-./tests/test.sh                              # 130 unit tests
+./tests/test.sh                              # unit test suite (540 tests)
 ```
 
 ## Modules
