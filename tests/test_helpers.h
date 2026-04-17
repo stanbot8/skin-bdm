@@ -45,6 +45,7 @@
 #include "lymphatic/edema_pde.h"
 #include "bioelectric/voltage_pde.h"
 #include "mmp/mmp_pde.h"
+#include "mmp/prommp_pde.h"
 
 #include <fstream>
 #include <sstream>
@@ -162,7 +163,10 @@ static void SetupAllFields(Simulation* sim) {
   water.Init(sim);
   SetupInflammation(sim);
   if (sp->fibronectin.enabled) { FibronectinPDE fn(sp); fn.Init(sim); }
-  if (sp->mmp.enabled) { MMPPDE mmp(sp); mmp.Init(sim); }
+  if (sp->mmp.enabled) {
+    MMPPDE mmp(sp); mmp.Init(sim);
+    ProMMPPDE prommp(sp); prommp.Init(sim);
+  }
   if (sp->fibroblast.enabled) {
     TGFBetaPDE tgfb(sp); tgfb.Init(sim);
     CollagenPDE col(sp); col.Init(sim);

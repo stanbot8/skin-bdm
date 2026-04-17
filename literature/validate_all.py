@@ -14,17 +14,24 @@ Override with explicit flags.
 import os
 import sys
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
+QUICK = "--quick" in sys.argv
+if QUICK:
+    sys.argv.remove("--quick")
+
+if not QUICK:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.dirname(__file__))
 from lib import (load_csv, plots_dir, detect_condition, detect_modules,
                  validate_wound, validate_fibroblast, validate_tumor,
                  validate_microenvironment, validate_ph, validate_ra,
-                 plot_wound_panels, plot_fibroblast_panels, plot_tumor_panels,
-                 plot_microenvironment_panels, plot_ph_panel, plot_ra_panels,
                  print_summary)
+if not QUICK:
+    from lib import (plot_wound_panels, plot_fibroblast_panels,
+                     plot_tumor_panels, plot_microenvironment_panels,
+                     plot_ph_panel, plot_ra_panels)
 from check_sources import run_checks as check_sources
 
 
@@ -88,6 +95,9 @@ def main():
     # --- Print once ---
     passed = print_summary(wound=wound_r, fibroblast=fibro_r, tumor=tumor_r,
                            microenv=micro_r, ph=ph_r, ra=ra_r)
+
+    if QUICK:
+        return passed
 
     out_dir = plots_dir(sim_path)
     os.makedirs(out_dir, exist_ok=True)

@@ -219,12 +219,7 @@ struct FibroblastBehavior : public Behavior {
     // as zymogens; activation occurs extracellularly (Visse & Nagase 2003).
     if (sp->mmp.enabled &&
         cell->GetFibroblastState() != kFibroQuiescent) {
-      ScaledGrid sg(rm->GetDiffusionGrid(fields::kProMMPId), sp);
-      real_t mmp_rate = sp->mmp.fibroblast_rate;
-      if (sp->diabetic.mode) {
-        mmp_rate *= sp->diabetic.mmp_factor;
-      }
-      sg.AgentDeposit(sg.Index(qpos), mmp_rate);
+      immune::ProduceMMP(qpos, sim, sp, sp->mmp.fibroblast_rate);
     }
 
     // --- TIMP production (activated and myofibroblast states) ---

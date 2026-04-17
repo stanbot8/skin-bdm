@@ -72,7 +72,7 @@ inline bool SaveCheckpoint(Simulation* sim, uint64_t step,
 
   // Save each DiffusionGrid
   rm->ForEachDiffusionGrid([&](DiffusionGrid* grid) {
-    std::string name = grid->GetSubstanceName();
+    std::string name = grid->GetContinuumName();
     std::string path = dir + "/grid_" + name + ".bin";
     std::ofstream f(path, std::ios::binary);
 
@@ -140,7 +140,7 @@ inline uint64_t LoadCheckpoint(Simulation* sim, const std::string& dir) {
 
   // Load each DiffusionGrid
   rm->ForEachDiffusionGrid([&](DiffusionGrid* grid) {
-    std::string name = grid->GetSubstanceName();
+    std::string name = grid->GetContinuumName();
     std::string path = dir + "/grid_" + name + ".bin";
     std::ifstream f(path, std::ios::binary);
     if (!f.is_open()) {
