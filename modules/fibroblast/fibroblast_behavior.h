@@ -139,10 +139,21 @@ struct FibroblastBehavior : public Behavior {
         return;
       }
       // Stochastic apoptosis program (Desmouliere 1995): after onset delay,
-      // myofibroblasts undergo apoptosis at a per-step probability
+      // myofibroblasts undergo apoptosis at a per-step probability.
+      // Rate scales with wound closure (mechanical unloading, Hinz 2007):
+      // as ECM tension drops, alpha-SMA disassembles and anoikis follows.
       if (state_age > sp->fibroblast.apoptosis_onset) {
         auto* random = sim->GetRandom();
-        if (random->Uniform(0, 1) < sp->fibroblast.apoptosis_rate) {
+        real_t eff_apoptosis = sp->fibroblast.apoptosis_rate;
+        auto* strat_grid = rm->GetDiffusionGrid(fields::kStratumId);
+        if (strat_grid) {
+          Real3 above = {qpos[0], qpos[1], 1.0};
+          real_t local_closure = std::clamp(strat_grid->GetValue(above),
+                                            real_t{0}, real_t{1});
+          eff_apoptosis *= (1.0 + sp->fibroblast.closure_apoptosis_scale
+                                  * local_closure);
+        }
+        if (random->Uniform(0, 1) < eff_apoptosis) {
           ContinuumHandoff(cell);
           cell->RemoveFromSimulation();
           return;
@@ -167,8 +178,28 @@ struct FibroblastBehavior : public Behavior {
       }
     }
 
+    // --- Collagen sequesters TGF-beta (Yamaguchi et al. 1990) ---
+    // Decorin/biglycan in mature collagen bind TGF-beta, providing negative
+    // feedback that limits the myofibroblast positive loop.
+    if (sp->fibroblast.tgfb_collagen_sequestration > 0) {
+      auto* col_grid = rm->GetDiffusionGrid(fields::kCollagenId);
+      if (col_grid && tgfb_grid) {
+        real_t col_local = col_grid->GetValue(qpos);
+        real_t tgfb_local = tgfb_grid->GetValue(qpos);
+        // Michaelis-Menten saturation: finite decorin binding sites per fibril
+        real_t col_sat = col_local / (col_local +
+                         sp->fibroblast.tgfb_sequestration_half_max);
+        real_t sink = sp->fibroblast.tgfb_collagen_sequestration
+                    * col_sat * tgfb_local;
+        if (sink > 1e-10) {
+          ScaledGrid sg(tgfb_grid, sp);
+          sg.AgentDeposit(sg.Index(qpos), -std::min(tgfb_local, sink));
+        }
+      }
+    }
+
     // --- Collagen deposition (myofibroblasts only) ---
-    // Collagen is non-diffusing (structural ECM) -- no ScaledGrid.
+    // Collagen is non-diffusing (structural ECM).
     if (cell->GetFibroblastState() == kMyofibroblast) {
       auto* col_grid = rm->GetDiffusionGrid(fields::kCollagenId);
       size_t col_idx = col_grid->GetBoxIndex(qpos);

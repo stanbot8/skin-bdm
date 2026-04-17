@@ -70,6 +70,20 @@ struct NeutrophilBehavior : public Behavior {
     immune::ProduceMMP(qpos, sim, sp,
                        sp->mmp.neutrophil_rate * cytokine_taper);
 
+    // MMP-9 degranulation: pre-formed gelatinase B released from secondary
+    // granules directly into the active MMP pool on arrival (no pro-MMP
+    // activation delay). Kolaczkowska & Kubes 2013.
+    if (sp->mmp.enabled && cell->GetAge() < sp->mmp.degranulation_window) {
+      auto* mmp_grid = sim->GetResourceManager()->GetDiffusionGrid(
+          fields::kMMPId);
+      if (mmp_grid) {
+        real_t burst = sp->mmp.neutrophil_degranulation;
+        if (sp->diabetic.mode) burst *= sp->diabetic.mmp_factor;
+        ScaledGrid sg(mmp_grid, sp);
+        sg.AgentDeposit(sg.Index(qpos), burst);
+      }
+    }
+
     // NO production via iNOS (Witte & Barbul 2002)
     if (sp->nitric_oxide.enabled) {
       auto* rm = sim->GetResourceManager();

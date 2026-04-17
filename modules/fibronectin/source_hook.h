@@ -12,9 +12,12 @@ namespace skibidy {
 // Fibronectin is a structural ECM grid with manual first-order decay.
 struct FibronectinDecayHook {
   DiffusionGrid* fn_grid = nullptr;
+  DiffusionGrid* col_grid = nullptr;
   const SimParam* sp_ = nullptr;
   const GridRegistry* reg_ = nullptr;
   bool active = false;
+  bool do_replacement = false;
+
   inline void Init(const GridRegistry& reg, SignalBoard& sig) {
     sp_ = reg.Params();
     reg_ = &reg;
@@ -22,24 +25,30 @@ struct FibronectinDecayHook {
     if (!active) return;
     fn_grid = reg.Get(fields::kFibronectinId);
     if (!fn_grid) { active = false; return; }
+    do_replacement = sp_->fibronectin.collagen_replacement > 0 &&
+                     sp_->fibroblast.enabled;
+    if (do_replacement) col_grid = reg.Get(fields::kCollagenId);
   }
 
-  // Self-contained iteration: fibronectin decay
+  // Fibronectin decay with collagen-driven replacement (Clark 1990):
+  // as mature collagen accumulates, it physically displaces provisional FN.
   inline void ApplyDecay(const GridContext::WoundMaskData& mask, real_t dt) {
-    real_t fn_mu_dt = sp_->fibronectin.decay * dt;
+    real_t base_mu_dt = sp_->fibronectin.decay * dt;
+    real_t k_replace = sp_->fibronectin.collagen_replacement * dt;
     real_t cw = reg_->CoarseWeight();
-    for (size_t idx : mask.epi_wound) {
+    auto decay_voxel = [&](size_t idx) {
       size_t si = reg_->CoarseIndex(idx);
       real_t v = fn_grid->GetConcentration(si);
-      if (v > 1e-10)
-        fn_grid->ChangeConcentrationBy(si, -v * fn_mu_dt * cw);
-    }
-    for (size_t idx : mask.dermal_wound) {
-      size_t si = reg_->CoarseIndex(idx);
-      real_t v = fn_grid->GetConcentration(si);
-      if (v > 1e-10)
-        fn_grid->ChangeConcentrationBy(si, -v * fn_mu_dt * cw);
-    }
+      if (v <= 1e-10) return;
+      real_t eff_mu = base_mu_dt;
+      if (do_replacement && col_grid) {
+        real_t col = col_grid->GetConcentration(si);
+        eff_mu += k_replace * col;
+      }
+      fn_grid->ChangeConcentrationBy(si, -v * eff_mu * cw);
+    };
+    for (size_t idx : mask.epi_wound) decay_voxel(idx);
+    for (size_t idx : mask.dermal_wound) decay_voxel(idx);
   }
 };
 

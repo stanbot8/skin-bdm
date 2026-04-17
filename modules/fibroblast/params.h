@@ -37,6 +37,17 @@ struct FibroblastParams {
   real_t collagen_fn_transition = 0.15;  // collagen level at which FN deposition ceases (ECM maturation)
   real_t tgfb_taper = 0.0012;  // myofibroblast TGF-beta exp(-k*state_age)
 
+  // Mechanical unloading: wound closure reduces ECM tension, accelerating
+  // myofibroblast apoptosis (Hinz 2007, Tomasek 2002)
+  real_t closure_apoptosis_scale = 2.0;  // apoptosis_rate multiplier at 100% closure
+
+  // Collagen-TGF-beta sequestration: decorin/biglycan in mature collagen
+  // bind and neutralize TGF-beta, breaking the positive feedback loop
+  // (Yamaguchi et al. 1990, doi:10.1038/346281a0)
+  // Saturating: decorin has finite binding sites per fibril.
+  real_t tgfb_collagen_sequestration = 0.02;  // max TGF-beta sink rate
+  real_t tgfb_sequestration_half_max = 0.15;  // collagen for half-max sequestration
+
   // Activated fibroblast apoptosis
   int activated_apoptosis_onset = 1680;  // 168h as activated before stochastic death
   real_t activated_apoptosis_rate = 0.0003;  // per-step removal for activated fibroblasts

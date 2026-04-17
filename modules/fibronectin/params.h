@@ -18,6 +18,10 @@ struct FibronectinParams {
   real_t migration_boost = 0.5;  // max migration speed boost on fibronectin
   real_t wound_seed = 0.08;  // plasma fibronectin co-deposited with fibrin clot (Clark 1996)
   real_t carrying_capacity = 1.0;  // local saturation limit for fibroblast deposition
+
+  // Collagen replacement: mature collagen physically displaces provisional
+  // fibronectin matrix (Clark 1990). Decay scales with local collagen.
+  real_t collagen_replacement = 0.03;  // additional FN decay per unit collagen
 };
 
 }  // namespace skibidy
