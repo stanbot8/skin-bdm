@@ -49,54 +49,44 @@ struct PressureSourceHook {
     steps_since_reposition_ = 0;
   }
 
+  // Advance the compression/release cycle once per timestep.
+  inline void AdvanceCompressionState(real_t dt) {
+    auto* sim = Simulation::GetActive();
+    uint64_t step = sim->GetScheduler()->GetSimulatedSteps();
+    if (step == last_state_step_) return;
+    last_state_step_ = step;
+    steps_since_reposition_++;
+
+    real_t reposition_steps = sp_->pressure.reposition_interval_h / dt;
+    if (reposition_steps > 0 &&
+        steps_since_reposition_ >= static_cast<int>(reposition_steps)) {
+      under_compression_ = !under_compression_;
+      steps_since_reposition_ = 0;
+    }
+
+    if (under_compression_) {
+      compression_time_ += dt;
+      tissue_damage_ += sp_->pressure.tissue_damage_rate * dt;
+      tissue_damage_ = std::min(tissue_damage_, static_cast<real_t>(1.0));
+    } else if (compression_time_ > 0) {
+      compression_time_ = 0.0;
+    }
+  }
+
   // Dermal: ischemia from compression, perfusion occlusion, tissue damage.
   inline void ApplyDermal(const VoxelSnapshot& snap, SignalBoard& sig) {
     if (!snap.in_wound) return;
 
     real_t dt = snap.dt;
+    AdvanceCompressionState(dt);
 
-    // Update global pressure state once per timestep (not per voxel)
-    auto* sim = Simulation::GetActive();
-    uint64_t step = sim->GetScheduler()->GetSimulatedSteps();
-    if (step != last_state_step_) {
-      last_state_step_ = step;
-      steps_since_reposition_++;
-
-      // Check for repositioning event (pressure relief cycle)
-      real_t reposition_steps = sp_->pressure.reposition_interval_h / dt;
-      if (reposition_steps > 0 &&
-          steps_since_reposition_ >= static_cast<int>(reposition_steps)) {
-        under_compression_ = !under_compression_;
-        steps_since_reposition_ = 0;
-      }
-
-      if (under_compression_) {
-        compression_time_ += dt;
-        // Tissue damage accumulation (pressure-time relationship, Kosiak 1959)
-        tissue_damage_ += sp_->pressure.tissue_damage_rate * dt;
-        tissue_damage_ = std::min(tissue_damage_, static_cast<real_t>(1.0));
-      } else if (compression_time_ > 0) {
-        compression_time_ = 0.0;
-      }
-    }
-
-    // Per-voxel effects (these should scale with voxel count)
     if (under_compression_) {
-      // Ischemia: compression occludes capillaries, reducing perfusion
       if (perf_grid) {
         real_t perf = perf_grid->GetConcentration(snap.idx);
         real_t occlusion = sp_->pressure.ischemia_rate *
                            sp_->pressure.shear_factor * dt;
         if (perf > 0.05) {
           perf_grid->ChangeConcentrationBy(snap.idx, -std::min(perf * 0.5, occlusion));
-        }
-      }
-
-      // Moisture-associated damage (per-voxel check, global accumulation gated above)
-      if (water_grid) {
-        real_t water = water_grid->GetConcentration(snap.idx);
-        if (water > 0.5 && step == last_state_step_) {
-          // Moisture damage already accumulated in the per-step block
         }
       }
     } else {

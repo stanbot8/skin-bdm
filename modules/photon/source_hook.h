@@ -100,32 +100,29 @@ struct PhotonSourceHook {
       }
     }
 
-    // Opsin kinetics: two-state model (closed <-> open)
-    // dO/dt = k_on * L * (1 - O) - k_off * O
-    // where O = open fraction, L = local fluence (normalized)
-    if (opsin_grid && fluence_grid) {
-      real_t fluence = fluence_grid->GetConcentration(snap.idx);
-      real_t opsin = opsin_grid->GetConcentration(snap.idx);
+    UpdateOpsin(snap.idx, dt);
+  }
 
-      real_t k_on = sp_->photon.opsin_activation_rate;
-      real_t k_off = sp_->photon.opsin_deactivation_rate;
-      real_t sat = sp_->photon.opsin_saturation;
+  // Two-state opsin kinetics: dO/dt = k_on * L * (sat - O) - k_off * O.
+  // Clamped to [0, saturation].
+  inline void UpdateOpsin(size_t idx, real_t dt) {
+    if (!opsin_grid || !fluence_grid) return;
+    real_t fluence = fluence_grid->GetConcentration(idx);
+    real_t opsin = opsin_grid->GetConcentration(idx);
 
-      // Light-driven opening, capped at saturation
-      real_t opening = k_on * fluence * (sat - opsin) * dt;
-      // Thermal closing (dark recovery)
-      real_t closing = k_off * opsin * dt;
+    real_t k_on = sp_->photon.opsin_activation_rate;
+    real_t k_off = sp_->photon.opsin_deactivation_rate;
+    real_t sat = sp_->photon.opsin_saturation;
 
-      real_t delta = opening - closing;
-      if (std::abs(delta) > 1e-12) {
-        opsin_grid->ChangeConcentrationBy(snap.idx, delta);
-        // Clamp to [0, saturation]
-        real_t new_val = opsin_grid->GetConcentration(snap.idx);
-        if (new_val < 0) {
-          opsin_grid->ChangeConcentrationBy(snap.idx, -new_val);
-        } else if (new_val > sat) {
-          opsin_grid->ChangeConcentrationBy(snap.idx, sat - new_val);
-        }
+    real_t delta = k_on * fluence * (sat - opsin) * dt
+                 - k_off * opsin * dt;
+    if (std::abs(delta) > 1e-12) {
+      opsin_grid->ChangeConcentrationBy(idx, delta);
+      real_t new_val = opsin_grid->GetConcentration(idx);
+      if (new_val < 0) {
+        opsin_grid->ChangeConcentrationBy(idx, -new_val);
+      } else if (new_val > sat) {
+        opsin_grid->ChangeConcentrationBy(idx, sat - new_val);
       }
     }
   }

@@ -62,6 +62,19 @@ struct AngioSourceHook {
     sig.vegf_threshold = sp_->angiogenesis.vegf_hypoxia_threshold;
   }
 
+  // Hypoxia-driven VEGF production (shared by dermal and epidermal wound).
+  inline void ProduceVEGF(size_t idx, real_t local_o2, const SignalBoard& sig) {
+    if (!sig.do_vegf) return;
+    if (local_o2 < sp_->angiogenesis.vegf_hypoxia_threshold) {
+      real_t vegf_prod = sig.vegf_prod_rate *
+          (sp_->angiogenesis.vegf_hypoxia_threshold - local_o2) /
+          sp_->angiogenesis.vegf_hypoxia_threshold;
+      if (vegf_prod > 1e-10) {
+        vegf_grid->ChangeConcentrationBy(idx, vegf_prod);
+      }
+    }
+  }
+
   // Dermal: vascular recovery + VEGF clearance + NO vasodilation + VEGF source
   inline void ApplyDermal(const VoxelSnapshot& snap, SignalBoard& sig) {
     real_t vasc_val = vasc_grid->GetConcentration(snap.idx);
@@ -132,17 +145,8 @@ struct AngioSourceHook {
     }
 
     // VEGF source (wound dermal hypoxia)
-    if (snap.in_wound && sig.do_vegf) {
-      real_t local_o2 = o2_grid->GetConcentration(snap.idx);
-      if (local_o2 < sp_->angiogenesis.vegf_hypoxia_threshold) {
-        real_t vegf_prod = sig.vegf_prod_rate *
-            (sp_->angiogenesis.vegf_hypoxia_threshold - local_o2) /
-            sp_->angiogenesis.vegf_hypoxia_threshold;
-        if (vegf_prod > 1e-10) {
-          vegf_grid->ChangeConcentrationBy(snap.idx, vegf_prod);
-        }
-      }
-    }
+    if (snap.in_wound)
+      ProduceVEGF(snap.idx, o2_grid->GetConcentration(snap.idx), sig);
 
     // NO vasodilation: boost effective perfusion
     if (do_no && snap.in_wound && sig.vasc_eligible) {
@@ -161,15 +165,7 @@ struct AngioSourceHook {
 
   // Epidermal wound: VEGF source (hypoxia-driven production)
   inline void ApplyEpiWound(const VoxelSnapshot& snap, SignalBoard& sig) {
-    if (!sig.do_vegf) return;
-    if (snap.o2 < sp_->angiogenesis.vegf_hypoxia_threshold) {
-      real_t vegf_prod = sig.vegf_prod_rate *
-          (sp_->angiogenesis.vegf_hypoxia_threshold - snap.o2) /
-          sp_->angiogenesis.vegf_hypoxia_threshold;
-      if (vegf_prod > 1e-10) {
-        vegf_grid->ChangeConcentrationBy(snap.idx, vegf_prod);
-      }
-    }
+    ProduceVEGF(snap.idx, snap.o2, sig);
   }
 };
 
