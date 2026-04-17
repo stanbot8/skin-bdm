@@ -86,8 +86,8 @@ def main():
     ra_r = validate_ra(sim, sim_days) if has_ra else None
 
     # --- Print once ---
-    print_summary(wound=wound_r, fibroblast=fibro_r, tumor=tumor_r,
-                  microenv=micro_r, ph=ph_r, ra=ra_r)
+    passed = print_summary(wound=wound_r, fibroblast=fibro_r, tumor=tumor_r,
+                           microenv=micro_r, ph=ph_r, ra=ra_r)
 
     out_dir = plots_dir(sim_path)
     os.makedirs(out_dir, exist_ok=True)
@@ -213,6 +213,9 @@ def main():
         plt.close(fig)
         print(f"  Saved {path}")
 
+    return passed
+
 
 if __name__ == "__main__":
-    main()
+    ok = main()
+    sys.exit(0 if ok else 1)

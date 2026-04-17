@@ -996,4 +996,38 @@ def print_summary(wound=None, fibroblast=None, tumor=None, microenv=None,
             print(f"  T cell density      RMSE = {a['tcell_rmse'] * 100:.2f} %")
         if a.get("has_syn"):
             print(f"  Synovial pannus     RMSE = {a['syn_rmse'] * 100:.2f} %")
+
+    # Threshold gate: all wound observables should be below 15% RMSE
+    failures = []
+    threshold = 15.0
+    if wound:
+        for name, key in [("Wound closure", "closure_rmse"),
+                          ("Inflammation", "inflammation_rmse"),
+                          ("Neutrophils", "neut_rmse"),
+                          ("Macrophages", "mac_rmse")]:
+            val = wound[key] * (1 if key == "closure_rmse" else 100)
+            if val > threshold:
+                failures.append((name, val))
+    if fibroblast:
+        for name, key in [("Fibroblasts", "fibro_rmse"),
+                          ("Myofibroblasts", "myofib_rmse"),
+                          ("Collagen", "collagen_rmse")]:
+            if fibroblast[key] * 100 > threshold:
+                failures.append((name, fibroblast[key] * 100))
+    if microenv:
+        for name, key in [("TGF-b", "tgfb_rmse"), ("VEGF", "vegf_rmse"),
+                          ("Fibronectin", "fn_rmse"), ("MMP", "mmp_rmse")]:
+            if microenv[key] * 100 > threshold:
+                failures.append((name, microenv[key] * 100))
+    if ph and ph["ph_rmse"] * 100 > threshold:
+        failures.append(("pH", ph["ph_rmse"] * 100))
+
     print("=" * 60)
+    if failures:
+        print(f"  FAIL: {len(failures)} observable(s) above {threshold}% RMSE:")
+        for name, val in failures:
+            print(f"    {name}: {val:.2f}%")
+    else:
+        print(f"  PASS: all observables below {threshold}% RMSE")
+    print("=" * 60)
+    return len(failures) == 0
