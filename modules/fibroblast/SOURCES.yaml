@@ -43,6 +43,12 @@ myofibroblast_kinetics:
     title: Formation and function of the myofibroblast during tissue repair
     journal: J Invest Dermatol 127(3):526-537
     doi: 10.1038/sj.jid.5700613
+  - id: jiang2025
+    authors: Jiang W, et al.
+    year: 2025
+    title: Fibromodulin selectively accelerates myofibroblast apoptosis in cutaneous wounds by enhancing interleukin 1 beta signaling
+    journal: Nature Communications
+    doi: 10.1038/s41467-025-58906-z
   - id: statpearls_wound
     authors: Wound Healing Phases, StatPearls
     year: 2024

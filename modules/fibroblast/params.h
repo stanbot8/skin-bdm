@@ -37,11 +37,15 @@ struct FibroblastParams {
   real_t collagen_fn_transition = 0.15;  // collagen level at which FN deposition ceases (ECM maturation)
   real_t tgfb_taper = 0.0012;  // myofibroblast TGF-beta exp(-k*state_age)
 
-  // Mechanical unloading: wound closure reduces ECM tension, accelerating
-  // myofibroblast apoptosis (Hinz 2007, Tomasek 2002).
-  // Disabled by default: 3-replicate validation showed regression without
-  // calibration. Enable + tune with multi-replicate parameter sweep.
-  real_t closure_apoptosis_scale = 0.0;  // apoptosis_rate multiplier at 100% closure
+  // Two-factor myofibroblast apoptosis gate (Jiang et al. 2025,
+  // doi:10.1038/s41467-025-58906-z): mechanical unloading AND local
+  // IL-1beta signaling jointly trigger apoptosis. Implementation multiplies
+  // apoptosis_rate by (1 + scale * local_closure * local_inflammation).
+  // Disabled by default: needs multi-replicate calibration. When enabled
+  // along with fibromodulin/decorin (collagen proxy here), it replicates
+  // the fetal-like rapid activation + expedited clearance pattern that
+  // minimizes scarring.
+  real_t closure_apoptosis_scale = 0.0;  // combined closure*infl multiplier
 
   // Collagen-TGF-beta sequestration: decorin/biglycan in mature collagen
   // bind and neutralize TGF-beta (Yamaguchi et al. 1990, doi:10.1038/346281a0).

@@ -140,18 +140,35 @@ struct FibroblastBehavior : public Behavior {
       }
       // Stochastic apoptosis program (Desmouliere 1995): after onset delay,
       // myofibroblasts undergo apoptosis at a per-step probability.
-      // Rate scales with wound closure (mechanical unloading, Hinz 2007):
-      // as ECM tension drops, alpha-SMA disassembles and anoikis follows.
+      //
+      // Rate is scaled by the product of:
+      //   (a) local wound closure (mechanical unloading; Hinz 2007, Tomasek 2002)
+      //   (b) local IL-1beta signaling (approximated by local inflammation).
+      //
+      // Jiang et al. 2025 (doi:10.1038/s41467-025-58906-z) show apoptosis
+      // requires BOTH mechanical unloading AND active IL-1beta-IL1R1 complex
+      // formation; fibromodulin in mature ECM accelerates the second factor.
+      // Gating on the product prevents premature myofibroblast loss in
+      // inflammation-only or closure-only states.
       if (state_age > sp->fibroblast.apoptosis_onset) {
         auto* random = sim->GetRandom();
         real_t eff_apoptosis = sp->fibroblast.apoptosis_rate;
-        auto* strat_grid = rm->GetDiffusionGrid(fields::kStratumId);
-        if (strat_grid) {
-          Real3 above = {qpos[0], qpos[1], 1.0};
-          real_t local_closure = std::clamp(strat_grid->GetValue(above),
-                                            real_t{0}, real_t{1});
+        if (sp->fibroblast.closure_apoptosis_scale > 0) {
+          real_t local_closure = 0;
+          auto* strat_grid = rm->GetDiffusionGrid(fields::kStratumId);
+          if (strat_grid) {
+            Real3 above = {qpos[0], qpos[1], 1.0};
+            local_closure = std::clamp(strat_grid->GetValue(above),
+                                        real_t{0}, real_t{1});
+          }
+          real_t local_infl = 0;
+          auto* infl_grid = rm->GetDiffusionGrid(fields::kInflammationId);
+          if (infl_grid) {
+            local_infl = std::max(real_t{0}, infl_grid->GetValue(qpos));
+          }
+          // Both factors required (Jiang 2025 two-factor AND gate):
           eff_apoptosis *= (1.0 + sp->fibroblast.closure_apoptosis_scale
-                                  * local_closure);
+                                  * local_closure * local_infl);
         }
         if (random->Uniform(0, 1) < eff_apoptosis) {
           ContinuumHandoff(cell);
