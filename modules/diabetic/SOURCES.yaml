@@ -350,3 +350,10 @@ diabetic_inflammation_timecourse:
     title: 'Wound repair and regeneration: mechanisms, signaling, and translation'
     journal: Sci Transl Med 6(265):265sr6
     doi: 10.1126/scitranslmed.3009337
+  - id: clayton2024
+    authors: Clayton SM, Shafikhani SH, Soulika AM
+    year: 2024
+    title: Macrophage and neutrophil dysfunction in diabetic wounds
+    journal: Adv Wound Care (New Rochelle)
+    doi: 10.1089/wound.2023.0149
+    notes: 'Review of diabetic macrophage M1 persistence and impaired efferocytosis. Ly6Chi M1 monocytes accumulate post-recruitment, failing M1->M2 switch; supports diabetic.efferocytosis_factor and m1_duration_factor parameters.'
