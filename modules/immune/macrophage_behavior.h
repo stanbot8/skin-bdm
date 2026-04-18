@@ -122,9 +122,14 @@ struct MacrophageBehavior : public Behavior {
         if (sp->mech_m1_m2_transition) {
           // Mechanistic: efferocytosis-count driven with timer ceiling.
           // Engulfing apoptotic neutrophils is the primary M2 signal
-          // (PS receptor -> NR4A1 -> anti-inflammatory program). Once
-          // quota is met, transition fires stochastically. Timer ceiling
-          // models alternative M2 signals (IL-4, IL-10, glucocorticoids).
+          // (PS receptor -> NR4A1 -> anti-inflammatory program). The
+          // downstream step is metabolic: efferocytosis triggers IDO1,
+          // tryptophan uptake, and kynurenine production, which activates
+          // AhR to drive the M2 transcriptional program (Sukka et al.
+          // 2024, Nat Metab, doi:10.1038/s42255-024-01115-7). Once the
+          // engulfment quota is met, transition fires stochastically.
+          // Timer ceiling models alternative M2 signals (IL-4, IL-10,
+          // glucocorticoids).
           if (cell->GetEngulfCount() >= sp->mech_efferocytosis_quota) {
             should_transition =
                 (sim->GetRandom()->Uniform(0, 1) < sp->mech_m2_transition_rate);

@@ -85,3 +85,10 @@ immune_cell_kinetics:
     journal: J Clin Invest 83(3):865-875
     doi: 10.1172/JCI113970
     notes: Aged neutrophils recognized and cleared by macrophages. Supports efferocytosis_age_fraction parameter.
+  - id: sukka2024
+    authors: Sukka SR, Ampomah PB, Darville LN, Ngai D, Wang X, Kuriakose G, et al.
+    year: 2024
+    title: Efferocytosis drives a tryptophan metabolism pathway in macrophages to promote tissue resolution
+    journal: Nature Metabolism 6:1736-1755
+    doi: 10.1038/s42255-024-01115-7
+    notes: IDO1-dependent Trp-Kyn-AhR pathway mechanistically links efferocytosis to M1->M2 polarization. Supports the mech_m1_m2_transition efferocytosis-count model (PS receptor triggers NR4A1/anti-inflammatory program via metabolic reprogramming).
