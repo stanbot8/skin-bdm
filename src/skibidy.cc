@@ -669,6 +669,11 @@ void bdm::skibidy::SimParam::LoadConfig(const skibidy::TomlConfig& config) {
   BDM_ASSIGN_CONFIG_VALUE(scar.proportional_enabled, "skin.scar.proportional_enabled");
   BDM_ASSIGN_CONFIG_VALUE(scar.accumulation_rate, "skin.scar.accumulation_rate");
   BDM_ASSIGN_CONFIG_VALUE(scar.collagen_threshold, "skin.scar.collagen_threshold");
+  BDM_ASSIGN_CONFIG_VALUE(scar.maturity_enabled, "skin.scar.maturity_enabled");
+  BDM_ASSIGN_CONFIG_VALUE(scar.maturation_rate, "skin.scar.maturation_rate");
+  BDM_ASSIGN_CONFIG_VALUE(scar.maturation_mmp_boost, "skin.scar.maturation_mmp_boost");
+  BDM_ASSIGN_CONFIG_VALUE(scar.maturation_infl_block, "skin.scar.maturation_infl_block");
+  BDM_ASSIGN_CONFIG_VALUE(scar.maturation_myofib_block, "skin.scar.maturation_myofib_block");
 
   // Metrics export (TOML: hours)
   BDM_ASSIGN_HOURS(metrics_interval, "skin.metrics_interval_h");

@@ -52,6 +52,7 @@ constexpr const char* kBone = "Bone";
 constexpr const char* kScab = "Scab";
 constexpr const char* kFluence = "Fluence";
 constexpr const char* kOpsin = "Opsin";
+constexpr const char* kScarMaturity = "ScarMaturity";
 
 // Derived composite field names (not DiffusionGrid IDs).
 constexpr const char* kECMQuality = "ECMQuality";
@@ -107,6 +108,7 @@ enum : int {
   kScabId = 44,
   kFluenceId = 45,
   kOpsinId = 46,
+  kScarMaturityId = 47,
 };
 
 }  // namespace fields

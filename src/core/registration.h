@@ -21,6 +21,7 @@
 #include "tissue/water.h"
 #include "inflammation/inflammation_pde.h"
 #include "scar/scar_pde.h"
+#include "scar/scar_maturity_pde.h"
 #include "fibroblast/tgfbeta_pde.h"
 #include "fibroblast/collagen_pde.h"
 #include "biofilm/biofilm_pde.h"
@@ -93,6 +94,9 @@ inline void RegisterFields(Simulation* sim, const SimParam* sp,
     fields.Add(std::make_unique<CalciumPDE>());
     fields.Add(std::make_unique<KgfPDE>());
     fields.Add(std::make_unique<ScarPDE>());
+    if (sp->scar.maturity_enabled) {
+      fields.Add(std::make_unique<ScarMaturityPDE>());
+    }
     fields.Add(std::make_unique<WaterPDE>());
     if (sp->inflammation.split_inflammation_enabled) {
       fields.Add(std::make_unique<ProInflammatoryPDE>(sp));
@@ -237,6 +241,8 @@ inline void RegisterFields(Simulation* sim, const SimParam* sp,
             fields::kBasalDensityId);
   skip_ftcs(sp->glucose_mod.enabled && sp->diabetic.mode, fields::kAGEId);
   skip_ftcs(sp->senescence.enabled, fields::kSenescenceId);
+  skip_ftcs(sp->scar.maturity_enabled && sp->wound.enabled,
+            fields::kScarMaturityId);
   skip_ftcs(sp->mechanotransduction.enabled, fields::kStiffnessId);
   skip_ftcs(sp->lymphatic.enabled, fields::kEdemaId);
   skip_ftcs(sp->photon.enabled, fields::kOpsinId);

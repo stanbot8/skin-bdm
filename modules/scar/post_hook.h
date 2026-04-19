@@ -14,15 +14,18 @@ namespace skibidy {
 // Aarabi et al. 2007 (doi:10.1096/fj.07-8218com)
 struct ScarPostHook {
   DiffusionGrid* scar_grid = nullptr;
+  DiffusionGrid* scar_maturity_grid = nullptr;
   DiffusionGrid* stiffness_grid = nullptr;
   DiffusionGrid* stratum_grid = nullptr;
   DiffusionGrid* col_grid = nullptr;
   DiffusionGrid* infl_grid = nullptr;
+  DiffusionGrid* mmp_grid = nullptr;
   const SimParam* sp_ = nullptr;
   const GridRegistry* reg_ = nullptr;
   bool active = false;
   bool do_scar_collagen = false;
   bool do_mechano = false;
+  bool do_maturity = false;
   size_t dermal_z_offset = 0;
   size_t res2 = 0;
 
@@ -62,6 +65,38 @@ struct ScarPostHook {
       stiffness_grid = reg.Get(fields::kStiffnessId);
       if (!stiffness_grid) do_mechano = false;
     }
+
+    do_maturity = sp_->scar.maturity_enabled;
+    if (do_maturity) {
+      scar_maturity_grid = reg.Get(fields::kScarMaturityId);
+      if (!scar_maturity_grid) do_maturity = false;
+      if (sp_->mmp.enabled) mmp_grid = reg.Get(fields::kMMPId);
+      infl_grid = reg.InflammationGrid();
+    }
+  }
+
+  // Scar maturation: advances toward 1 (mature fibrous) gated by MMP
+  // activity and throttled by persistent inflammation / active myofibroblasts.
+  inline void AdvanceMaturity(size_t coarse_si, size_t fine_idx,
+                               real_t dt) {
+    if (!do_maturity) return;
+    real_t m = scar_maturity_grid->GetConcentration(coarse_si);
+    if (m >= 1.0) return;
+
+    // Accelerators
+    real_t mmp_val = mmp_grid ? mmp_grid->GetConcentration(fine_idx) : 0;
+    real_t boost = 1.0 + sp_->scar.maturation_mmp_boost * mmp_val;
+
+    // Inhibitors (persistent inflammation keeps scar immature)
+    real_t infl = infl_grid ? infl_grid->GetConcentration(fine_idx) : 0;
+    real_t damp = 1.0 / (1.0 + sp_->scar.maturation_infl_block * infl);
+
+    real_t delta = sp_->scar.maturation_rate * boost * damp * dt
+                 * (1.0 - m);  // saturate at 1
+    if (delta > 1e-10) {
+      real_t new_m = std::min(real_t{1}, m + delta);
+      scar_maturity_grid->ChangeConcentrationBy(coarse_si, new_m - m);
+    }
   }
 
   // Called per epidermal wound voxel. Fully self-contained.
@@ -96,6 +131,8 @@ struct ScarPostHook {
             inflammation * sp_->scar.accumulation_rate * snap.coarse_w);
       }
     }
+
+    AdvanceMaturity(snap.coarse_si, snap.idx, snap.dt);
 
     // Mechanotransduction scar amplification
     if (do_mechano && stiffness_grid) {

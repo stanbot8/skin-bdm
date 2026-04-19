@@ -1,0 +1,47 @@
+# Profile: psoriasis (chronic plaque psoriasis)
+#
+# Psoriasis is a chronic inflammatory skin disease with accelerated
+# keratinocyte proliferation (cell cycle 3-4 days vs normal 28), aberrant
+# differentiation (parakeratosis, retained nuclei in corneum), Th17-driven
+# immune dysregulation (IL-17A, IL-23, TNF-alpha), and a thickened scaly
+# epidermis. Not a wound response but shares machinery with wound healing.
+#
+# Primary literature:
+#   Boehncke WH 2015 (Lancet, doi:10.1016/S0140-6736(14)61909-7):
+#     psoriasis pathogenesis review
+#   Lowes MA 2014 (Annu Rev Immunol, doi:10.1146/annurev-immunol-032713-120225):
+#     Th17 pathway central to psoriasis
+#   Weinstein GD 1984 (J Invest Dermatol): cell cycle time in psoriatic
+#     vs normal epidermis
+#   Nestle FO 2009 (N Engl J Med, doi:10.1056/NEJMra0804595):
+#     clinical features and immunology
+#   Griffiths CEM 2017 (BMJ, doi:10.1136/bmj.j4347): epidemiology and
+#     treatment landscape
+
+[skin]
+# Hyperproliferative epidermis (Weinstein 1984)
+g1_duration = 1.5                    # drastically shortened G1 vs normal ~8h
+s_duration = 2.0                     # shorter S phase
+stem_fraction = 0.6                  # expanded proliferative compartment
+volume_z_cornified = 60.0            # thickened stratum corneum (plaque scale)
+water_recovery_rate = 0.15           # rapid keratinocyte turnover
+
+[skin.basal_density_enabled]
+# Keep basal density dynamics active; psoriasis is a proliferation disorder
+
+[skin.inflammation]
+# Th17-dominated chronic inflammation (Lowes 2014)
+inflammation_source_rate = 0.0018    # chronic elevated baseline
+inflammation_source_taper = 0.0002   # very slow taper; plaques persist weeks to months
+
+[skin.immune]
+# M1-biased macrophage pool, sustained TNF-alpha and IL-23 axis
+m1_duration_factor = 2.5             # prolonged M1 (Boehncke 2015)
+resolution_factor = 0.4              # impaired M2 resolution
+macrophage_spawn_rate_factor = 1.4   # amplified recruitment
+neutrophil_factor = 2.2              # Munro microabscesses (Nestle 2009)
+
+[skin.angiogenesis]
+# Increased dermal papilla vascularity (dilated tortuous capillaries,
+# clinical Auspitz sign bleeding on scale removal)
+vegf_production_rate = 0.0035        # 1.75x normal 0.002

@@ -1,0 +1,45 @@
+# Profile: hypertrophic scar (raised scar confined to wound margin)
+#
+# Hypertrophic scars resemble keloids (raised, red, sustained myofibroblasts,
+# excess collagen) but stay within the original wound boundary and tend to
+# regress over 1-2 years. Distinguished from keloid by lower TGF-beta
+# amplitude, eventual maturation, and contracture that limits range of
+# motion (common in burn sequelae and surgical wounds at high-tension sites).
+#
+# Primary literature:
+#   Gauglitz GG 2011 (Mol Med, doi:10.2119/molmed.2009.00153): hypertrophic
+#     vs keloid pathophysiology
+#   Ogawa R 2017 (Int J Mol Sci, doi:10.3390/ijms18030606): shared
+#     inflammatory mechanism with keloids
+#   Aarabi S 2007 (FASEB J, doi:10.1096/fj.07-8218com): mechanical tension
+#     drives hypertrophic transformation via mechanotransduction
+#   Marshall CD 2018 (Adv Wound Care, doi:10.1089/wound.2016.0696):
+#     abnormal scar remodeling and maturation
+
+[skin]
+stem_fraction = 0.35
+
+[skin.fibroblast]
+# Milder myofibroblast persistence than keloid (regresses over months)
+apoptosis_rate = 0.00035             # 60% of normal 0.0006
+apoptosis_onset = 2400               # 240h (10d), extended but less than keloid
+# Moderate TGF-beta elevation
+tgfb_rate = 0.0014                   # 1.4x normal (Gauglitz 2011)
+tgfb_taper = 0.0007                  # ~1.7x slower taper
+# Increased collagen deposition
+collagen_deposition_rate = 0.00075   # 1.5x normal (Gauglitz 2011)
+
+[skin.mmp]
+# Partial MMP/TIMP imbalance (less severe than keloid)
+fibroblast_rate = 0.0008             # 80% of normal 0.001
+timp_fibroblast_rate = 0.003         # 1.5x normal 0.002
+
+[skin.scar]
+proportional_enabled = true
+accumulation_rate = 0.0025           # 2.5x normal; raised bulk
+maturity_enabled = true              # track delayed maturation
+maturation_rate = 0.00008            # ~half normal; matures by 6-12 months
+maturation_infl_block = 5.0          # chronic inflammation prolongs immature phase
+
+[skin.mechanotransduction]
+enabled = true                       # high-tension mechanotransduction drives hypertrophic

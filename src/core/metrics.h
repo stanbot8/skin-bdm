@@ -65,7 +65,8 @@ struct MetricsExporter : public StandaloneOperationImpl {
             << "mean_stiffness_wound,mean_lymphatic_wound,mean_edema_wound,mean_voltage_wound,"
             << "mean_tnf_alpha_wound,mean_il6_wound,mean_cartilage_wound,mean_synovial_wound,"
             << "mean_tcell_wound,mean_bone_wound,"
-            << "mean_scab_wound"
+            << "mean_scab_wound,"
+            << "mean_scar_maturity_wound"
             << std::endl;
     }
 
@@ -196,6 +197,7 @@ struct MetricsExporter : public StandaloneOperationImpl {
     real_t mean_tcell = 0;
     real_t mean_bone = 0;
     real_t mean_scab = 0;
+    real_t mean_smat = 0;
 
     if (sp->wound.enabled) {
       auto* stratum_grid = rm->GetDiffusionGrid(fields::kStratumId);
@@ -282,6 +284,10 @@ struct MetricsExporter : public StandaloneOperationImpl {
       if (sp->scab.enabled) {
         scab_grid_m = rm->GetDiffusionGrid(fields::kScabId);
       }
+      DiffusionGrid* smat_grid_m = nullptr;
+      if (sp->scar.maturity_enabled) {
+        smat_grid_m = rm->GetDiffusionGrid(fields::kScarMaturityId);
+      }
       DiffusionGrid* tnf_grid_m = nullptr;
       DiffusionGrid* il6_grid_m = nullptr;
       DiffusionGrid* cart_grid_m = nullptr;
@@ -336,6 +342,7 @@ struct MetricsExporter : public StandaloneOperationImpl {
       real_t sum_tnf = 0, sum_il6 = 0, sum_cart = 0, sum_syn = 0;
       real_t sum_tcell = 0, sum_bone = 0;
       real_t sum_scab = 0;
+      real_t sum_smat = 0;
 
       // Compact loops: iterate only wound voxels via precomputed index lists.
       for (size_t idx : mask_.epi_wound) {
@@ -367,6 +374,7 @@ struct MetricsExporter : public StandaloneOperationImpl {
         if (ros_grid_m) sum_ros += ros_grid_m->GetConcentration(idx);
         if (volt_grid_m) sum_volt += volt_grid_m->GetConcentration(idx);
         if (scab_grid_m) sum_scab += scab_grid_m->GetConcentration(sidx(scab_grid_m, idx));
+        if (smat_grid_m) sum_smat += smat_grid_m->GetConcentration(sidx(smat_grid_m, idx));
         if (tnf_grid_m) sum_tnf += tnf_grid_m->GetConcentration(idx);
         if (il6_grid_m) sum_il6 += il6_grid_m->GetConcentration(idx);
         if (tcell_grid_m) sum_tcell += tcell_grid_m->GetConcentration(idx);
@@ -409,6 +417,7 @@ struct MetricsExporter : public StandaloneOperationImpl {
         if (ph_grid) mean_ph = sum_ph / total_voxels;
         if (fibrin_grid) mean_fibrin = sum_fibrin / total_voxels;
         if (scab_grid_m) mean_scab = sum_scab / total_voxels;
+        if (smat_grid_m) mean_smat = sum_smat / total_voxels;
         if (g_ecm_quality) mean_ecm_quality = sum_ecm / total_voxels;
         if (g_tissue_viability) mean_tissue_viability = sum_viability / total_voxels;
       }
@@ -531,7 +540,8 @@ struct MetricsExporter : public StandaloneOperationImpl {
           << mean_synovial << ","
           << mean_tcell << ","
           << mean_bone << ","
-          << mean_scab
+          << mean_scab << ","
+          << mean_smat
           << std::endl;
     timer.Print("metrics");
   }
