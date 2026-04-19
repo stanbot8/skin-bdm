@@ -1,0 +1,39 @@
+# Profile: keloid (hypertrophic / keloid scar, pathological over-healing)
+#
+# Keloids extend beyond the original wound margin and show sustained
+# myofibroblast activity, chronic low-grade inflammation, TGF-beta
+# overexpression, and collagen hyperdeposition with reversed type III:I
+# ratio. Unlike chronic wounds that fail to heal, keloids heal too much.
+#
+# Primary literature:
+#   Ogawa R 2017 (Int J Mol Sci, doi:10.3390/ijms18030606): keloid and
+#     hypertrophic scars are chronic inflammatory disorders
+#   Limandjaja GC 2020 (Exp Dermatol, doi:10.1111/exd.14116): keloid
+#     heterogeneity, histopathology, mechanisms
+#   Ehrlich HP 1994 (Am J Pathol): excess collagen deposition profile
+#   Ulrich D 2010 (Wound Repair Regen, doi:10.1111/j.1524-475X.2009.00565.x):
+#     reduced MMP/TIMP ratio in keloid fibroblasts
+#   Bettinger DA 1994 (Plast Reconstr Surg): elevated TGF-beta1 in keloid
+
+[skin]
+stem_fraction = 0.35                # normal proliferation at wound edge
+
+[skin.fibroblast]
+# Myofibroblast persistence: reduced apoptosis rate, delayed onset of clearance
+apoptosis_rate = 0.0002             # 3x lower than normal 0.0006 (Lim 2002, 10.1097/00006534-200206000-00027)
+apoptosis_onset = 3360              # 336h (14d) vs normal 168h; keloid myofib persist beyond 14d
+apoptosis_threshold = 0.0003        # lower TGF-b floor for apoptosis (sustained signaling)
+# Elevated TGF-beta production
+tgfb_rate = 0.002                   # 2x normal 0.001 (Bettinger 1994)
+tgfb_taper = 0.0004                 # 3x slower taper (Liu 2018, doi:10.1016/j.intimp.2018.05.020)
+# Fibroblast hyperactivity
+collagen_deposition_rate = 0.001    # 2x normal 0.0005 (Ehrlich 1994)
+
+[skin.mmp]
+# Reduced remodeling: keloid fibroblasts under-express MMP
+fibroblast_rate = 0.0005            # half normal 0.001 (Ulrich 2010)
+timp_fibroblast_rate = 0.004        # 2x normal 0.002; excess TIMP inhibits MMPs
+
+[skin.scar]
+proportional_enabled = true
+accumulation_rate = 0.4             # 2x normal; scar accumulates faster

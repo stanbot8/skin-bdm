@@ -66,7 +66,7 @@ bdm.core.toml              core tissue params
   = bdm.toml                 runtime config (gitignored)
 ```
 
-Skin profiles: `normal` (default), `aged`, `diabetic`, `aged_diabetic`, `rheumatoid`, `burn`, `pressure`, `surgical`, `tumor`, `tumor_wound`. Studies: `wound`, `diabetic-wound`, `tumor`, `tumor-wound`, `burn`, `pressure-ulcer`, `surgical`, `rheumatoid`, `baseline`, `full-model`.
+Skin profiles: `normal` (default), `aged`, `diabetic`, `aged_diabetic`, `keloid`, `venous`, `scleroderma`, `rheumatoid`, `burn`, `pressure`, `surgical`, `tumor`, `tumor_wound`. Studies: `wound`, `diabetic-wound`, `tumor`, `tumor-wound`, `burn`, `pressure-ulcer`, `surgical`, `rheumatoid`, `baseline`, `full-model`.
 
 ## Treatment study
 

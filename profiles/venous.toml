@@ -1,0 +1,45 @@
+# Profile: venous leg ulcer (chronic wound driven by venous hypertension)
+#
+# Venous insufficiency causes capillary pooling, fibrin cuff formation
+# around capillaries, chronic edema, iron deposition (hemosiderin), and
+# a stalled wound that cycles between inflammation and failed proliferation.
+# Distinct from diabetic ulcers: the immune dysfunction is edema and
+# fibrin-cuff mediated rather than hyperglycemic.
+#
+# Primary literature:
+#   Raffetto JD 2016 (Vasc Biomed, doi:10.2147/VHRM.S128695): venous ulcer
+#     pathophysiology review
+#   Herrick SE 1992 (J Invest Dermatol, doi:10.1111/1523-1747.ep12469681):
+#     fibrin cuffs and pericapillary fibrin deposition
+#   Mendez MV 1998 (J Vasc Surg, doi:10.1016/S0741-5214(98)70252-X):
+#     senescent fibroblast phenotype in venous ulcer wound bed
+#   Trengove NJ 1999 (Wound Repair Regen, doi:10.1046/j.1524-475X.1999.00442.x):
+#     elevated MMP activity with reduced TIMP in chronic venous wounds
+#   Bollinger A 1989 (Int J Microcirc Clin Exp): dermal microangiopathy
+
+[skin]
+aging_factor = 1.2
+
+[skin.perfusion]
+basal = 0.55                        # reduced effective capillary perfusion (fibrin cuffs)
+angio_rate = 0.003                  # impaired angiogenesis (Bollinger 1989)
+
+[skin.lymphatic]
+enabled = true
+
+[skin.inflammation]
+# Persistent chronic inflammation with recurrent flare cycles
+inflammation_source_rate = 0.002    # 2x normal; chronic DAMPs from failed healing
+inflammation_source_taper = 0.0005  # slow taper (weeks, not days)
+
+[skin.fibroblast]
+# Senescent fibroblast phenotype in wound bed (Mendez 1998)
+activation_threshold = 0.015        # 3x normal 0.005; reduced TGF-b responsiveness
+collagen_deposition_rate = 0.00025  # half normal 0.0005; senescent fibroblasts deposit less
+apoptosis_rate = 0.0012             # 2x normal; faster death from oxidative stress
+
+[skin.mmp]
+# Elevated MMP activity, reduced TIMP (Trengove 1999)
+fibroblast_rate = 0.002             # 2x normal 0.001
+timp_fibroblast_rate = 0.001        # half normal 0.002
+residual_decay = 0.010              # slower clearance; sustained proteolytic activity

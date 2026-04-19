@@ -1,0 +1,49 @@
+# Profile: scleroderma (systemic sclerosis skin involvement)
+#
+# Scleroderma dermis shows diffuse fibrosis: persistent apoptosis-resistant
+# myofibroblast-like cells, excessive type I collagen deposition without
+# wound stimulus, vascular rarefaction, and elevated TGF-beta1 with
+# refractory signaling. The skin is thick, tight, and sclerotic.
+# Unlike keloid, fibrosis is systemic and not confined to a wound margin.
+#
+# Primary literature:
+#   Varga J 2007 (Ann Rheum Dis, doi:10.1136/ard.2006.066068): SSc
+#     fibrosis pathogenesis, apoptosis-resistant myofibroblast
+#   Kissin EY 2002 (Curr Opin Rheumatol): dermal fibroblast hyperactivity
+#   Distler JHW 2019 (Nat Rev Rheumatol, doi:10.1038/s41584-019-0322-7):
+#     SSc pathogenesis review, TGF-beta central role
+#   Trojanowska M 2010 (Curr Opin Rheumatol): endothelial dysfunction and
+#     vascular rarefaction in SSc
+#   Asano Y 2015 (J Dermatol, doi:10.1111/1346-8138.12958): vascular
+#     pathology in SSc
+
+[skin]
+aging_factor = 1.0
+
+[skin.perfusion]
+# Vascular rarefaction: reduced capillary density (Trojanowska 2010)
+basal = 0.65
+angio_rate = 0.002                  # impaired angiogenesis; nailfold capillary dropout
+
+[skin.fibroblast]
+# Apoptosis-resistant myofibroblast-like cells (Varga 2007)
+apoptosis_rate = 0.0001             # ~6x lower than normal 0.0006
+apoptosis_threshold = 0.0002        # cells survive at very low TGF-b
+apoptosis_onset = 4800              # 480h (20d); sustained activation
+# Elevated constitutive TGF-beta signaling (Distler 2019)
+tgfb_rate = 0.0025                  # 2.5x normal 0.001
+tgfb_taper = 0.0003                 # ~4x slower than normal 0.0012
+# Collagen hyperdeposition (Kissin 2002)
+collagen_deposition_rate = 0.0012   # 2.4x normal 0.0005
+# Constitutive activation: lower threshold for quiescent to activated
+activation_threshold = 0.002        # half normal 0.005
+
+[skin.mmp]
+# Reduced remodeling capacity (net profibrotic balance)
+fibroblast_rate = 0.0004            # 40% of normal 0.001
+timp_fibroblast_rate = 0.0035       # ~1.75x normal 0.002
+
+[skin.inflammation]
+# Low-grade chronic inflammation from autoantibodies and immune cells
+inflammation_source_rate = 0.0008
+inflammation_source_taper = 0.0004  # slow taper; chronic low-level
